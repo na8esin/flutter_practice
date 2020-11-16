@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_practice/hello.dart';
+import 'package:flutter_practice/error.dart';
+import 'package:flutter_practice/loading.dart';
 
 void main() {
   runApp(App());
@@ -31,40 +33,6 @@ class App extends StatelessWidget {
         // Otherwise, show something whilst waiting for initialization to complete
         return Loading();
       },
-    );
-  }
-}
-
-class Error extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Error'),
-        ),
-        body: Center(
-          child: Text('Error.'),
-        ),
-      ),
-    );
-  }
-}
-
-class Loading extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Welcome to Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Welcome to Flutter'),
-        ),
-        body: Center(
-          child: Text('Just a moment, please.'),
-        ),
-      ),
     );
   }
 }
