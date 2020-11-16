@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_practice/hello.dart';
+
 import 'package:flutter_practice/error.dart';
 import 'package:flutter_practice/loading.dart';
+import 'package:flutter_practice/nav2app.dart';
 
 void main() {
   runApp(App());
@@ -27,7 +28,7 @@ class App extends StatelessWidget {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return Hello();
+          return Nav2App();
         }
 
         // Otherwise, show something whilst waiting for initialization to complete

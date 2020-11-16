@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_practice/error.dart';
 import 'package:flutter_practice/loading.dart';
 
-class Hello extends StatelessWidget {
+class PublicScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CollectionReference public = FirebaseFirestore.instance.collection('public');
