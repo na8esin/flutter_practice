@@ -20,13 +20,20 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class Counter extends StateNotifier<int> {
+  Counter() : super(0);
+
+  void increment() => state++;
+}
+
 /// Providers are declared globally and specifies how to create a state
-final counterProvider = StateProvider<int>((ref) => 0);
+final counterProvider = StateNotifierProvider((ref) => Counter());
 
 class Home extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final count = useProvider<StateController<int>>(counterProvider).state;
+    final Counter counter = useProvider(counterProvider);
+    final int count = useProvider(counterProvider.state);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Counter example')),
@@ -36,7 +43,7 @@ class Home extends HookWidget {
           child: Text('$count')),
       floatingActionButton: FloatingActionButton(
         // The read method is an utility to read a provider without listening to it
-        onPressed: () => context.read(counterProvider).state++,
+        onPressed: () => counter.increment(),
         child: const Icon(Icons.add),
       ),
     );
