@@ -26,14 +26,14 @@ final counterProvider = StateProvider<int>((ref) => 0);
 class Home extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final count = useProvider<StateController<int>>(counterProvider);
+    final count = useProvider<StateController<int>>(counterProvider).state;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Counter example')),
       body: Center(
           // Consumer is a widget that allows you reading providers.
           // You could also use the hook "useProvider" if you uses flutter_hooks
-          child: Text(count.state.toString())),
+          child: Text('$count')),
       floatingActionButton: FloatingActionButton(
         // The read method is an utility to read a provider without listening to it
         onPressed: () => context.read(counterProvider).state++,
