@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // A Counter example implemented with riverpod
 
@@ -20,21 +21,19 @@ class MyApp extends StatelessWidget {
 }
 
 /// Providers are declared globally and specifies how to create a state
-final counterProvider = StateProvider((ref) => 0);
+final counterProvider = StateProvider<int>((ref) => 0);
 
-class Home extends StatelessWidget {
+class Home extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final count = useProvider<StateController<int>>(counterProvider);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Counter example')),
       body: Center(
-        // Consumer is a widget that allows you reading providers.
-        // You could also use the hook "useProvider" if you uses flutter_hooks
-        child: Consumer(builder: (context, watch, _) {
-          final count = watch(counterProvider).state;
-          return Text('$count');
-        }),
-      ),
+          // Consumer is a widget that allows you reading providers.
+          // You could also use the hook "useProvider" if you uses flutter_hooks
+          child: Text(count.state.toString())),
       floatingActionButton: FloatingActionButton(
         // The read method is an utility to read a provider without listening to it
         onPressed: () => context.read(counterProvider).state++,
