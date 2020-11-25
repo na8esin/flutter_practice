@@ -35,35 +35,32 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: new ListView(
-            children:[
-              FlatButton(
-                child: Text('View Details'),
-                onPressed: () {
-                  Navigator.pushNamed(
-                  context,
-                  '/details/1',
-                  );
-                },
-              ),
-              FlatButton(
-                child: Text('View publics'),
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    '/public',
-                  );
-                },
-              ),
-            ]
-        )
-      ),
+          child: new ListView(children: [
+        FlatButton(
+          child: Text('View Details'),
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              '/details/1',
+            );
+          },
+        ),
+        FlatButton(
+          child: Text('View publics'),
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              '/public',
+            );
+          },
+        ),
+      ])),
     );
   }
 }
 
 class DetailScreen extends StatelessWidget {
-  String id;
+  final String id;
 
   DetailScreen({
     this.id,
