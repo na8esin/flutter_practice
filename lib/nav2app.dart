@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_practice/public_screen.dart';
+import 'package:flutter_practice/stream_public_screen.dart';
 
 class Nav2App extends StatelessWidget {
   @override
@@ -21,6 +22,9 @@ class Nav2App extends StatelessWidget {
 
         if (uri.pathSegments.first == 'public') {
           return MaterialPageRoute(builder: (context) => PublicScreen());
+        }
+        if (uri.pathSegments.first == 'public_stream') {
+          return MaterialPageRoute(builder: (context) => StreamPublicScreen());
         }
 
         return MaterialPageRoute(builder: (context) => UnknownScreen());
@@ -51,6 +55,15 @@ class HomeScreen extends StatelessWidget {
             Navigator.pushNamed(
               context,
               '/public',
+            );
+          },
+        ),
+        FlatButton(
+          child: Text('View publics stream'),
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              '/public_stream',
             );
           },
         ),
