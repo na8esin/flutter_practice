@@ -20,19 +20,19 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class Counter extends StateNotifier<int> {
-  Counter() : super(0);
+class CounterController extends StateNotifier<int> {
+  CounterController() : super(0);
 
   void increment() => state++;
 }
 
 /// Providers are declared globally and specifies how to create a state
-final counterProvider = StateNotifierProvider((ref) => Counter());
+final counterProvider = StateNotifierProvider((ref) => CounterController());
 
 class Home extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final Counter counter = useProvider(counterProvider);
+    final CounterController counter = useProvider(counterProvider);
     final int count = useProvider(counterProvider.state);
 
     return Scaffold(
