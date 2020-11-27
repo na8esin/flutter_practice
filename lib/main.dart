@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
-
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 
-import 'package:flutter_practice/error.dart';
-import 'package:flutter_practice/loading.dart';
-import 'package:flutter_practice/nav2app.dart';
+import 'error.dart';
+import 'loading.dart';
+import 'nav2app.dart';
 
 void main() {
   runApp(App());
