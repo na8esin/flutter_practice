@@ -20,15 +20,33 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class CounterController extends StateNotifier<int> {
-  CounterController() : super(0);
+class CounterRepository {
+  CounterRepository(this.read);
 
-  void increment() => state++;
+  /// The `ref.read` function
+  final Reader read;
+
+  int incrementCount(int count) {
+    // 何らかの貯蔵庫からの取得処理
+
+    return count + 1;
+  }
 }
 
+class CounterController extends StateNotifier<int> {
+  CounterController(this.repository) : super(0);
+  final CounterRepository repository;
+  void increment() {
+    state = repository.incrementCount(state);
+  }
+}
+
+final counterRepositoryProvider =
+    Provider((ref) => CounterRepository(ref.read));
+
 /// Providers are declared globally and specifies how to create a state
-final counterControllerProvider =
-    StateNotifierProvider((ref) => CounterController());
+final counterControllerProvider = StateNotifierProvider(
+    (ref) => CounterController(ref.watch(counterRepositoryProvider)));
 
 class Home extends HookWidget {
   @override
