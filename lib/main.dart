@@ -1,6 +1,7 @@
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'detail_screen.dart';
 import 'error.dart';
@@ -11,10 +12,15 @@ import 'stream_public_screen.dart';
 import 'unknown_screen.dart';
 
 void main() {
-  runApp(App());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    // Appはconstじゃなくても起動はするみたい
+    ProviderScope(child: App()),
+  );
 }
 
 class App extends StatelessWidget {
+  App({Key key}) : super(key: key);
   // Create the initialization Future outside of `build`:
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
