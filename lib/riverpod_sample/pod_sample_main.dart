@@ -27,13 +27,14 @@ class CounterController extends StateNotifier<int> {
 }
 
 /// Providers are declared globally and specifies how to create a state
-final counterProvider = StateNotifierProvider((ref) => CounterController());
+final counterControllerProvider =
+    StateNotifierProvider((ref) => CounterController());
 
 class Home extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final CounterController counter = useProvider(counterProvider);
-    final int count = useProvider(counterProvider.state);
+    final CounterController counter = useProvider(counterControllerProvider);
+    final int count = useProvider(counterControllerProvider.state);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Counter example')),
