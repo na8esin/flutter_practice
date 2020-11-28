@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class CharacterView extends HookWidget {
-  const CharacterView({Key key}) : super(key: key);
+import 'family.dart';
+
+class PublicView extends HookWidget {
+  const PublicView({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final id = useProvider(selectedCharacterId);
-    assert(
-      id != null,
-      'CharacterView used but selectedCharacterId is null',
-    );
-
-    return useProvider(character(id)).when(
+    return useProvider(publicFamily('9qpBAhvsBfWsCp6iGREc')).when(
       loading: () {
         return const Scaffold(
           body: Center(child: CircularProgressIndicator()),
@@ -26,12 +22,12 @@ class CharacterView extends HookWidget {
           ),
         );
       },
-      data: (character) {
+      data: (public) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(character.name),
+            title: Text(public.name),
           ),
-          body: LoadingImage(url: character.thumbnail.url),
+          body: Text(public.subname),
         );
       },
     );

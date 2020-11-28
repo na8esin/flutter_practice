@@ -7,6 +7,7 @@ import 'detail_screen.dart';
 import 'error.dart';
 import 'home_screen.dart';
 import 'loading.dart';
+import 'public_hook_view.dart';
 import 'public_screen.dart';
 import 'stream_public_screen.dart';
 import 'unknown_screen.dart';
@@ -74,6 +75,9 @@ class Navigation extends StatelessWidget {
         }
         if (uri.pathSegments.first == 'public_stream') {
           return MaterialPageRoute(builder: (context) => StreamPublicScreen());
+        }
+        if (uri.pathSegments.first == 'public_hook') {
+          return MaterialPageRoute(builder: (context) => PublicView());
         }
 
         return MaterialPageRoute(builder: (context) => UnknownScreen());
