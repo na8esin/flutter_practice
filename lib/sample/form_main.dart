@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() => runApp(
@@ -17,53 +18,56 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text(appTitle),
         ),
-        body: MyCustomForm(),
+        body: MyCustomFormState(),
       ),
     );
   }
 }
 
-// Create a Form widget.
-class MyCustomForm extends StatefulWidget {
-  @override
-  MyCustomFormState createState() {
-    return MyCustomFormState();
+class MyFormController extends StateNotifier<String> {
+  MyFormController() : super('');
+  bool validate() {
+    if (state.isNotEmpty) {
+      return true;
+    }
+    return false;
+  }
+
+  String validator(String value) {
+    setFormValue(value);
+    if (value.isEmpty) {
+      return 'Please enter some text';
+    }
+    return null;
+  }
+
+  void setFormValue(String value) {
+    state = value;
   }
 }
 
+final myFormControllerProvider =
+    StateNotifierProvider((ref) => MyFormController());
+
 // Create a corresponding State class.
 // This class holds data related to the form.
-class MyCustomFormState extends State<MyCustomForm> {
-  // Create a global key that uniquely identifies the Form widget
-  // and allows validation of the form.
-  //
-  // Note: This is a GlobalKey<FormState>,
-  // not a GlobalKey<MyCustomFormState>.
-  final _formKey = GlobalKey<FormState>();
-
+class MyCustomFormState extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    // Build a Form widget using the _formKey created above.
+    final MyFormController myForm = useProvider(myFormControllerProvider);
+
     return Form(
-      key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           TextFormField(
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter some text';
-              }
-              return null;
-            },
+            validator: myForm.validator,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () {
-                // Validate returns true if the form is valid, or false
-                // otherwise.
-                if (_formKey.currentState.validate()) {
+                if (myForm.validate()) {
                   // If the form is valid, display a Snackbar.
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text('Processing Data')));
