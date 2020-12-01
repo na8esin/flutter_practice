@@ -5,6 +5,7 @@ import 'home_screen.dart';
 import 'public_hook_view.dart';
 import 'public_screen.dart';
 import 'stream_public_screen.dart';
+import 'stream_riverpod_public_screen.dart';
 import 'unknown_screen.dart';
 
 class Navigation extends StatelessWidget {
@@ -37,6 +38,10 @@ class Navigation extends StatelessWidget {
         }
         if (uri.pathSegments.first == 'public_hook') {
           return MaterialPageRoute(builder: (context) => PublicView());
+        }
+        if (uri.pathSegments.first == 'public_stream_hook') {
+          return MaterialPageRoute(
+              builder: (context) => StreamRiverPodPublicScreen());
         }
 
         return MaterialPageRoute(builder: (context) => UnknownScreen());

@@ -35,11 +35,20 @@ class HomeScreen extends StatelessWidget {
           },
         ),
         FlatButton(
-          child: Text('View publics_hook stream'),
+          child: Text('View publics_hook future'),
           onPressed: () {
             Navigator.pushNamed(
               context,
               '/public_hook',
+            );
+          },
+        ),
+        FlatButton(
+          child: Text('View publics_hook stream'),
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              '/public_stream_hook',
             );
           },
         ),
