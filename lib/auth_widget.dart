@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'empty_content.dart';
 
@@ -10,7 +11,7 @@ final firebaseAuthProvider =
 final authStateChangesProvider = StreamProvider<User>(
     (ref) => ref.watch(firebaseAuthProvider).authStateChanges());
 
-class AuthWidget extends ConsumerWidget {
+class AuthWidget extends HookWidget {
   const AuthWidget({
     Key key,
     @required this.signedInBuilder,
@@ -20,8 +21,8 @@ class AuthWidget extends ConsumerWidget {
   final WidgetBuilder signedInBuilder;
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final authStateChanges = watch(authStateChangesProvider);
+  Widget build(BuildContext context) {
+    var authStateChanges = useProvider(authStateChangesProvider);
     return authStateChanges.when(
       data: (user) => _data(context, user),
       loading: () => const Scaffold(
