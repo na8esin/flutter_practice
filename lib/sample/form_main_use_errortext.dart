@@ -24,10 +24,20 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyFormController extends StateNotifier<String> {
-  MyFormController() : super('');
+class MyForm {
+  MyForm({
+    this.email = '',
+    this.submitted = false,
+  });
+  bool submitted;
+  String email;
+}
+
+// form model的な感じ
+class MyFormController extends StateNotifier<MyForm> {
+  MyFormController() : super(MyForm());
   bool validate() {
-    if (state.isNotEmpty) {
+    if (state.email.isNotEmpty) {
       return true;
     }
     return false;
@@ -43,7 +53,23 @@ class MyFormController extends StateNotifier<String> {
   }
 
   void setFormValue(String value) {
-    state = value;
+    state.email = value;
+  }
+
+  void setSubmitted(bool value) {
+    state.submitted = value;
+  }
+
+  String get emailErrorText {
+    print('emailErrorText');
+    if (state.submitted && !validate()) {
+      return 'Please enter some text';
+    }
+    return null;
+  }
+
+  String get email {
+    return state.email;
   }
 }
 
@@ -53,28 +79,28 @@ final myFormControllerProvider =
 // Create a corresponding State class.
 // This class holds data related to the form.
 class MyCustomFormState extends HookWidget {
-  final formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     final MyFormController myForm = useProvider(myFormControllerProvider);
 
     return Form(
-      key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           TextFormField(
-            validator: myForm.validator,
+            // TODO: errorTextが更新される方法がわからない
+            decoration: InputDecoration(errorText: myForm.emailErrorText),
+            onChanged: myForm.setFormValue,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () {
-                if (formKey.currentState.validate()) {
+                myForm.setSubmitted(true);
+                if (myForm.validate()) {
                   // If the form is valid, display a Snackbar.
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text('Processing Data')));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Processing Data:' + myForm.email)));
                 }
               },
               child: Text('Submit'),
