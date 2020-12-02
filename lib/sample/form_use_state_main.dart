@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
 
 /*
   flutter_hooksを使った簡単なバリデーションサンプル
+  GlobalKeyを使えばいいんじゃない？と思った。
  */
 class MyCustomForm extends HookWidget {
   @override
