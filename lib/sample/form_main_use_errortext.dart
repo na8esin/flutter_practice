@@ -82,6 +82,7 @@ class MyCustomFormState extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final MyFormController myForm = useProvider(myFormControllerProvider);
+    final textEditingController = useTextEditingController();
 
     return Form(
       child: Column(
@@ -91,6 +92,7 @@ class MyCustomFormState extends HookWidget {
             // TODO: errorTextが更新される方法がわからない
             decoration: InputDecoration(errorText: myForm.emailErrorText),
             onChanged: myForm.setFormValue,
+            controller: textEditingController,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
