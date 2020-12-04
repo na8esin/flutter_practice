@@ -28,8 +28,8 @@ dependencies:
   hooks_riverpod: ^0.12.1
   freezed_annotation:
   firebase_core: ^0.5.2+1
-  firebase_auth: "^0.18.3+1"
-  cloud_firestore: "^0.14.3+1"
+  firebase_auth: ^0.18.3+1
+  cloud_firestore: ^0.14.3+1
   flutter_signin_button: ^1.1.0
   google_sign_in: ^4.5.6
 
