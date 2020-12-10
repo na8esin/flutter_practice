@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'error.dart';
-import 'loading.dart';
+import '../common/error.dart';
+import '../common/loading.dart';
 
 class StreamPublicScreen extends StatelessWidget {
   @override

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'detail_screen.dart';
 import 'home_screen.dart';
-import 'public_hook_view.dart';
+import 'public_hook_screen.dart';
 import 'public_screen.dart';
-import 'stream_public_screen.dart';
-import 'stream_riverpod_public_screen.dart';
+import 'stream_builder_public_screen.dart';
+import 'stream_riverpod_hook_public_screen.dart';
 import 'unknown_screen.dart';
 
 class Navigation extends StatelessWidget {
