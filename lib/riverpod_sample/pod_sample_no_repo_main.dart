@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // A Counter example implemented with riverpod
+// Repositoryを作らないパターン
 
 void main() {
   runApp(
