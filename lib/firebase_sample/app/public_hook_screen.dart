@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'public_family.dart';
+import 'public_provider_family.dart';
 
 class PublicView extends HookWidget {
   const PublicView({Key key}) : super(key: key);

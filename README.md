@@ -17,3 +17,6 @@ flutter pub run build_runner build --delete-conflicting-outputs
 - https://github.com/lohanidamodar/flutter_firebase_starter
 
 ということで後回し
+
+## TODO
+- freezed, flutter_hooks, firestore_refのサンプル

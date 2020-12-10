@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'detail_screen.dart';
 import 'home_screen.dart';
+import 'public_future_builder_screen.dart';
 import 'public_hook_screen.dart';
-import 'public_screen.dart';
 import 'stream_builder_public_screen.dart';
 import 'stream_riverpod_hook_public_screen.dart';
 import 'unknown_screen.dart';
