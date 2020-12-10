@@ -20,3 +20,5 @@ flutter pub run build_runner build --delete-conflicting-outputs
 
 ## TODO
 - freezed, flutter_hooks, firestore_refのサンプル
+- ui系もちゃんとわかってないな
+- routes
