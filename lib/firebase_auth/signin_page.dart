@@ -33,14 +33,14 @@ class _SignInPageState extends State<SignInPage> {
               onPressed: () async {
                 final User user = await _auth.currentUser;
                 if (user == null) {
-                  Scaffold.of(context).showSnackBar(const SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text('No one has signed in.'),
                   ));
                   return;
                 }
                 _signOut();
                 final String uid = user.uid;
-                Scaffold.of(context).showSnackBar(SnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(uid + ' has successfully signed out.'),
                 ));
               },
@@ -56,7 +56,7 @@ class _SignInPageState extends State<SignInPage> {
             _EmailPasswordForm(),
             _EmailLinkSignInSection(),
             _AnonymouslySignInSection(),
-            _PhoneSignInSection(Scaffold.of(context)),
+            _PhoneSignInSection(ScaffoldMessenger.of(context)),
             _OtherProvidersSignInSection(),
           ],
         );
@@ -149,12 +149,12 @@ class _EmailPasswordFormState extends State<_EmailPasswordForm> {
       ))
           .user;
 
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("${user.email} signed in"),
       ));
     } catch (e) {
       print(e);
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Failed to sign in with Email & Password"),
       ));
     }
@@ -231,12 +231,12 @@ class _EmailLinkSignInSectionState extends State<_EmailLinkSignInSection> {
               iOSBundleId: 'io.flutter.plugins.firebaseAuthExample',
               androidPackageName: 'io.flutter.plugins.firebaseauthexample'));
 
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("An email has been sent to ${_userEmail}"),
       ));
     } catch (e) {
       print(e);
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Sending email failed"),
       ));
     }
@@ -301,11 +301,11 @@ class _AnonymouslySignInSectionState extends State<_AnonymouslySignInSection> {
     try {
       final User user = (await _auth.signInAnonymously()).user;
 
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Signed in Anonymously as user ${user.uid}"),
       ));
     } catch (e) {
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Failed to sign in Anonymously"),
       ));
     }
@@ -315,7 +315,7 @@ class _AnonymouslySignInSectionState extends State<_AnonymouslySignInSection> {
 class _PhoneSignInSection extends StatefulWidget {
   _PhoneSignInSection(this._scaffold);
 
-  final ScaffoldState _scaffold;
+  final ScaffoldMessengerState _scaffold;
 
   @override
   State<StatefulWidget> createState() => _PhoneSignInSectionState();
@@ -680,12 +680,12 @@ class _OtherProvidersSignInSectionState
 
       final user = userCredential.user;
 
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Sign In ${user.uid} with GitHub"),
       ));
     } catch (e) {
       print(e);
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Failed to sign in with GitHub: ${e}"),
       ));
     }
@@ -699,12 +699,12 @@ class _OtherProvidersSignInSectionState
       );
       final User user = (await _auth.signInWithCredential(credential)).user;
 
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Sign In ${user.uid} with Facebook"),
       ));
     } catch (e) {
       print(e);
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Failed to sign in with Facebook: ${e}"),
       ));
     }
@@ -727,12 +727,12 @@ class _OtherProvidersSignInSectionState
 
       final user = userCredential.user;
 
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Sign In ${user.uid} with Twitter"),
       ));
     } catch (e) {
       print(e);
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Failed to sign in with Twitter: ${e}"),
       ));
     }
@@ -759,13 +759,13 @@ class _OtherProvidersSignInSectionState
       }
 
       final user = userCredential.user;
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Sign In ${user.uid} with Google"),
       ));
     } catch (e) {
       print(e);
 
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Failed to sign in with Google: ${e}"),
       ));
     }
