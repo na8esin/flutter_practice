@@ -41,6 +41,16 @@ class MyCustomForm extends HookWidget {
             controller: textEditingController,
             decoration: InputDecoration(errorText: errorText.value),
           ),
+          SizedBox(
+            width: 200,
+            height: 400,
+            // TODO: 表示とカーソルの位置がづれるというか、最終行が隠れちゃう
+            child: TextFormField(
+              expands: true,
+              maxLines: null,
+              minLines: null,
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
