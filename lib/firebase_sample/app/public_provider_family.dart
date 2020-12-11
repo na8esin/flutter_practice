@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../model/public.dart';
+import '../../model/public.dart';
 
 final $family = FutureProvider.autoDispose.family;
 final publicFamily = $family<Public, String>((ref, documentId) async {

@@ -18,15 +18,13 @@ class _$TodoTearOff {
 
 // ignore: unused_element
   _Todo call(
-      {@required String title,
-      @required @TimestampConverter() DateTime testDay,
-      String description,
+      {@required String description,
+      @required bool completed,
       @TimestampConverter() DateTime createdAt,
       @TimestampConverter() DateTime updatedAt}) {
     return _Todo(
-      title: title,
-      testDay: testDay,
       description: description,
+      completed: completed,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
@@ -44,11 +42,8 @@ const $Todo = _$TodoTearOff();
 
 /// @nodoc
 mixin _$Todo {
-//@required String id,
-  String get title;
-  @TimestampConverter()
-  DateTime get testDay;
   String get description;
+  bool get completed;
   @TimestampConverter()
   DateTime get createdAt;
   @TimestampConverter()
@@ -63,9 +58,8 @@ abstract class $TodoCopyWith<$Res> {
   factory $TodoCopyWith(Todo value, $Res Function(Todo) then) =
       _$TodoCopyWithImpl<$Res>;
   $Res call(
-      {String title,
-      @TimestampConverter() DateTime testDay,
-      String description,
+      {String description,
+      bool completed,
       @TimestampConverter() DateTime createdAt,
       @TimestampConverter() DateTime updatedAt});
 }
@@ -80,17 +74,15 @@ class _$TodoCopyWithImpl<$Res> implements $TodoCopyWith<$Res> {
 
   @override
   $Res call({
-    Object title = freezed,
-    Object testDay = freezed,
     Object description = freezed,
+    Object completed = freezed,
     Object createdAt = freezed,
     Object updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
-      title: title == freezed ? _value.title : title as String,
-      testDay: testDay == freezed ? _value.testDay : testDay as DateTime,
       description:
           description == freezed ? _value.description : description as String,
+      completed: completed == freezed ? _value.completed : completed as bool,
       createdAt:
           createdAt == freezed ? _value.createdAt : createdAt as DateTime,
       updatedAt:
@@ -105,9 +97,8 @@ abstract class _$TodoCopyWith<$Res> implements $TodoCopyWith<$Res> {
       __$TodoCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String title,
-      @TimestampConverter() DateTime testDay,
-      String description,
+      {String description,
+      bool completed,
       @TimestampConverter() DateTime createdAt,
       @TimestampConverter() DateTime updatedAt});
 }
@@ -123,17 +114,15 @@ class __$TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object title = freezed,
-    Object testDay = freezed,
     Object description = freezed,
+    Object completed = freezed,
     Object createdAt = freezed,
     Object updatedAt = freezed,
   }) {
     return _then(_Todo(
-      title: title == freezed ? _value.title : title as String,
-      testDay: testDay == freezed ? _value.testDay : testDay as DateTime,
       description:
           description == freezed ? _value.description : description as String,
+      completed: completed == freezed ? _value.completed : completed as bool,
       createdAt:
           createdAt == freezed ? _value.createdAt : createdAt as DateTime,
       updatedAt:
@@ -147,24 +136,20 @@ class __$TodoCopyWithImpl<$Res> extends _$TodoCopyWithImpl<$Res>
 /// @nodoc
 class _$_Todo implements _Todo {
   _$_Todo(
-      {@required this.title,
-      @required @TimestampConverter() this.testDay,
-      this.description,
+      {@required this.description,
+      @required this.completed,
       @TimestampConverter() this.createdAt,
       @TimestampConverter() this.updatedAt})
-      : assert(title != null),
-        assert(testDay != null);
+      : assert(description != null),
+        assert(completed != null);
 
   factory _$_Todo.fromJson(Map<String, dynamic> json) =>
       _$_$_TodoFromJson(json);
 
-  @override //@required String id,
-  final String title;
-  @override
-  @TimestampConverter()
-  final DateTime testDay;
   @override
   final String description;
+  @override
+  final bool completed;
   @override
   @TimestampConverter()
   final DateTime createdAt;
@@ -174,21 +159,19 @@ class _$_Todo implements _Todo {
 
   @override
   String toString() {
-    return 'Todo(title: $title, testDay: $testDay, description: $description, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Todo(description: $description, completed: $completed, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Todo &&
-            (identical(other.title, title) ||
-                const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.testDay, testDay) ||
-                const DeepCollectionEquality()
-                    .equals(other.testDay, testDay)) &&
             (identical(other.description, description) ||
                 const DeepCollectionEquality()
                     .equals(other.description, description)) &&
+            (identical(other.completed, completed) ||
+                const DeepCollectionEquality()
+                    .equals(other.completed, completed)) &&
             (identical(other.createdAt, createdAt) ||
                 const DeepCollectionEquality()
                     .equals(other.createdAt, createdAt)) &&
@@ -200,9 +183,8 @@ class _$_Todo implements _Todo {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(testDay) ^
       const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(completed) ^
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(updatedAt);
 
@@ -218,21 +200,17 @@ class _$_Todo implements _Todo {
 
 abstract class _Todo implements Todo {
   factory _Todo(
-      {@required String title,
-      @required @TimestampConverter() DateTime testDay,
-      String description,
+      {@required String description,
+      @required bool completed,
       @TimestampConverter() DateTime createdAt,
       @TimestampConverter() DateTime updatedAt}) = _$_Todo;
 
   factory _Todo.fromJson(Map<String, dynamic> json) = _$_Todo.fromJson;
 
-  @override //@required String id,
-  String get title;
-  @override
-  @TimestampConverter()
-  DateTime get testDay;
   @override
   String get description;
+  @override
+  bool get completed;
   @override
   @TimestampConverter()
   DateTime get createdAt;

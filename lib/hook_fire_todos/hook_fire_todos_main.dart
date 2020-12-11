@@ -2,10 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'todo.dart';
-import 'todo_service.dart';
+import '../model/todo.dart';
+import 'todo_freezed_service.dart';
 
 /// Some keys used for testing
 final addTodoKey = UniqueKey();
@@ -35,8 +36,9 @@ class Home extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final todos = useProvider(filteredTodos);
+    //final todos = useProvider(filteredTodos);
     final newTodoController = useTextEditingController();
+    var todosAutoDisposeProvider = useProvider(todosProvider);
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -52,33 +54,48 @@ class Home extends HookWidget {
                 labelText: 'What needs to be done?',
               ),
               onSubmitted: (value) {
-                context.read(todoListProvider).add(value);
+                todosRef.add(Todo(description: value, completed: false));
                 newTodoController.clear();
               },
             ),
             const SizedBox(height: 42),
             const Toolbar(),
             // ここから下が、todoのリスト
-            ListView.separated(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: todos.length,
-              itemBuilder: (context, i) {
-                return Dismissible(
-                  key: ValueKey(todos[i].id),
-                  onDismissed: (_) {
-                    context.read(todoListProvider).remove(todos[i]);
-                  },
-                  child: ProviderScope(
-                    overrides: [
-                      _currentTodo.overrideWithValue(todos[i]),
-                    ],
-                    child: const TodoItem(),
-                  ),
-                );
-              },
-              separatorBuilder: (_, index) => const Divider(height: 0),
-            )
+            todosAutoDisposeProvider.when(
+                data: (data) {
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: data.length,
+                    itemBuilder: (context, i) {
+                      return Dismissible(
+                        key: ValueKey(data.elementAt(i).id),
+                        onDismissed: (_) {
+                          data.elementAt(i).todoRef.delete();
+                        },
+                        child: ProviderScope(
+                          overrides: [
+                            _currentTodo.overrideWithValue(data.elementAt(i)),
+                          ],
+                          child: const TodoItem(),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (_, index) => const Divider(height: 0),
+                  );
+                },
+                error: (err, stack) {
+                  return Scaffold(
+                    appBar: AppBar(title: const Text('Error')),
+                    body: Center(
+                      child: Text('$err'),
+                    ),
+                  );
+                },
+                loading: () => Container(
+                      color: Colors.white,
+                      child: const Center(child: CircularProgressIndicator()),
+                    ))
           ],
         ),
       ),
@@ -105,7 +122,7 @@ class Toolbar extends HookWidget {
         children: [
           Expanded(
             child: Text(
-              '${useProvider(uncompletedTodosCount).toString()} items left',
+              '${useProvider(uncompletedTodosCountProvider)} items left',
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -170,7 +187,7 @@ class Title extends StatelessWidget {
 ///
 /// This ensures that when we add/remove/edit todos, only what the
 /// impacted widgets rebuilds, instead of the entire list of items.
-final _currentTodo = ScopedProvider<Todo>(null);
+final _currentTodo = ScopedProvider<TodoDoc>(null);
 
 class TodoItem extends HookWidget {
   const TodoItem({Key key}) : super(key: key);
@@ -193,12 +210,11 @@ class TodoItem extends HookWidget {
         focusNode: itemFocusNode,
         onFocusChange: (focused) {
           if (focused) {
-            textEditingController.text = todo.description;
+            textEditingController.text = todo.entity.description;
           } else {
-            // Commit changes only when the textfield is unfocused, for performance
-            context
-                .read(todoListProvider)
-                .edit(id: todo.id, description: textEditingController.text);
+            todo.todoRef.update(Todo(
+                description: textEditingController.text,
+                completed: todo.entity.completed));
           }
         },
         child: ListTile(
@@ -207,17 +223,19 @@ class TodoItem extends HookWidget {
             textFieldFocusNode.requestFocus();
           },
           leading: Checkbox(
-            value: todo.completed,
-            onChanged: (value) =>
-                context.read(todoListProvider).toggle(todo.id),
-          ),
+              value: todo.entity.completed,
+              onChanged: (value) => todo.todoRef.update(Todo(
+                  description: todo.entity.description,
+                  completed: !todo.entity.completed,
+                  createdAt: todo.entity.createdAt // TODO: これやらないとだめ？
+                  ))),
           title: isFocused
               ? TextField(
                   autofocus: true,
                   focusNode: textFieldFocusNode,
                   controller: textEditingController,
                 )
-              : Text(todo.description),
+              : Text(todo.entity.description),
         ),
       ),
     );

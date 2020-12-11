@@ -7,10 +7,8 @@ part 'todo.g.dart';
 @freezed
 abstract class Todo with _$Todo {
   factory Todo({
-    //@required String id,
-    @required String title,
-    @required @TimestampConverter() DateTime testDay,
-    String description,
+    @required String description,
+    @required bool completed,
     @TimestampConverter() DateTime createdAt,
     @TimestampConverter() DateTime updatedAt,
   }) = _Todo;
@@ -18,8 +16,7 @@ abstract class Todo with _$Todo {
 }
 
 class TodoField {
-  static const title = 'title';
-  static const testDay = 'testDay';
+  static const completed = 'completed';
   static const description = 'description';
   static const createdAt = 'createdAt';
   static const updatedAt = 'updatedAt';
