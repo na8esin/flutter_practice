@@ -42,13 +42,17 @@ class MyCustomForm extends HookWidget {
             decoration: InputDecoration(errorText: errorText.value),
           ),
           SizedBox(
-            width: 200,
             height: 400,
+            width: 600,
             // TODO: 表示とカーソルの位置がづれるというか、最終行が隠れちゃう
+            // https://github.com/flutter/flutter/issues/64792
             child: TextFormField(
-              expands: true,
-              maxLines: null,
-              minLines: null,
+              expands: false,
+              maxLines: 20,
+              keyboardType: TextInputType.multiline,
+              decoration: InputDecoration(border: const OutlineInputBorder()),
+              textAlignVertical: TextAlignVertical.top,
+              maxLength: 2000,
             ),
           ),
           Padding(
