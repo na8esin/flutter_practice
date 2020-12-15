@@ -5,12 +5,18 @@
 // (although elevation on the navigation rail can be used instead). The
 // `_selectedIndex` is updated by the `onDestinationSelected` callback.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(const ProviderScope(child: MyApp()));
+}
 
 /// This is the main application widget.
-class MyApp extends StatelessWidget {
+class MyApp extends HookWidget {
+  const MyApp();
   static const String _title = 'Flutter Code Sample';
 
   @override
@@ -23,28 +29,19 @@ class MyApp extends StatelessWidget {
 }
 
 /// This is the stateful widget that the main application instantiates.
-class MyStatefulWidget extends StatefulWidget {
+class MyStatefulWidget extends HookWidget {
   MyStatefulWidget({Key key}) : super(key: key);
 
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
-}
-
-/// This is the private State class that goes with MyStatefulWidget.
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _selectedIndex = 0;
-
-  @override
   Widget build(BuildContext context) {
+    final ValueNotifier<int> _selectedIndex = useState(0);
     return Scaffold(
       body: Row(
         children: <Widget>[
           NavigationRail(
-            selectedIndex: _selectedIndex,
+            selectedIndex: _selectedIndex.value,
             onDestinationSelected: (int index) {
-              setState(() {
-                _selectedIndex = index;
-              });
+              _selectedIndex.value = index;
             },
             labelType: NavigationRailLabelType.selected,
             destinations: [
@@ -69,7 +66,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           // This is the main content.
           Expanded(
             child: Center(
-              child: Text('selectedIndex: $_selectedIndex'),
+              child: Text('selectedIndex: ${_selectedIndex.value}'),
             ),
           )
         ],
