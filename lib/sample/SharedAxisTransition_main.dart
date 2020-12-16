@@ -37,7 +37,7 @@ class MyState extends State<MyApp> {
           return SharedAxisTransition(
             animation: primaryAnimation,
             secondaryAnimation: secondaryAnimation,
-            transitionType: SharedAxisTransitionType.horizontal,
+            transitionType: SharedAxisTransitionType.vertical,
             child: child,
           );
         },
