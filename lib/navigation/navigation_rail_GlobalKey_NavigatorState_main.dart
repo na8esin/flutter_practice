@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// まだ、navigation_rail_main.dartと同じ状態
-
 void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -30,8 +28,6 @@ class MyApp extends HookWidget {
   }
 }
 
-final desktopMailNavKey = GlobalKey<NavigatorState>();
-
 /// This is the stateful widget that the main application instantiates.
 class MyStatefulWidget extends HookWidget {
   MyStatefulWidget({Key key}) : super(key: key);
@@ -39,6 +35,7 @@ class MyStatefulWidget extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final ValueNotifier<int> _selectedIndex = useState(0);
+    final navKey = GlobalObjectKey<NavigatorState>(context);
     return Scaffold(
       body: Row(
         children: <Widget>[
@@ -48,16 +45,13 @@ class MyStatefulWidget extends HookWidget {
               _selectedIndex.value = index;
               switch (index) {
                 case 0:
-                  desktopMailNavKey.currentState
-                      .pushNamed(MailNavigator.inboxRoute);
+                  navKey.currentState.pushNamed(MailNavigator.inboxRoute);
                   break;
                 case 1:
-                  desktopMailNavKey.currentState
-                      .pushNamed(MailNavigator.composeRoute);
+                  navKey.currentState.pushNamed(MailNavigator.composeRoute);
                   break;
                 default:
-                  desktopMailNavKey.currentState
-                      .pushNamed(MailNavigator.thirdRoute);
+                  navKey.currentState.pushNamed(MailNavigator.thirdRoute);
               }
             },
             labelType: NavigationRailLabelType.selected,
@@ -84,7 +78,7 @@ class MyStatefulWidget extends HookWidget {
           Expanded(
             child: Center(
               //child: Text('selectedIndex: ${_selectedIndex.value}'),
-              child: MailNavigator(),
+              child: MailNavigator(navKey),
             ),
           )
         ],
@@ -94,7 +88,8 @@ class MyStatefulWidget extends HookWidget {
 }
 
 class MailNavigator extends StatelessWidget {
-  const MailNavigator();
+  const MailNavigator(this.navKey);
+  final navKey;
 
   static const inboxRoute = '/inbox';
   static const composeRoute = '/compose';
@@ -106,7 +101,7 @@ class MailNavigator extends StatelessWidget {
       restorationScopeId: 'replyMailNavigator',
       // keyをコメントアウトするとアイコンを押すたびに↓が発生する
       // NoSuchMethodError: invalid member on null: 'pushNamed'
-      key: desktopMailNavKey,
+      key: navKey,
       initialRoute: inboxRoute,
       onGenerateRoute: (settings) {
         switch (settings.name) {
