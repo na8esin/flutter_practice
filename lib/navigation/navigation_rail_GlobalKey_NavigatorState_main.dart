@@ -78,6 +78,7 @@ class MyStatefulWidget extends HookWidget {
           Expanded(
             child: Center(
               //child: Text('selectedIndex: ${_selectedIndex.value}'),
+              // 引数で渡してもOK
               child: MailNavigator(navKey),
             ),
           )
