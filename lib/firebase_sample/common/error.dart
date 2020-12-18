@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Error extends StatelessWidget {
+  Error({this.error});
+  final Object error;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -8,7 +10,7 @@ class Error extends StatelessWidget {
         title: Text('Error'),
       ),
       body: Center(
-        child: Text('Error.'),
+        child: Text(error.toString()),
       ),
     );
   }

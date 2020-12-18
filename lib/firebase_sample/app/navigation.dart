@@ -5,10 +5,14 @@ import 'home_screen.dart';
 import 'public_future_builder_screen.dart';
 import 'public_hook_screen.dart';
 import 'stream_builder_public_screen.dart';
-import 'stream_riverpod_hook_public_screen.dart';
+import 'stream_hook_public_detail_screen.dart';
+import 'stream_hook_public_screen.dart';
 import 'unknown_screen.dart';
 
 // TODO: いろいろメタメタだから書き換えないと
+
+const publicPath = 'public';
+const publicStream = 'public_stream';
 
 class Navigation extends StatelessWidget {
   final String _title;
@@ -32,10 +36,10 @@ class Navigation extends StatelessWidget {
           return MaterialPageRoute(builder: (context) => DetailScreen(id: id));
         }
 
-        if (uri.pathSegments.first == 'public') {
+        if (uri.pathSegments.first == publicPath) {
           return MaterialPageRoute(builder: (context) => PublicScreen());
         }
-        if (uri.pathSegments.first == 'public_stream') {
+        if (uri.pathSegments.first == publicStream) {
           return MaterialPageRoute(builder: (context) => StreamPublicScreen());
         }
         if (uri.pathSegments.first == 'public_hook') {
@@ -44,6 +48,9 @@ class Navigation extends StatelessWidget {
         if (uri.pathSegments.first == 'public_stream_hook') {
           return MaterialPageRoute(
               builder: (context) => StreamRiverPodPublicScreen());
+        }
+        if (uri.pathSegments.first == 'detail') {
+          return MaterialPageRoute(builder: (context) => StreamDetailsScreen());
         }
 
         return MaterialPageRoute(builder: (context) => UnknownScreen());

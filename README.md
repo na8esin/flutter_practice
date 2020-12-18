@@ -26,6 +26,18 @@ flutter pub run build_runner build --delete-conflicting-outputs
 ## TODO
 
 - freezed, flutter_hooks, firestore_ref のサンプル
+  - firestore_ref ってサブコレクションに対応してる？
 - ui 系もちゃんとわかってないな
 - routes
 - riverpod の StateNotifierProvider 使うと copyWith 必要なくない？
+- サブコレクションが欲しいときと欲しくない時あるよねー。
+  - author_model
+  - author_book_model とかやると冗長だね
+  - book_model
+- author の一覧
+- author に紐づく、book の一覧
+- author を跨いだ book の一覧に author 表示されるパターン
+
+## 些末なこと
+
+- Scaffold extends StatefulWidget なので、StatefulWidget が完全になくせるわけじゃないし、意味がないと思う

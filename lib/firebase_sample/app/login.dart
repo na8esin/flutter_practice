@@ -28,7 +28,8 @@ class MyCustomForm extends HookWidget {
     final emailErrorText = useState<String>(null);
     final passwordErrorText = useState<String>(null);
     final emailEditingController = useTextEditingController();
-    final passwordEditingController = useTextEditingController();
+    final passwordEditingController =
+        useTextEditingController(text: 'password');
     final firebaseAuth = useProvider(firebaseAuthProvider);
     return Form(
       child: Column(
@@ -57,10 +58,16 @@ class MyCustomForm extends HookWidget {
                   passwordErrorText.value = "some error";
                   return;
                 }
-                await firebaseAuth.signInWithCredential(
-                    EmailAuthProvider.credential(
-                        email: emailEditingController.text,
-                        password: passwordEditingController.text));
+                try {
+                  await firebaseAuth.signInWithCredential(
+                      EmailAuthProvider.credential(
+                          email: emailEditingController.text,
+                          password: passwordEditingController.text));
+                } on Exception catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('$e'),
+                  ));
+                }
               },
               child: Text('Submit'),
             ),

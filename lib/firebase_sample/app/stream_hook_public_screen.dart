@@ -8,14 +8,15 @@ import '../common/loading.dart';
 
 final publicProvider = StreamProvider<QuerySnapshot>((ref) {
   CollectionReference public = FirebaseFirestore.instance.collection('public');
+  public.doc().collection('details');
   return public.snapshots();
 });
 
 class StreamRiverPodPublicScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    AsyncValue<QuerySnapshot> public = useProvider(publicProvider);
-    return public.when(
+    AsyncValue<QuerySnapshot> publicSnapshot = useProvider(publicProvider);
+    return publicSnapshot.when(
         loading: () => Loading(),
         error: (error, stack) => Error(),
         data: (public) => Scaffold(
@@ -23,11 +24,12 @@ class StreamRiverPodPublicScreen extends HookWidget {
               title: Text('StreamRiverPodPublicScreen'),
             ),
             body: Center(
-                child: new ListView(
+                child: ListView(
               children: public.docs.map((DocumentSnapshot document) {
-                return new ListTile(
-                  title: new Text(document.data()['name']),
-                  subtitle: new Text(document.data()['subname']),
+                return ListTile(
+                  title: Text(document.data()['name']),
+                  subtitle: Text(document.data()['subname']),
+                  trailing: Text('tr'),
                 );
               }).toList(),
             ))));

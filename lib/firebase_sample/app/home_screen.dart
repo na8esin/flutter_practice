@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'navigation.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -21,7 +22,7 @@ class HomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(
               context,
-              '/public',
+              '/${publicPath}',
             );
           },
         ),
@@ -30,7 +31,7 @@ class HomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(
               context,
-              '/public_stream',
+              '/${publicStream}',
             );
           },
         ),
@@ -44,11 +45,11 @@ class HomeScreen extends StatelessWidget {
           },
         ),
         FlatButton(
-          child: Text('View publics_hook stream'),
+          child: Text('detail'),
           onPressed: () {
             Navigator.pushNamed(
               context,
-              '/public_stream_hook',
+              '/detail',
             );
           },
         ),
