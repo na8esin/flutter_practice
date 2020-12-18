@@ -1,5 +1,7 @@
 /**
  * StateNotifierとの比較のためのサンプルコード
+ * ChangeNotifierが存在しない世界線で生きてきたけど、
+ * flutter/galleryのコードで存在していたので
  */
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
