@@ -7,25 +7,31 @@ void main() {
   ));
 }
 
+final navKey = GlobalKey<NavigatorState>();
+
 // Navigatorが間にあっても遷移はする
 class MyNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Navigator(onGenerateRoute: (settings) {
-      switch (settings.name) {
-        case '/':
-          return MaterialPageRoute<void>(
-            builder: (context) => App(),
-          );
-          break;
-        default:
-          return MaterialPageRoute<void>(
-            builder: (context) => Scaffold(
-              body: Text('error'),
-            ),
-          );
-      }
-    });
+    return Navigator(
+        restorationScopeId: 'replyMailNavigator',
+        key: navKey,
+        initialRoute: '/',
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/':
+              return MaterialPageRoute<void>(
+                builder: (context) => App(),
+              );
+              break;
+            default:
+              return MaterialPageRoute<void>(
+                builder: (context) => Scaffold(
+                  body: Text('error'),
+                ),
+              );
+          }
+        });
   }
 }
 
