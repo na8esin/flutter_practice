@@ -65,6 +65,7 @@ class MyApp extends HookWidget {
 class MyForm extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final prop = useProvider(countStateControllerProvider);
     return Form(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,14 +92,19 @@ class MyForm extends HookWidget {
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                 child: RaisedButton(
                   child: Text('Cancel'),
-                  onPressed: () {},
+                  onPressed: () {
+                    prop.erase();
+                    Navigator.of(context).pop(true);
+                  },
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                 child: RaisedButton(
                   child: Text('OK'),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
                 ),
               ),
             ],
