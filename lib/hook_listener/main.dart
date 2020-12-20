@@ -41,7 +41,7 @@ class MyApp extends HookWidget {
     return ProviderListener(
       provider: countStateProvider,
       onChange: (context, CountState countState) {
-        if (countState.count == 5) {
+        if (countState.count % 5 == 0) {
           showDialog(
             context: context,
             builder: (context) => SimpleDialog(
@@ -66,50 +66,71 @@ class MyForm extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final prop = useProvider(countStateControllerProvider);
-    return Form(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Name',
+    final containerWidth = MediaQuery.of(context).size.width * 0.8;
+    final containerheight = MediaQuery.of(context).size.height * 0.8;
+    return Container(
+      width: containerWidth,
+      height: containerheight,
+      child: Form(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                ),
+                onChanged: (newValue) {},
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a name';
+                  }
+                  return null;
+                },
               ),
-              onChanged: (newValue) {},
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Please enter a name';
-                }
-                return null;
-              },
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                child: RaisedButton(
-                  child: Text('Cancel'),
-                  onPressed: () {
-                    prop.erase();
-                    Navigator.of(context).pop(true);
-                  },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Sub Name',
                 ),
+                onChanged: (newValue) {},
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter a sub name';
+                  }
+                  return null;
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                child: RaisedButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                  child: RaisedButton(
+                    child: Text('Cancel'),
+                    onPressed: () {
+                      prop.erase();
+                      Navigator.of(context).pop(true);
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                  child: RaisedButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
