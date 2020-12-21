@@ -101,7 +101,7 @@ class MyHome extends HookWidget {
                     text = 'third';
                   }
 
-                  await showDialog(
+                  showDialog(
                       context: context,
                       builder: (context) => SimpleDialog(
                             title: Text(text),
