@@ -31,6 +31,7 @@ class MyApp extends HookWidget {
 // このプロバイダーだとうまくいかない
 //final selectedIndexPro = Provider<int>((ref) => 0);
 
+// https://github.com/rrousselGit/river_pod/blob/0ba3e28bba005f6be06bf269049a6e762e71998e/packages/flutter_riverpod/test/auto_dispose_change_notifier_provider_test.dart#L12
 final selectedIndexPro = ChangeNotifierProvider.autoDispose((ref) {
   //ref.onDispose(onDispose);
   return ValueNotifier(0);
