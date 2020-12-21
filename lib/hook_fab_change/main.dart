@@ -11,10 +11,19 @@ class MyApp extends HookWidget {
   const MyApp();
   @override
   Widget build(BuildContext context) {
-    //Icon fabIcon = useState()
+    ValueNotifier<String> dialogText = useState<String>('inbox');
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          // awaitじゃないとだめ
+          await showDialog(
+              context: context,
+              builder: (context) => SimpleDialog(
+                    title: Text(dialogText.value),
+                    children: <Widget>[Text(dialogText.value)],
+                  ));
+          dialogText.value = dialogText.value == 'outbox' ? 'inbox' : 'outbox';
+        },
         child: const Icon(Icons.add),
       ),
     );
