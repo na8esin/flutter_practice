@@ -123,8 +123,20 @@ class MailNavigator extends StatelessWidget {
 
   static Route createInboxRoute(RouteSettings settings) {
     return PageRouteBuilder<void>(
-      pageBuilder: (context, animation, secondaryAnimation) => const Scaffold(
+      pageBuilder: (context, animation, secondaryAnimation) => Scaffold(
         body: Text('inbox'),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) => SimpleDialog(
+                      title: Text('inbox'),
+                      children: <Widget>[Text('inbox')],
+                    ));
+            return;
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
       settings: settings,
     );
@@ -132,8 +144,20 @@ class MailNavigator extends StatelessWidget {
 
   static Route createComposeRoute(RouteSettings settings) {
     return PageRouteBuilder<void>(
-      pageBuilder: (context, animation, secondaryAnimation) => const Scaffold(
+      pageBuilder: (context, animation, secondaryAnimation) => Scaffold(
         body: Text('Compose'),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) => SimpleDialog(
+                      title: Text('Compose'),
+                      children: <Widget>[Text('Compose')],
+                    ));
+            return;
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
       settings: settings,
     );
