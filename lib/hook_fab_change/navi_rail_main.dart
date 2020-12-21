@@ -28,7 +28,9 @@ class MyApp extends HookWidget {
   }
 }
 
+// このプロバイダーだとうまくいかない
 //final selectedIndexPro = Provider<int>((ref) => 0);
+
 final selectedIndexPro = ChangeNotifierProvider.autoDispose((ref) {
   //ref.onDispose(onDispose);
   return ValueNotifier(0);
