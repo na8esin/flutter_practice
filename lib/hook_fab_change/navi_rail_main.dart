@@ -90,10 +90,21 @@ class MyHome extends HookWidget {
               ),
               floatingActionButton: FloatingActionButton(
                 onPressed: () async {
+                  var text = '';
+                  if (_selectedIndex.value == 0) {
+                    text = 'inbox';
+                  }
+                  if (_selectedIndex.value == 1) {
+                    text = 'compose';
+                  }
+                  if (_selectedIndex.value == 2) {
+                    text = 'third';
+                  }
+
                   await showDialog(
                       context: context,
                       builder: (context) => SimpleDialog(
-                            title: Text('${_selectedIndex.value}'),
+                            title: Text(text),
                             children: <Widget>[Text('inbox')],
                           ));
                   return;
