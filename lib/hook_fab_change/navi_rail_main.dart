@@ -31,8 +31,13 @@ class StateSelectedStateNotifier extends StateNotifier<int> {
   StateSelectedStateNotifier() : super(0);
 
   // こんなセッターを定義すればうまくいくけど、
-  // イミュータブルか？
+  // なんかダサい
   setIndex(int index) {
+    state = index;
+  }
+
+  // こういうのを定義するとControllerって呼びたい気持ちがわかる
+  onDestinationSelected(int index) {
     state = index;
   }
 }
@@ -52,13 +57,11 @@ class MyHome extends HookWidget {
       body: Row(
         children: <Widget>[
           NavigationRail(
-            // 変わらない -> 変わる
-            selectedIndex: _selectedIndex,
-            onDestinationSelected: (int index) {
-              contora.setIndex(index);
-              // これだとだめ
-              // _selectedIndex = index;
-            },
+            selectedIndex: useProvider(stateSelectedProvider.state),
+            onDestinationSelected: contora.onDestinationSelected,
+            // これだと、NavigationRailDestinationのアイコンが切り替わらない
+            // ただ、FABの方は反映されている
+            // onDestinationSelected: (int index) => _selectedIndex = index
             labelType: NavigationRailLabelType.selected,
             destinations: [
               NavigationRailDestination(
