@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../model/public.dart';
 
+// https://github.com/dart-lang/sdk/issues/41449
 final $family = FutureProvider.autoDispose.family;
 final publicFamily = $family<Public, String>((ref, documentId) async {
   // このあたりがrepository化した方がいい？

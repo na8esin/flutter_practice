@@ -25,6 +25,7 @@ flutter pub run build_runner build --delete-conflicting-outputs
 
 ## TODO
 
+- public コレクションは publics にしたからもろもろ直す
 - freezed, flutter_hooks, firestore_ref のサンプル
   - firestore_ref ってサブコレクションに対応してる？
 - ui 系もちゃんとわかってないな

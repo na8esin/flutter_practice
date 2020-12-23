@@ -5,7 +5,7 @@ import 'home_screen.dart';
 import 'public_future_builder_screen.dart';
 import 'public_hook_screen.dart';
 import 'stream_builder_public_screen.dart';
-import 'stream_hook_public_detail_screen.dart';
+import 'stream_hook_collectionGroup_detail_screen.dart';
 import 'stream_hook_public_screen.dart';
 import 'unknown_screen.dart';
 
