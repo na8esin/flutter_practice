@@ -37,9 +37,14 @@ final detailsProvider = $family<QuerySnapshot, String>((ref, id) {
   return details.snapshots();
 });
 
-final detailsRefProvider =
-    $family<QuerySnapshot, PublicDoc>((ref, publicDocdoc) {
-  return publicDocdoc.publicRef.ref.collection('details').snapshots();
+final detailsRefProvider = $family<QuerySnapshot, PublicDoc>((ref, publicDoc) {
+  DocumentReference docref = publicDoc.publicRef.ref;
+  return docref.collection('details').snapshots();
+});
+
+final detailsRef2Provider =
+    $family<List<DetailDoc>, PublicDoc>((ref, publicDoc) {
+  return DetailsRef(publicDoc).documents();
 });
 
 class MyBody extends HookWidget {
@@ -50,13 +55,6 @@ class MyBody extends HookWidget {
         data: (data) {
           return ListView.separated(
             itemCount: data.length,
-            padding: EdgeInsetsDirectional.only(
-              start: 120,
-              end: 60,
-              top: 28,
-              bottom: kToolbarHeight,
-            ),
-            primary: false,
             separatorBuilder: (context, index) => const SizedBox(height: 4),
             itemBuilder: (context, index) {
               Public entity = data.elementAt(index).entity;
@@ -68,11 +66,13 @@ class MyBody extends HookWidget {
                     context,
                     MaterialPageRoute(builder: (context) {
                       return Scaffold(
-                        appBar: AppBar(title: const Text('details')),
-                        // body: DetailScreen(data.elementAt(index).id),
-                        // ちょっとだけ、firestore_refを使ったバージョン
-                        body: DetailRefScreen(data.elementAt(index)),
-                      );
+                          appBar: AppBar(title: const Text('details')),
+                          // FirebaseFirestoreをそのまま使うパターン
+                          // body: DetailScreen(data.elementAt(index).id),
+                          // ちょっとだけ、firestore_refを使うバージョン
+                          // body: DetailRefScreen(data.elementAt(index)),
+                          // firestore_refだけにはなってるが、DetailsRefを書き換えたバージョン
+                          body: DetailRef2Screen(data.elementAt(index)));
                     }),
                   );
                 },
@@ -122,6 +122,22 @@ class DetailRefScreen extends HookWidget {
   }
 }
 
+class DetailRef2Screen extends HookWidget {
+  DetailRef2Screen(this.publicDoc);
+  final PublicDoc publicDoc;
+  @override
+  Widget build(BuildContext context) {
+    AsyncValue<List<DetailDoc>> asyncValue =
+        useProvider(detailsRef2Provider(publicDoc));
+    return asyncValue.when(
+        data: (List<DetailDoc> data) {
+          return DetailDocListView(itemCount: data.length, details: data);
+        },
+        error: (err, stack) => ErrorScreen(err),
+        loading: () => LoadingScreen());
+  }
+}
+
 class DetailListView extends HookWidget {
   DetailListView({this.itemCount, this.details});
   final int itemCount;
@@ -130,16 +146,30 @@ class DetailListView extends HookWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       itemCount: itemCount,
-      padding: EdgeInsetsDirectional.only(
-        start: 120,
-        end: 60,
-        top: 28,
-        bottom: kToolbarHeight,
-      ),
-      primary: false,
       separatorBuilder: (context, index) => const SizedBox(height: 4),
       itemBuilder: (context, index) {
         Detail entity = details.elementAt(index);
+        return ListTile(
+          title: Text(entity.title),
+          subtitle: Text(entity.title),
+          onTap: () {},
+        );
+      },
+    );
+  }
+}
+
+class DetailDocListView extends HookWidget {
+  DetailDocListView({this.itemCount, this.details});
+  final int itemCount;
+  final List<DetailDoc> details;
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      itemCount: itemCount,
+      separatorBuilder: (context, index) => const SizedBox(height: 4),
+      itemBuilder: (context, index) {
+        Detail entity = details.elementAt(index).entity;
         return ListTile(
           title: Text(entity.title),
           subtitle: Text(entity.title),

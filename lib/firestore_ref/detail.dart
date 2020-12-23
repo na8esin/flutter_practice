@@ -1,6 +1,8 @@
 import 'package:firestore_ref/firestore_ref.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'public.dart';
+
 part 'detail.freezed.dart';
 part 'detail.g.dart';
 
@@ -20,10 +22,16 @@ class DetailField {
   static const updatedAt = 'updatedAt';
 }
 
-final detailsRef = DetailsRef();
+// 書き換え
+// final detailsRef = DetailsRef();
+final detailsRef = (PublicDoc publicDoc) => DetailsRef(publicDoc);
 
 class DetailsRef extends CollectionRef<Detail, DetailDoc, DetailRef> {
-  DetailsRef() : super(FirebaseFirestore.instance.collection('details'));
+  // TODO: ここを書き換えちまうか
+  //DetailsRef() : super(FirebaseFirestore.instance.collection('details'));
+  DetailsRef(this.publicDoc)
+      : super(publicDoc.publicRef.ref.collection('details'));
+  final PublicDoc publicDoc;
 
   @override
   Map<String, dynamic> encode(Detail data) =>
