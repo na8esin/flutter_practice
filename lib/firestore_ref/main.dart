@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'public.dart';
 import 'detail.dart';
+import 'error_and_loading_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,8 +32,14 @@ final publicsProvider = StreamProvider.autoDispose((ref) {
 final $family = StreamProvider.autoDispose.family;
 final detailsProvider = $family<QuerySnapshot, String>((ref, id) {
   CollectionReference public = FirebaseFirestore.instance.collection('publics');
-  CollectionReference details = public.doc(id).collection('details');
+  DocumentReference detailsDoc = public.doc(id);
+  CollectionReference details = detailsDoc.collection('details');
   return details.snapshots();
+});
+
+final detailsRefProvider =
+    $family<QuerySnapshot, PublicDoc>((ref, publicDocdoc) {
+  return publicDocdoc.publicRef.ref.collection('details').snapshots();
 });
 
 class MyBody extends HookWidget {
@@ -62,7 +69,9 @@ class MyBody extends HookWidget {
                     MaterialPageRoute(builder: (context) {
                       return Scaffold(
                         appBar: AppBar(title: const Text('details')),
-                        body: DetailScreen(data.elementAt(index).id),
+                        // body: DetailScreen(data.elementAt(index).id),
+                        // ちょっとだけ、firestore_refを使ったバージョン
+                        body: DetailRefScreen(data.elementAt(index)),
                       );
                     }),
                   );
@@ -71,18 +80,8 @@ class MyBody extends HookWidget {
             },
           );
         },
-        error: (err, stack) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('Error')),
-            body: Center(
-              child: Text('$err'),
-            ),
-          );
-        },
-        loading: () => Container(
-              color: Colors.white,
-              child: const Center(child: CircularProgressIndicator()),
-            ));
+        error: (err, stack) => ErrorScreen(err),
+        loading: () => LoadingScreen());
   }
 }
 
@@ -94,39 +93,59 @@ class DetailScreen extends HookWidget {
     AsyncValue<QuerySnapshot> asyncValue = useProvider(detailsProvider(id));
     return asyncValue.when(
         data: (data) {
+          // TODO: この、オブジェクトマッピングのコードをなくしたい
           List<Detail> details =
               data.docs.map((e) => Detail(title: e.data()['title'])).toList();
-          return ListView.separated(
-            itemCount: data.docs.length,
-            padding: EdgeInsetsDirectional.only(
-              start: 120,
-              end: 60,
-              top: 28,
-              bottom: kToolbarHeight,
-            ),
-            primary: false,
-            separatorBuilder: (context, index) => const SizedBox(height: 4),
-            itemBuilder: (context, index) {
-              Detail entity = details.elementAt(index);
-              return ListTile(
-                title: Text(entity.title),
-                subtitle: Text(entity.title),
-                onTap: () {},
-              );
-            },
-          );
+          return DetailListView(itemCount: data.docs.length, details: details);
         },
-        error: (err, stack) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('Error')),
-            body: Center(
-              child: Text('$err'),
-            ),
-          );
+        error: (err, stack) => ErrorScreen(err),
+        loading: () => LoadingScreen());
+  }
+}
+
+class DetailRefScreen extends HookWidget {
+  DetailRefScreen(this.publicDoc);
+  final PublicDoc publicDoc;
+  @override
+  Widget build(BuildContext context) {
+    AsyncValue<QuerySnapshot> asyncValue =
+        useProvider(detailsRefProvider(publicDoc));
+    return asyncValue.when(
+        data: (data) {
+          // TODO: この、オブジェクトマッピングのコードをなくしたい
+          List<Detail> details =
+              data.docs.map((e) => Detail(title: e.data()['title'])).toList();
+          return DetailListView(itemCount: data.docs.length, details: details);
         },
-        loading: () => Container(
-              color: Colors.white,
-              child: const Center(child: CircularProgressIndicator()),
-            ));
+        error: (err, stack) => ErrorScreen(err),
+        loading: () => LoadingScreen());
+  }
+}
+
+class DetailListView extends HookWidget {
+  DetailListView({this.itemCount, this.details});
+  final int itemCount;
+  final List<Detail> details;
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      itemCount: itemCount,
+      padding: EdgeInsetsDirectional.only(
+        start: 120,
+        end: 60,
+        top: 28,
+        bottom: kToolbarHeight,
+      ),
+      primary: false,
+      separatorBuilder: (context, index) => const SizedBox(height: 4),
+      itemBuilder: (context, index) {
+        Detail entity = details.elementAt(index);
+        return ListTile(
+          title: Text(entity.title),
+          subtitle: Text(entity.title),
+          onTap: () {},
+        );
+      },
+    );
   }
 }
