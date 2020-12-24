@@ -15,13 +15,32 @@ Future<void> main() async {
   runApp(const ProviderScope(child: MaterialApp(home: MyApp())));
 }
 
+List<Map<String, dynamic>> listListTile = [
+  {'title': Text(PublicsBody().toStringShort()), 'builder': PublicsBody()},
+  {
+    'title': Text(DetailsGroupBody().toStringShort()),
+    'builder': DetailsGroupBody()
+  }
+];
+
 class MyApp extends HookWidget {
   const MyApp();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MyBody(),
-    );
+        body: ListView.separated(
+            itemCount: listListTile.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 3),
+            itemBuilder: (context, index) {
+              return ListTile(
+                  title: listListTile[index]['title'],
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Scaffold(
+                                body: listListTile[index]['builder'],
+                              ))));
+            }));
   }
 }
 
@@ -44,10 +63,14 @@ final detailsRefProvider = $family<QuerySnapshot, PublicDoc>((ref, publicDoc) {
 
 final detailsRef2Provider =
     $family<List<DetailDoc>, PublicDoc>((ref, publicDoc) {
-  return DetailsRef(publicDoc).documents();
+  return DetailsRef(publicDoc: publicDoc).documents();
 });
 
-class MyBody extends HookWidget {
+final detailsGroupProvider = StreamProvider.autoDispose((ref) {
+  return DetailsGroupRef().documents();
+});
+
+class PublicsBody extends HookWidget {
   @override
   Widget build(BuildContext context) {
     AsyncValue<List<PublicDoc>> asyncValue = useProvider(publicsProvider);
@@ -76,6 +99,31 @@ class MyBody extends HookWidget {
                     }),
                   );
                 },
+              );
+            },
+          );
+        },
+        error: (err, stack) => ErrorScreen(err),
+        loading: () => LoadingScreen());
+  }
+}
+
+class DetailsGroupBody extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    AsyncValue<List<DetailDoc>> asyncValue = useProvider(detailsGroupProvider);
+    return asyncValue.when(
+        data: (data) {
+          return ListView.separated(
+            itemCount: data.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 4),
+            itemBuilder: (context, index) {
+              Detail entity = data.elementAt(index).entity;
+              return ListTile(
+                title: Text(entity.title),
+                // TODO: ここはむしろ親のnameとかが欲しい
+//                subtitle: Text(entity.subname),
+                onTap: () {},
               );
             },
           );

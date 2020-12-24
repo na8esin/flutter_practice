@@ -6,6 +6,7 @@ part 'public.g.dart';
 
 @freezed
 abstract class Public with _$Public {
+  // TODO: ここにDtailsを入れたくなるが。。。
   factory Public({
     @required String name,
     @required String subname,
