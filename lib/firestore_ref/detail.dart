@@ -29,7 +29,7 @@ final detailsRef = (PublicDoc publicDoc) => DetailsRef(publicDoc: publicDoc);
 class DetailsRef extends CollectionRef<Detail, DetailDoc, DetailRef> {
   // ここを書き換えちまう。TODO: もっといい対応があるのか？
   //DetailsRef() : super(FirebaseFirestore.instance.collection('details'));
-  // 引数があると、CollectionGroupが使いづらい　→　コンストラクタをいじる必要がある
+  // 引数があると、CollectionGroupRefのdocRefが実装しづらい　→　コンストラクタ修正
   DetailsRef({this.publicDoc})
       : super(publicDoc == null
             ? FirebaseFirestore.instance.collection('details')
