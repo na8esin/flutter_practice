@@ -1,3 +1,4 @@
+// vscodeだとブラウザが起動しちゃう
 void main() {
   print(x);
 }
