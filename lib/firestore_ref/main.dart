@@ -20,6 +20,10 @@ List<Map<String, dynamic>> listListTile = [
   {
     'title': Text(DetailsGroupBody().toStringShort()),
     'builder': DetailsGroupBody()
+  },
+  {
+    'title': Text(SubColleDetailsGroupBody().toStringShort()),
+    'builder': SubColleDetailsGroupBody()
   }
 ];
 
@@ -99,16 +103,15 @@ final publicsDetailsProvider = FutureProvider.autoDispose((ref) async {
             (e) => PublicDetail(pubDoc.entity.name, e.data()['title']))
         .toList();
     return title;
-    /**
-     * public
-     *  - detail
-     *  - detail
-     * public 
-     *  - detail
-     * 
-     */
   });
-  Future<List<List<PublicDetail>>> waithoge = Future.wait(hoge);
+
+  List<List<PublicDetail>> waithoge = await Future.wait(hoge);
+  List<PublicDetail> hoges = waithoge.fold<List<PublicDetail>>([],
+      (List<PublicDetail> previousValue, List<PublicDetail> element) {
+    previousValue.addAll(element.map((e) => e));
+    return previousValue;
+  });
+  return hoges;
 });
 
 class PublicDetail {
@@ -170,6 +173,32 @@ class DetailsGroupBody extends HookWidget {
                 title: Text(entity.title),
                 // TODO: ここはむしろ親のnameとかが欲しい
 //                subtitle: Text(entity.subname),
+                onTap: () {},
+              );
+            },
+          );
+        },
+        error: (err, stack) => ErrorScreen(err),
+        loading: () => LoadingScreen());
+  }
+}
+
+// DetailsGroupBodyで親のフィールドが欲しいところを改良したバージョン
+class SubColleDetailsGroupBody extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    AsyncValue<List<PublicDetail>> asyncValue =
+        useProvider(publicsDetailsProvider);
+    return asyncValue.when(
+        data: (data) {
+          return ListView.separated(
+            itemCount: data.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 4),
+            itemBuilder: (context, index) {
+              PublicDetail entity = data.elementAt(index);
+              return ListTile(
+                title: Text(entity.detailtitle),
+                subtitle: Text(entity.publicName),
                 onTap: () {},
               );
             },
