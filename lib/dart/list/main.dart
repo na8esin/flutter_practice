@@ -4,7 +4,14 @@ void main() {
     [PublicDetail('mickel', 'title3')],
   ];
 
-  listList.fold([[]], (previousValue, List<PublicDetail> element) => {});
+  List<PublicDetail> details = listList.fold<List<PublicDetail>>([],
+      (List<PublicDetail> previousValue, List<PublicDetail> element) {
+    previousValue.addAll(element.map((e) => e));
+    return previousValue;
+  });
+
+  // [Instance of 'PublicDetail', Instance of 'PublicDetail', Instance of 'PublicDetail']
+  print(details);
 }
 
 class PublicDetail {
