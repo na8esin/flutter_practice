@@ -66,9 +66,56 @@ final detailsRef2Provider =
   return DetailsRef(publicDoc: publicDoc).documents();
 });
 
+// 単純にCollectionGroupを使う
 final detailsGroupProvider = StreamProvider.autoDispose((ref) {
   return DetailsGroupRef().documents();
 });
+
+// 親のコレクションとCollectionGroupをくっつける
+// 本当はin句みたいなのに入れるのか？でも10個までだって。
+// detailsが1つ更新になったら、全部のpublicを取得するのか？
+// CollectionGroupだと結びつける手段がないか。。
+/*final detailsGroupProvider = StreamProvider.autoDispose((ref) async {
+  List<DetailDoc> details = await DetailsGroupRef().documents().last;
+  List<PublicDoc> publics = await PublicsRef().documents().last;
+  details.map((e) => {
+    e.detailRef.
+  });
+});*/
+
+// 実直にpublicsからdetailsを引っ張る
+final publicsDetailsProvider = FutureProvider.autoDispose((ref) async {
+  List<PublicDoc> publics = await PublicsRef().documents().last;
+
+  Iterable<Future<List<PublicDetail>>> hoge =
+      publics.map((PublicDoc pubDoc) async {
+    // public からサブコレクションのdetailsを取得
+    QuerySnapshot last =
+        await pubDoc.publicRef.ref.collection('details').snapshots().last;
+
+    // スナップショットをいろいろする
+    List<PublicDetail> title = last.docs
+        .map<PublicDetail>(
+            (e) => PublicDetail(pubDoc.entity.name, e.data()['title']))
+        .toList();
+    return title;
+    /**
+     * public
+     *  - detail
+     *  - detail
+     * public 
+     *  - detail
+     * 
+     */
+  });
+  Future<List<List<PublicDetail>>> waithoge = Future.wait(hoge);
+});
+
+class PublicDetail {
+  PublicDetail(this.publicName, this.detailtitle);
+  final String publicName;
+  final String detailtitle;
+}
 
 class PublicsBody extends HookWidget {
   @override
