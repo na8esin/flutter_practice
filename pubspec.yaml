@@ -23,6 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  async: ^2.4.2
   animations: ^1.1.2
   provider: ^4.3.2+3
   flutter_hooks: ^0.15.0

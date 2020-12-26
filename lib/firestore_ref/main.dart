@@ -20,10 +20,6 @@ List<Map<String, dynamic>> listListTile = [
   {
     'title': Text(DetailsGroupBody().toStringShort()),
     'builder': DetailsGroupBody()
-  },
-  {
-    'title': Text(SubColleDetailsGroupBody().toStringShort()),
-    'builder': SubColleDetailsGroupBody()
   }
 ];
 
@@ -49,6 +45,9 @@ class MyApp extends HookWidget {
 }
 
 final publicsProvider = StreamProvider.autoDispose((ref) {
+  // await しても変わんない
+  //Stream<List<PublicDoc>> awaitPubStream = await PublicsRef().documents();
+
   return PublicsRef().documents();
 });
 
@@ -73,45 +72,6 @@ final detailsRef2Provider =
 // 単純にCollectionGroupを使う
 final detailsGroupProvider = StreamProvider.autoDispose((ref) {
   return DetailsGroupRef().documents();
-});
-
-// 親のコレクションとCollectionGroupをくっつける
-// 本当はin句みたいなのに入れるのか？でも10個までだって。
-// detailsが1つ更新になったら、全部のpublicを取得するのか？
-// CollectionGroupだと結びつける手段がないか。。
-/*final detailsGroupProvider = StreamProvider.autoDispose((ref) async {
-  List<DetailDoc> details = await DetailsGroupRef().documents().last;
-  List<PublicDoc> publics = await PublicsRef().documents().last;
-  details.map((e) => {
-    e.detailRef.
-  });
-});*/
-
-// 実直にpublicsからdetailsを引っ張る
-final publicsDetailsProvider = FutureProvider.autoDispose((ref) async {
-  List<PublicDoc> publics = await PublicsRef().documents().last;
-
-  Iterable<Future<List<PublicDetail>>> hoge =
-      publics.map((PublicDoc pubDoc) async {
-    // public からサブコレクションのdetailsを取得
-    QuerySnapshot last =
-        await pubDoc.publicRef.ref.collection('details').snapshots().last;
-
-    // スナップショットをいろいろする
-    List<PublicDetail> title = last.docs
-        .map<PublicDetail>(
-            (e) => PublicDetail(pubDoc.entity.name, e.data()['title']))
-        .toList();
-    return title;
-  });
-
-  List<List<PublicDetail>> waithoge = await Future.wait(hoge);
-  List<PublicDetail> hoges = waithoge.fold<List<PublicDetail>>([],
-      (List<PublicDetail> previousValue, List<PublicDetail> element) {
-    previousValue.addAll(element.map((e) => e));
-    return previousValue;
-  });
-  return hoges;
 });
 
 class PublicDetail {
@@ -173,32 +133,6 @@ class DetailsGroupBody extends HookWidget {
                 title: Text(entity.title),
                 // TODO: ここはむしろ親のnameとかが欲しい
 //                subtitle: Text(entity.subname),
-                onTap: () {},
-              );
-            },
-          );
-        },
-        error: (err, stack) => ErrorScreen(err),
-        loading: () => LoadingScreen());
-  }
-}
-
-// DetailsGroupBodyで親のフィールドが欲しいところを改良したバージョン
-class SubColleDetailsGroupBody extends HookWidget {
-  @override
-  Widget build(BuildContext context) {
-    AsyncValue<List<PublicDetail>> asyncValue =
-        useProvider(publicsDetailsProvider);
-    return asyncValue.when(
-        data: (data) {
-          return ListView.separated(
-            itemCount: data.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 4),
-            itemBuilder: (context, index) {
-              PublicDetail entity = data.elementAt(index);
-              return ListTile(
-                title: Text(entity.detailtitle),
-                subtitle: Text(entity.publicName),
                 onTap: () {},
               );
             },
