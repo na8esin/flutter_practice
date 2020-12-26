@@ -62,14 +62,53 @@ class Body extends HookWidget {
           return Text("Loading");
         }
 
-        return new ListView(
-          children: snapshot1.data.docs.map((DocumentSnapshot document) {
-            return new ListTile(
-              title: new Text(document.data()['name']),
-            );
-          }).toList(),
-        );
+        return ListView(children: [
+          for (DocumentSnapshot document in snapshot1.data.docs)
+            StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('publics')
+                    .doc(document.id)
+                    .collection('details')
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot2) {
+                  if (snapshot1.hasError) {
+                    return Text('Something went wrong');
+                  }
+
+                  if (snapshot1.connectionState == ConnectionState.waiting) {
+                    return Text("Loading");
+                  }
+
+                  // widgetを返さないといけない
+                  return Column(
+                      children: snapshot2.data.docs.map((e) {
+                    return ListTile(
+                      title: Text(e.data()['title']),
+                      subtitle: Text(document.data()['name']),
+                    );
+                  }).toList());
+                })
+        ]);
       },
     );
   }
 }
+
+/**
+ * idがとれた
+          return ListView(children: [
+          for (DocumentSnapshot document in snapshot1.data.docs)
+            ListTile(
+              title: Text(document.data()['name']),
+              subtitle: Text(document.id),
+            )
+        ]);
+ */
+
+/* 基本の形
+snapshot1.data.docs.map((DocumentSnapshot document) {
+            return new ListTile(
+              title: new Text(document.data()['name']),
+            );
+          }).toList(),
+          */
