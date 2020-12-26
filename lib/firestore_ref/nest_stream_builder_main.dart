@@ -11,6 +11,10 @@ import 'public.dart';
 import 'detail.dart';
 import 'error_and_loading_screen.dart';
 
+/**
+ * two_stream_builder_main
+ * の苦しまぎれのColumnを消したいのに頑張ったが、未完成
+ */
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -48,16 +52,6 @@ final publicsProvider = StreamProvider.autoDispose((ref) {
   return PublicsRef().documents();
 });
 
-/**
- * StreamBuilderを入れ子にしているが、
- * StreamBuilderがWidgetを返さないといけないため、
- * 内側のStreamBuilderはColumn(ListTile())を返している
- * 要するに、
- * ListView([
- *   Column([ListTile(),ListTile()]), Column([ListTile()])
- * ])
- * みたいな、構成になる。見た目にはわからないが。。。
- */
 class Body extends HookWidget {
   @override
   Widget build(BuildContext context) {
@@ -65,33 +59,27 @@ class Body extends HookWidget {
       stream: FirebaseFirestore.instance.collection('publics').snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot1) {
         if (snapshot1.hasError) return Text('Something went wrong');
-
         if (snapshot1.connectionState == ConnectionState.waiting)
           return Text("Loading");
 
-        return ListView(children: [
-          for (DocumentSnapshot document in snapshot1.data.docs)
-            StreamBuilder(
-                stream: document.reference.collection('details').snapshots(),
-                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot2) {
-                  if (snapshot1.hasError) return Text('Something went wrong');
-
-                  if (snapshot1.connectionState == ConnectionState.waiting ||
-                      snapshot2.data == null) return Text("Loading");
-
-                  // widgetを返さないといけない
-                  return Column(
-                      // ここがfor文みたいなもん
-                      children: snapshot2.data.docs.map((e) {
-                    return ListTile(
-                      title: Text(e.data()['title']),
-                      subtitle: Text(document.data()['name']),
-                    );
-                  }).toList());
-                })
-        ]);
+        // pubulicをループさせないといけないんだよなー。
+        // for (DocumentSnapshot document in snapshot1.data.docs)
+        return StreamBuilder(
+          stream: _detailStream('id'),
+          builder: (context, snapshot2) {
+            return Container();
+          },
+        );
       },
     );
+  }
+
+  Stream<QuerySnapshot> _detailStream(String publicId) {
+    return FirebaseFirestore.instance
+        .collection('publics')
+        .doc(publicId)
+        .collection('details')
+        .snapshots();
   }
 }
 
