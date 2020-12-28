@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:async/async.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +87,7 @@ final detailfamily = $family<QuerySnapshot, CollectionReference>(
 
 // これだとloadingっていう文字が表示されたまま
 // だから何とかStreamProviderで返せないといけない
-final _mergeStreamsProvider = Provider<List<PublicDetail>>((ref) {
+final _mergeStreamsProvider = StreamProvider<List<PublicDetail>>((ref) {
   AsyncValue<QuerySnapshot> pub = ref.watch(publicStreamsProvider);
   Iterable<List<PublicDetail>> fff = pub.when(
       data: (data) {
@@ -115,7 +117,9 @@ final _mergeStreamsProvider = Provider<List<PublicDetail>>((ref) {
     return previousValue;
   });
 
-  return ggg;
+  var controller = StreamController<List<PublicDetail>>();
+  controller.add(ggg);
+  return controller.stream;
 });
 
 class PublicDetail {
@@ -127,16 +131,21 @@ class PublicDetail {
 class DetailsLast extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    List<PublicDetail> snaps = useProvider(_mergeStreamsProvider);
-    return ListView.builder(
-      itemCount: snaps.length,
-      itemBuilder: (context, index) {
-        PublicDetail pc = snaps.elementAt(index);
-        return ListTile(
-          title: Text(pc.detailtitle),
-          subtitle: Text(pc.publicName),
-        );
-      },
-    );
+    AsyncValue<List<PublicDetail>> snaps = useProvider(_mergeStreamsProvider);
+    return snaps.when(
+        data: (data) {
+          return ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              PublicDetail pc = data.elementAt(index);
+              return ListTile(
+                title: Text(pc.detailtitle),
+                subtitle: Text(pc.publicName),
+              );
+            },
+          );
+        },
+        error: (err, stack) => ErrorScreen(err),
+        loading: () => LoadingScreen());
   }
 }
