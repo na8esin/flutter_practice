@@ -5,10 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'public.dart';
-import 'detail.dart';
 import 'error_and_loading_screen.dart';
 
+/**
+ * collectionGroupのparentってとれるのか検証
+ * collectionGroup_main.dartの例と何も変わらなかった。
+ */
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -54,7 +56,7 @@ class DetailsGroupBody extends HookWidget {
   Widget build(BuildContext context) {
     AsyncValue<QuerySnapshot> asyncValue = useProvider(detailsGroupProvider);
     return asyncValue.when(
-        data: (data) {
+        data: (QuerySnapshot data) {
           List<QueryDocumentSnapshot> docs = data.docs;
           return ListView.separated(
             itemCount: docs.length,
@@ -62,19 +64,19 @@ class DetailsGroupBody extends HookWidget {
             itemBuilder: (context, index) {
               QueryDocumentSnapshot docsE = docs.elementAt(index);
 
-              //return MyListTile(docsE.data()['title'], docsE.reference.parent);
               return StreamBuilder(
                   stream: docsE.reference.parent.snapshots(),
                   builder: (context, AsyncSnapshot<QuerySnapshot> snap2) {
-                    if (snap2.hasError) Text('Something went wrong');
+                    if (snap2.hasError) return Text('Something went wrong');
                     if (snap2.connectionState == ConnectionState.waiting)
-                      Text("Loading");
+                      return Text("Loading");
 
+                    var d2 = snap2.data.docs.first;
                     return ListTile(
                       title: Text(docsE.data()['title']),
                       // ↓のnameがnullで取れない。
                       // collectionGroupのparentって取れないんじゃない？
-                      subtitle: Text(snap2.data.docs.first.data()['name']),
+                      subtitle: Text(d2.data()['name'] ?? 'no data.'),
                     );
                   });
             },
@@ -82,44 +84,5 @@ class DetailsGroupBody extends HookWidget {
         },
         error: (err, stack) => ErrorScreen(err),
         loading: () => LoadingScreen());
-  }
-}
-
-final $family = StreamProvider.autoDispose.family;
-final parentProvider =
-    $family<QuerySnapshot, CollectionReference>((ref, collectionRef) {
-  return collectionRef.snapshots();
-});
-
-// ずっとローディングのまま
-class MyListTile extends HookWidget {
-  MyListTile(this.title, this.collectionRef);
-  final String title;
-  final CollectionReference collectionRef;
-  @override
-  Widget build(BuildContext context) {
-    AsyncValue<QuerySnapshot> asyncValue =
-        useProvider(parentProvider(collectionRef));
-    return asyncValue.when(
-        data: (data) {
-          return ListTile(
-            title: Text(title),
-            // 親だから、docsは１つのはず
-            subtitle: Text(data.docs.first.data()['name']),
-            onTap: () {},
-          );
-        },
-        error: (err, stack) => ListTile(
-              title: Text(title),
-              // TODO: 本番なら空文字でいいか？
-              subtitle: Text('error'),
-              onTap: () {},
-            ),
-        loading: () => ListTile(
-              title: Text(title),
-              // TODO: テキストじゃない方がいいのか
-              subtitle: Text('Loading'),
-              onTap: () {},
-            ));
   }
 }
