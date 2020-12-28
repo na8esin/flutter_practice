@@ -111,11 +111,7 @@ final _mergeStreamsProvider = StreamProvider<List<PublicDetail>>((ref) {
             [PublicDetail('error', 'error')]
           ]);
 
-  var ggg = fff.toList().fold<List<PublicDetail>>([],
-      (List<PublicDetail> previousValue, Iterable<PublicDetail> element) {
-    previousValue.addAll(element.map((e) => e));
-    return previousValue;
-  });
+  var ggg = _foldList(fff);
 
   var controller = StreamController<List<PublicDetail>>();
   controller.add(ggg);
@@ -126,6 +122,14 @@ class PublicDetail {
   PublicDetail(this.publicName, this.detailtitle);
   final String publicName;
   final String detailtitle;
+}
+
+List<PublicDetail> _foldList(Iterable<List<PublicDetail>> publicDetails) {
+  return publicDetails.toList().fold<List<PublicDetail>>([],
+      (List<PublicDetail> previousValue, Iterable<PublicDetail> element) {
+    previousValue.addAll(element.map((e) => e));
+    return previousValue;
+  });
 }
 
 class DetailsLast extends HookWidget {
