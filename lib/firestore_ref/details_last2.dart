@@ -24,8 +24,36 @@ final detailfamily = $family<QuerySnapshot, CollectionReference>(
   return colRef.snapshots();
 });
 
-// Loadingの文字が表示されたまま変化なし
-class DetailsLast2 extends HookWidget {
+class DetailsLast2ListViewSeparated extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    AsyncValue<QuerySnapshot> asyncValue = useProvider(publicStreamsProvider);
+
+    return asyncValue.when(
+        data: (data) {
+          // ListView.separatedなら動くけど、ListViewだとだめ
+          return ListView.separated(
+            itemCount: data.docs.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 4),
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(data.docs.elementAt(index).data()['name']),
+                onTap: () {},
+              );
+            },
+          );
+        },
+        loading: () => ListView(children: [
+              ListTile(title: Text('loading'), subtitle: Text('loading')),
+            ]),
+        error: (o, e) => ListView(children: [
+              ListTile(title: Text('error'), subtitle: Text('error'))
+            ]));
+  }
+}
+
+// ListViewだとLoadingのまま
+class DetailsLast2Listview extends HookWidget {
   @override
   Widget build(BuildContext context) {
     AsyncValue<QuerySnapshot> asyncValue = useProvider(publicStreamsProvider);

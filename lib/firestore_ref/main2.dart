@@ -25,7 +25,10 @@ List<Map<String, dynamic>> listListTile = [
     'builder': NestStreamBody()
   },
   {'title': Text(DetailsLast().toStringShort()), 'builder': DetailsLast()},
-  {'title': Text(DetailsLast2().toStringShort()), 'builder': DetailsLast2()},
+  {
+    'title': Text(DetailsLast2ListViewSeparated().toStringShort()),
+    'builder': DetailsLast2ListViewSeparated()
+  },
   {
     'title': Text(NoHookNestStreamBuilder().toStringShort()),
     'builder': NoHookNestStreamBuilder()
