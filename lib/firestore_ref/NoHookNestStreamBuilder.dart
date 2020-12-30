@@ -57,22 +57,3 @@ class NoHookNestStreamBuilder extends HookWidget {
     );
   }
 }
-
-/**
- * idがとれた
-          return ListView(children: [
-          for (DocumentSnapshot document in snapshot1.data.docs)
-            ListTile(
-              title: Text(document.data()['name']),
-              subtitle: Text(document.id),
-            )
-        ]);
- */
-
-/* 基本の形
-snapshot1.data.docs.map((DocumentSnapshot document) {
-            return new ListTile(
-              title: new Text(document.data()['name']),
-            );
-          }).toList(),
-          */

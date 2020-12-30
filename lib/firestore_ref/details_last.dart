@@ -85,8 +85,6 @@ final detailfamily = $family<QuerySnapshot, CollectionReference>(
   return colRef.snapshots();
 });
 
-// これだとloadingっていう文字が表示されたまま
-// だから何とかStreamProviderで返せないといけない
 final _mergeStreamsProvider = StreamProvider<List<PublicDetail>>((ref) {
   AsyncValue<QuerySnapshot> pub = ref.watch(publicStreamsProvider);
   Iterable<List<PublicDetail>> fff = pub.when(
@@ -113,6 +111,7 @@ final _mergeStreamsProvider = StreamProvider<List<PublicDetail>>((ref) {
 
   var ggg = _foldList(fff);
 
+  // 最後に無理やりstream化。無限ロードになる
   var controller = StreamController<List<PublicDetail>>();
   controller.add(ggg);
   return controller.stream;
