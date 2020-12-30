@@ -5,8 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'public.dart';
-import 'detail.dart';
+import 'model/public.dart';
+import 'model/detail.dart';
 import 'error_and_loading_screen.dart';
 
 Future<void> main() async {

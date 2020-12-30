@@ -7,9 +7,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'public.dart';
-import 'detail.dart';
+import 'model/public.dart';
 import 'details_last.dart';
+import 'details_last2.dart';
+import 'NoHookNestStreamBuilder.dart';
 import 'error_and_loading_screen.dart';
 
 Future<void> main() async {
@@ -24,6 +25,11 @@ List<Map<String, dynamic>> listListTile = [
     'builder': NestStreamBody()
   },
   {'title': Text(DetailsLast().toStringShort()), 'builder': DetailsLast()},
+  {'title': Text(DetailsLast2().toStringShort()), 'builder': DetailsLast2()},
+  {
+    'title': Text(NoHookNestStreamBuilder().toStringShort()),
+    'builder': NoHookNestStreamBuilder()
+  },
 ];
 
 class MyApp extends HookWidget {
