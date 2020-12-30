@@ -32,7 +32,14 @@ class DetailsLast2 extends HookWidget {
 
     // widgetを返さないとだめ
     return asyncValue.when(
-        data: (data) {},
+        data: (data) {
+          List<ListTile> lists = data.docs
+              .map((e) => ListTile(
+                    title: e.data()['name'],
+                  ))
+              .toList();
+          return ListView(children: lists);
+        },
         loading: () => ListView(children: [
               ListTile(title: Text('loading'), subtitle: Text('loading')),
             ]),
@@ -42,6 +49,7 @@ class DetailsLast2 extends HookWidget {
   }
 }
 
+// 抽出
 class _ListTile extends HookWidget {
   _ListTile(this.data);
   final QuerySnapshot data;
