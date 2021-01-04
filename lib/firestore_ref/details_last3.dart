@@ -76,6 +76,71 @@ class DetailsLast2Listview extends HookWidget {
   }
 }
 
+class DetailsLast2ListViewSeparatedNest extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    AsyncValue<QuerySnapshot> asyncValue = useProvider(publicStreamsProvider);
+
+    return asyncValue.when(
+        data: (data) {
+          return _ListTile(data);
+        },
+        loading: () => ListView(children: [
+              ListTile(title: Text('loading'), subtitle: Text('loading')),
+            ]),
+        error: (o, e) => ListView(children: [
+              ListTile(title: Text('error'), subtitle: Text('error'))
+            ]));
+  }
+}
+
+// 抽出
+class _ListTile extends HookWidget {
+  _ListTile(this.data);
+  final QuerySnapshot data;
+  @override
+  Widget build(BuildContext context) {
+    Iterable<List<ListTile>> listTiles = data.docs.map((snap) {
+      return _ListTile2(snap);
+    });
+    //return ListView(children: _foldListTile(listTiles));
+    return ListView.separated(
+        itemCount: _foldListTile(listTiles).length,
+        separatorBuilder: (context, index) => const SizedBox(height: 4),
+        itemBuilder: (context, index) {
+          return _foldListTile(listTiles).elementAt(index);
+        });
+  }
+}
+
+class _ListTile2 extends HookWidget {
+  _ListTile2(this.snap);
+  final snap;
+  @override
+  Widget build(BuildContext context) {
+    AsyncValue<QuerySnapshot> asyncValue2 =
+        useProvider(detailfamily(snap.reference.collection('details')));
+
+    // whenをwidgetで返さないと
+    // List<ListTile> ddd =
+    return asyncValue2.when(
+      data: (data) {
+        List<ListTile> tiles = data.docs
+            .map<ListTile>((snap2) => ListTile(
+                  title: Text(snap2.data()['title']),
+                  subtitle: Text(snap.data()['name']),
+                ))
+            .toList();
+        return tiles;
+      },
+      loading: () =>
+          [ListTile(title: Text('loading'), subtitle: Text('loading'))],
+      error: (o, e) =>
+          [ListTile(title: Text('error'), subtitle: Text('error'))],
+    );
+  }
+}
+
 List<ListTile> _foldListTile(Iterable<List<ListTile>> pds) {
   return pds.toList().fold<List<ListTile>>([],
       (List<ListTile> previousValue, Iterable<ListTile> element) {

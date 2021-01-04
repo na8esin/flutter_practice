@@ -30,6 +30,10 @@ List<Map<String, dynamic>> listListTile = [
     'builder': DetailsLast2ListViewSeparated()
   },
   {
+    'title': Text(DetailsLast2Listview().toStringShort()),
+    'builder': DetailsLast2Listview()
+  },
+  {
     'title': Text(NoHookNestStreamBuilder().toStringShort()),
     'builder': NoHookNestStreamBuilder()
   },

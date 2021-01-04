@@ -85,7 +85,7 @@ final detailfamily = $family<QuerySnapshot, CollectionReference>(
   return colRef.snapshots();
 });
 
-final _mergeStreamsProvider = StreamProvider<List<PublicDetail>>((ref) {
+final _mergeProvider = StateNotifierProvider<PublicDetails>((ref) {
   AsyncValue<QuerySnapshot> pub = ref.watch(publicStreamsProvider);
   Iterable<List<PublicDetail>> fff = pub.when(
       data: (data) {
@@ -109,13 +109,12 @@ final _mergeStreamsProvider = StreamProvider<List<PublicDetail>>((ref) {
             [PublicDetail('error', 'error')]
           ]);
 
-  var ggg = _foldList(fff);
-
-  // 最後に無理やりstream化。無限ロードになる
-  var controller = StreamController<List<PublicDetail>>();
-  controller.add(ggg);
-  return controller.stream;
+  return PublicDetails(_foldList(fff));
 });
+
+class PublicDetails extends StateNotifier<List<PublicDetail>> {
+  PublicDetails([List<PublicDetail> initial]) : super(initial ?? []);
+}
 
 class PublicDetail {
   PublicDetail(this.publicName, this.detailtitle);
@@ -134,21 +133,17 @@ List<PublicDetail> _foldList(Iterable<List<PublicDetail>> publicDetails) {
 class DetailsLast extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    AsyncValue<List<PublicDetail>> snaps = useProvider(_mergeStreamsProvider);
-    return snaps.when(
-        data: (data) {
-          return ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              PublicDetail pc = data.elementAt(index);
-              return ListTile(
-                title: Text(pc.detailtitle),
-                subtitle: Text(pc.publicName),
-              );
-            },
-          );
-        },
-        error: (err, stack) => ErrorScreen(err),
-        loading: () => LoadingScreen());
+    var pds = useProvider(_mergeProvider.state);
+
+    return ListView.builder(
+      itemCount: pds.length,
+      itemBuilder: (context, index) {
+        PublicDetail pc = pds.elementAt(index);
+        return ListTile(
+          title: Text(pc.detailtitle),
+          subtitle: Text(pc.publicName),
+        );
+      },
+    );
   }
 }
