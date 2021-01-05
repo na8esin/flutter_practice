@@ -1,35 +1,21 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(BooksApp());
-}
+import 'book.dart';
 
-class Book {
-  final String title;
-  final String author;
-
-  Book(this.title, this.author);
-}
-
-class BooksApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _BooksAppState();
-}
-
-class _BooksAppState extends State<BooksApp> {
-  BookRouterDelegate _routerDelegate = BookRouterDelegate();
-  BookRouteInformationParser _routeInformationParser =
-      BookRouteInformationParser();
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Books App',
-      routerDelegate: _routerDelegate,
-      routeInformationParser: _routeInformationParser,
-    );
-  }
-}
+/**
+ * TODO: riverpodで書き換える
+ * bookとか単位でこの量のソースが必要なの？
+ * 
+ * class 一覧
+ *  BookRouteInformationParser
+ *  BookRouterDelegate
+ *  BookDetailsPage
+ *  BookRoutePath
+ * 
+ *  BooksListScreen
+ *  BookDetailsScreen
+ *  UnknownScreen
+ */
 
 class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
   @override

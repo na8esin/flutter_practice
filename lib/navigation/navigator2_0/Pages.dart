@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 /*
 As it stands, this app only enables us to define the stack of pages in a declarative way. 
 We aren’t able to handle the platform’s back button, and the browser’s URL doesn’t change as we navigate.
+
+現状では、このアプリでは、ページのスタックを宣言的な方法で定義することしかできません。
+プラットフォームの戻るボタンを処理することはできません。また、ナビゲートしてもブラウザのURLは変更されません。
 */
 void main() {
   runApp(BooksApp());
