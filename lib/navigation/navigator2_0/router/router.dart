@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'book.dart';
+import 'book_details_screen.dart';
+import 'books_list_screen.dart';
+import 'unknown_screen.dart';
 
 /**
  * TODO: riverpodで書き換える
@@ -22,7 +25,9 @@ class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
   Future<BookRoutePath> parseRouteInformation(
       RouteInformation routeInformation) async {
     final uri = Uri.parse(routeInformation.location);
+
     // Handle '/'
+    // 実態は、restful的には、/books
     if (uri.pathSegments.length == 0) {
       return BookRoutePath.home();
     }
@@ -139,6 +144,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   }
 }
 
+// BookRouterDelegateに呼ばれる
 class BookDetailsPage extends Page {
   final Book book;
 
@@ -173,70 +179,4 @@ class BookRoutePath {
   bool get isHomePage => id == null;
 
   bool get isDetailsPage => id != null;
-}
-
-class BooksListScreen extends StatelessWidget {
-  final List<Book> books;
-  final ValueChanged<Book> onTapped;
-
-  BooksListScreen({
-    @required this.books,
-    @required this.onTapped,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: ListView(
-        children: [
-          for (var book in books)
-            ListTile(
-              title: Text(book.title),
-              subtitle: Text(book.author),
-              onTap: () => onTapped(book),
-            )
-        ],
-      ),
-    );
-  }
-}
-
-class BookDetailsScreen extends StatelessWidget {
-  final Book book;
-
-  BookDetailsScreen({
-    @required this.book,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (book != null) ...[
-              Text(book.title, style: Theme.of(context).textTheme.headline6),
-              Text(book.author, style: Theme.of(context).textTheme.subtitle1),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class UnknownScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Text('404!'),
-      ),
-    );
-  }
 }

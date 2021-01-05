@@ -101,7 +101,7 @@ class _ListTile extends HookWidget {
   @override
   Widget build(BuildContext context) {
     Iterable<List<ListTile>> listTiles = data.docs.map((snap) {
-      return _ListTile2(snap);
+      //return _ListTile2(snap);
     });
     //return ListView(children: _foldListTile(listTiles));
     return ListView.separated(
@@ -113,6 +113,7 @@ class _ListTile extends HookWidget {
   }
 }
 
+/*
 class _ListTile2 extends HookWidget {
   _ListTile2(this.snap);
   final snap;
@@ -140,7 +141,7 @@ class _ListTile2 extends HookWidget {
     );
   }
 }
-
+*/
 List<ListTile> _foldListTile(Iterable<List<ListTile>> pds) {
   return pds.toList().fold<List<ListTile>>([],
       (List<ListTile> previousValue, Iterable<ListTile> element) {

@@ -2,14 +2,12 @@
 https://gist.github.com/johnpryan/bbca91e23bbb4d39247fa922533be7c9
 */
 import 'package:flutter/material.dart';
+
 import 'book.dart';
 import 'settings_screen.dart';
 import 'BookDetailsScreen.dart';
 import 'BooksListScreen.dart';
-
-void main() {
-  runApp(NestedRouterDemo());
-}
+import 'BooksAppState.dart';
 
 class NestedRouterDemo extends StatefulWidget {
   @override
@@ -17,6 +15,8 @@ class NestedRouterDemo extends StatefulWidget {
 }
 
 class _NestedRouterDemoState extends State<NestedRouterDemo> {
+  // ここをどんどん増やして行けばいいのか。
+  // CatRouterDelegate　とか DogRouterDelegate とか
   BookRouterDelegate _routerDelegate = BookRouterDelegate();
   BookRouteInformationParser _routeInformationParser =
       BookRouteInformationParser();
@@ -31,60 +31,13 @@ class _NestedRouterDemoState extends State<NestedRouterDemo> {
   }
 }
 
-class BooksAppState extends ChangeNotifier {
-  int _selectedIndex;
-
-  Book _selectedBook;
-
-  final List<Book> books = [
-    Book('Stranger in a Strange Land', 'Robert A. Heinlein'),
-    Book('Foundation', 'Isaac Asimov'),
-    Book('Fahrenheit 451', 'Ray Bradbury'),
-  ];
-
-  BooksAppState() : _selectedIndex = 0;
-
-  int get selectedIndex => _selectedIndex;
-
-  set selectedIndex(int idx) {
-    _selectedIndex = idx;
-    if (_selectedIndex == 1) {
-      // Remove this line if you want to keep the selected book when navigating
-      // between "settings" and "home" which book was selected when Settings is
-      // tapped.
-      selectedBook = null;
-    }
-    notifyListeners();
-  }
-
-  Book get selectedBook => _selectedBook;
-
-  set selectedBook(Book book) {
-    _selectedBook = book;
-    notifyListeners();
-  }
-
-  int getSelectedBookById() {
-    if (!books.contains(_selectedBook)) return 0;
-    return books.indexOf(_selectedBook);
-  }
-
-  void setSelectedBookById(int id) {
-    if (id < 0 || id > books.length - 1) {
-      return;
-    }
-
-    _selectedBook = books[id];
-    notifyListeners();
-  }
-}
-
 class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
   @override
   Future<BookRoutePath> parseRouteInformation(
       RouteInformation routeInformation) async {
     final uri = Uri.parse(routeInformation.location);
 
+    // ここってbookだけじゃなくてもっと汎用的に使えると思うけどなー。
     if (uri.pathSegments.isNotEmpty && uri.pathSegments.first == 'settings') {
       return BooksSettingsPath();
     } else {
