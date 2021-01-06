@@ -1,4 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'BooksAppState.dart';
 import 'router.dart';
@@ -61,9 +64,44 @@ class _AppShellState extends State<AppShell> {
         ],
         currentIndex: appState.selectedIndex,
         onTap: (newIndex) {
+          // BooksAppState.selectedIndex
+          // これbookのstateだよね？settingの時はどうなるの？
+          //   -> settingの時は普通に1。homeは0
+          print(newIndex);
           appState.selectedIndex = newIndex;
         },
       ),
+    );
+  }
+}
+
+class MyNavigationRail extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final ValueNotifier<int> _selectedIndex = useState(0);
+    NavigationRail(
+      selectedIndex: _selectedIndex.value,
+      onDestinationSelected: (int index) {
+        _selectedIndex.value = index;
+      },
+      labelType: NavigationRailLabelType.selected,
+      destinations: [
+        NavigationRailDestination(
+          icon: Icon(Icons.favorite_border),
+          selectedIcon: Icon(Icons.favorite),
+          label: Text('First'),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.bookmark_border),
+          selectedIcon: Icon(Icons.book),
+          label: Text('Second'),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.star_border),
+          selectedIcon: Icon(Icons.star),
+          label: Text('Third'),
+        ),
+      ],
     );
   }
 }
