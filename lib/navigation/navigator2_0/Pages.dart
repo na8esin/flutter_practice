@@ -6,6 +6,8 @@ We aren’t able to handle the platform’s back button, and the browser’s URL
 
 現状では、このアプリでは、ページのスタックを宣言的な方法で定義することしかできません。
 プラットフォームの戻るボタンを処理することはできません。また、ナビゲートしてもブラウザのURLは変更されません。
+
+所感：routerを使うための布石なんだろうなぁ
 */
 void main() {
   runApp(BooksApp());
@@ -37,14 +39,20 @@ class _BooksAppState extends State<BooksApp> {
     return MaterialApp(
       title: 'Books App',
       home: Navigator(
+        // The list of pages with which to populate the history.
+        // ここって、変更されんの？
         pages: [
+          // MaterialPageかPageを継承したやつ
           MaterialPage(
             key: ValueKey('BooksListPage'),
             child: BooksListScreen(
               books: books,
+              // それぞれのTileをtapした時にBooksAppのstateを変更する
+              // ことで画面が切り替わってる
               onTapped: _handleBookTapped,
             ),
           ),
+          // if文を消すと、何も表示されない。。。Listすら表示されない
           if (_selectedBook != null) BookDetailsPage(book: _selectedBook)
         ],
         onPopPage: (route, result) {
@@ -70,6 +78,8 @@ class _BooksAppState extends State<BooksApp> {
   }
 }
 
+// Page — an immutable object used to set the navigator’s history stack.
+// 引数を受け取って、ワンクッション入れるクラス？
 class BookDetailsPage extends Page {
   final Book book;
 
