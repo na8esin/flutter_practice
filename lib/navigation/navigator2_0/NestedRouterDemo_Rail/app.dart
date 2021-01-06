@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'router.dart';
-import 'book_router_delegate.dart';
 
-class BooksApp extends StatefulWidget {
+class NestedRouterDemo extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _BooksAppState();
+  _NestedRouterDemoState createState() => _NestedRouterDemoState();
 }
 
-class _BooksAppState extends State<BooksApp> {
+class _NestedRouterDemoState extends State<NestedRouterDemo> {
+  // ここをどんどん増やして行けばいいのか。
+  // CatRouterDelegate　とか DogRouterDelegate とか
   BookRouterDelegate _routerDelegate = BookRouterDelegate();
   BookRouteInformationParser _routeInformationParser =
       BookRouteInformationParser();

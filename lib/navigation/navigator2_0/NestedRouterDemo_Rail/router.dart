@@ -1,35 +1,11 @@
-/*
-https://gist.github.com/johnpryan/bbca91e23bbb4d39247fa922533be7c9
-*/
 import 'package:flutter/material.dart';
 
-import 'book.dart';
-import 'settings_screen.dart';
-import 'BookDetailsScreen.dart';
-import 'BooksListScreen.dart';
 import 'BooksAppState.dart';
-
-class NestedRouterDemo extends StatefulWidget {
-  @override
-  _NestedRouterDemoState createState() => _NestedRouterDemoState();
-}
-
-class _NestedRouterDemoState extends State<NestedRouterDemo> {
-  // ここをどんどん増やして行けばいいのか。
-  // CatRouterDelegate　とか DogRouterDelegate とか
-  BookRouterDelegate _routerDelegate = BookRouterDelegate();
-  BookRouteInformationParser _routeInformationParser =
-      BookRouteInformationParser();
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Books App',
-      routerDelegate: _routerDelegate,
-      routeInformationParser: _routeInformationParser,
-    );
-  }
-}
+import 'FadeAnimationPage.dart';
+import 'BooksListScreen.dart';
+import 'BookDetailsScreen.dart';
+import 'settings_screen.dart';
+import 'book.dart';
 
 class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
   @override
@@ -261,24 +237,5 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
   void _handleBookTapped(Book book) {
     appState.selectedBook = book;
     notifyListeners();
-  }
-}
-
-class FadeAnimationPage extends Page {
-  final Widget child;
-
-  FadeAnimationPage({Key key, this.child}) : super(key: key);
-
-  Route createRoute(BuildContext context) {
-    return PageRouteBuilder(
-      settings: this,
-      pageBuilder: (context, animation, animation2) {
-        var curveTween = CurveTween(curve: Curves.easeIn);
-        return FadeTransition(
-          opacity: animation.drive(curveTween),
-          child: child,
-        );
-      },
-    );
   }
 }
