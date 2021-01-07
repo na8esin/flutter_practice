@@ -97,6 +97,9 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     } else if (path is BooksSettingsPath) {
       appState.selectedIndex = 1;
     } else if (path is BooksDetailsPath) {
+      // https://gist.github.com/johnpryan/bbca91e23bbb4d39247fa922533be7c9#gistcomment-3511502
+      // うまくいった！
+      appState.selectedIndex = 0; // This was missing!
       appState.setSelectedBookById(path.id);
     }
   }
