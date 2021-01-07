@@ -1,22 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'book.dart';
-import 'book_details_screen.dart';
-
-/**
- * TODO: riverpodで書き換える
- * bookとか単位でこの量のソースが必要なの？
- * 
- * class 一覧
- *  BookRouteInformationParser
- *  BookRouterDelegate
- *  BookDetailsPage
- *  BookRoutePath
- * 
- *  BooksListScreen
- *  BookDetailsScreen
- *  UnknownScreen
- */
+import 'book_route_path.dart';
 
 class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
   @override
@@ -56,41 +40,4 @@ class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
     }
     return null;
   }
-}
-
-// BookRouterDelegateに呼ばれる
-class BookDetailsPage extends Page {
-  final Book book;
-
-  BookDetailsPage({
-    this.book,
-  }) : super(key: ValueKey(book));
-
-  Route createRoute(BuildContext context) {
-    return MaterialPageRoute(
-      settings: this,
-      builder: (BuildContext context) {
-        return BookDetailsScreen(book: book);
-      },
-    );
-  }
-}
-
-class BookRoutePath {
-  final int id;
-  final bool isUnknown;
-
-  BookRoutePath.home()
-      : id = null,
-        isUnknown = false;
-
-  BookRoutePath.details(this.id) : isUnknown = false;
-
-  BookRoutePath.unknown()
-      : id = null,
-        isUnknown = true;
-
-  bool get isHomePage => id == null;
-
-  bool get isDetailsPage => id != null;
 }
