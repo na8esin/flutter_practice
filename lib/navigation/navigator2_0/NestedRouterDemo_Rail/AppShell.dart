@@ -50,57 +50,47 @@ class _AppShellState extends State<AppShell> {
     // to pick which one should take priority;
     _backButtonDispatcher.takePriority();
 
-    return Scaffold(
-      appBar: AppBar(),
-      body: Router(
-        routerDelegate: _routerDelegate,
-        backButtonDispatcher: _backButtonDispatcher,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Settings'),
-        ],
-        currentIndex: appState.selectedIndex,
-        onTap: (newIndex) {
-          // BooksAppState.selectedIndex
-          // これbookのstateだよね？settingの時はどうなるの？
-          //   -> settingの時は普通に1。homeは0
-          print(newIndex);
-          appState.selectedIndex = newIndex;
-        },
-      ),
-    );
-  }
-}
-
-class MyNavigationRail extends HookWidget {
-  @override
-  Widget build(BuildContext context) {
-    final ValueNotifier<int> _selectedIndex = useState(0);
-    NavigationRail(
-      selectedIndex: _selectedIndex.value,
-      onDestinationSelected: (int index) {
-        _selectedIndex.value = index;
-      },
-      labelType: NavigationRailLabelType.selected,
-      destinations: [
-        NavigationRailDestination(
-          icon: Icon(Icons.favorite_border),
-          selectedIcon: Icon(Icons.favorite),
-          label: Text('First'),
+    return Row(
+      children: [
+        NavigationRail(
+          selectedIndex: appState.selectedIndex,
+          onDestinationSelected: (int newIndex) {
+            appState.selectedIndex = newIndex;
+          },
+          labelType: NavigationRailLabelType.selected,
+          destinations: [
+            NavigationRailDestination(
+              icon: Icon(Icons.favorite_border),
+              selectedIcon: Icon(Icons.favorite),
+              label: Text('First'),
+            ),
+            NavigationRailDestination(
+              icon: Icon(Icons.bookmark_border),
+              selectedIcon: Icon(Icons.book),
+              label: Text('Second'),
+            ),
+            NavigationRailDestination(
+              icon: Icon(Icons.star_border),
+              selectedIcon: Icon(Icons.star),
+              label: Text('Third'),
+            ),
+          ],
         ),
-        NavigationRailDestination(
-          icon: Icon(Icons.bookmark_border),
-          selectedIcon: Icon(Icons.book),
-          label: Text('Second'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.star_border),
-          selectedIcon: Icon(Icons.star),
-          label: Text('Third'),
-        ),
+        VerticalDivider(thickness: 1, width: 1),
+        // This is the main content.
+        Expanded(
+          child: Center(
+            //child: Text('selectedIndex: ${_selectedIndex.value}'),
+            // 引数で渡してもOK
+            child: Scaffold(
+              appBar: AppBar(),
+              body: Router(
+                routerDelegate: _routerDelegate,
+                backButtonDispatcher: _backButtonDispatcher,
+              ),
+            ),
+          ),
+        )
       ],
     );
   }
