@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'BooksAppState.dart';
-import 'router.dart';
+import 'InnerRouterDelegate.dart';
 
 // Widget that contains the AdaptiveNavigationScaffold
 class AppShell extends StatefulWidget {
@@ -80,8 +80,6 @@ class _AppShellState extends State<AppShell> {
         // This is the main content.
         Expanded(
           child: Center(
-            //child: Text('selectedIndex: ${_selectedIndex.value}'),
-            // 引数で渡してもOK
             child: Scaffold(
               appBar: AppBar(),
               body: Router(
