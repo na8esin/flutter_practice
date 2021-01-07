@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'book.dart';
 
+// BookRouterDelegateからしか呼ばれてない
 class BooksAppState extends ChangeNotifier {
   Book _selectedBook;
   bool _show404;

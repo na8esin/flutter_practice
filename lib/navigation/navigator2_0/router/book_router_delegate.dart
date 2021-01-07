@@ -7,6 +7,7 @@ import 'books_list_screen.dart';
 import 'book_details_page.dart';
 import 'book.dart';
 import 'books_app_state.dart';
+import 'books_app_state_notifier.dart';
 
 // StateNotifierに書き換えると
 // Missing concrete implementation of 'Listenable.removeListener'.
@@ -26,10 +27,15 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   final GlobalKey<NavigatorState> navigatorKey;
 
   // これをStateNotifierにしてもStateNotifierProviderが使えないなぁ
-  BooksAppState appState = BooksAppState();
+  //BooksAppState appState = BooksAppState();
+  BooksAppStateNotifier appState =
+      BooksAppStateNotifier(BooksStatus(selectedBook: null, show404: false));
 
   BookRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
-    appState.addListener(notifyListeners);
+    appState.addListener((state) {
+      notifyListeners();
+      return state;
+    });
   }
 
   @override
@@ -70,7 +76,6 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
         // Update the list of pages by setting _selectedBook to null
         appState.selectedBook = null;
         appState.show404 = false;
-        notifyListeners();
         return true;
       },
     );
@@ -101,6 +106,5 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
 
   void _handleBookTapped(Book book) {
     appState.selectedBook = book;
-    notifyListeners();
   }
 }
