@@ -56,7 +56,6 @@ class BooksAppStateNotifier extends StateNotifier<BooksStatus> {
   List<Book> get books => _books;
 
   int getSelectedBookByBook(Book selectedBook) {
-    print(selectedBook);
     if (!books.contains(selectedBook)) return -2;
     return books.indexOf(selectedBook);
   }
