@@ -146,6 +146,9 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
           ),
           if (appState.selectedBook != null)
             MaterialPage(
+              // gistのコメントみて追加してみたけどダメ
+              // https://gist.github.com/johnpryan/bbca91e23bbb4d39247fa922533be7c9#gistcomment-3486058
+              //name: '/book/${appState.selectedIndex}',
               key: ValueKey(appState.selectedBook),
               child: BookDetailsScreen(book: appState.selectedBook),
             ),

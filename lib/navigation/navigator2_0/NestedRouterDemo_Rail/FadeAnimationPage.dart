@@ -1,6 +1,3 @@
-/*
-https://gist.github.com/johnpryan/bbca91e23bbb4d39247fa922533be7c9
-*/
 import 'package:flutter/material.dart';
 
 class FadeAnimationPage extends Page {
