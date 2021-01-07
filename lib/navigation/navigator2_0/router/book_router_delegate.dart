@@ -34,7 +34,6 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   BookRouterDelegate() {
     appState.addListener((state) {
       notifyListeners();
-      return state;
     });
   }
 
@@ -43,9 +42,11 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     if (appState.show404) {
       return BookRoutePath.unknown();
     }
+
     return appState.selectedBook == null
         ? BookRoutePath.home()
-        : BookRoutePath.details(appState.books.indexOf(appState.selectedBook));
+        : BookRoutePath.details(
+            appState.getSelectedBookByBook(appState.selectedBook));
   }
 
   // from RouterDelegate
