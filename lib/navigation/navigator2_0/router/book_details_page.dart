@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 import 'book.dart';
 import 'book_details_screen.dart';
 
-/**
- * TODO: riverpodで書き換える
- * bookとか単位でこの量のソースが必要なの？
- */
-
 // BookRouterDelegateに呼ばれる
 class BookDetailsPage extends Page {
   final Book book;

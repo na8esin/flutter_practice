@@ -24,14 +24,14 @@ import 'books_app_state_notifier.dart';
  */
 class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BookRoutePath> {
-  final GlobalKey<NavigatorState> navigatorKey;
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   // これをStateNotifierにしてもStateNotifierProviderが使えないなぁ
   //BooksAppState appState = BooksAppState();
   BooksAppStateNotifier appState =
       BooksAppStateNotifier(BooksStatus(selectedBook: null, show404: false));
 
-  BookRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
+  BookRouterDelegate() {
     appState.addListener((state) {
       notifyListeners();
       return state;
