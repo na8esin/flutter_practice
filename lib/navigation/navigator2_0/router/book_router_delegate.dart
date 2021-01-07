@@ -19,6 +19,7 @@ import 'books_app_state.dart';
   @override
   void addListener(listener) {}
 
+  でも、そもそもRouterDelegateでbuildがあるから、HookWidget使えなくない？
  */
 class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BookRoutePath> {
@@ -31,6 +32,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     appState.addListener(notifyListeners);
   }
 
+  @override
   BookRoutePath get currentConfiguration {
     if (appState.show404) {
       return BookRoutePath.unknown();
@@ -75,7 +77,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   }
 
   // ここには、もとからnotifyListeners()はない
-  @override
+  @override // from RouterDelegate
   Future<void> setNewRoutePath(BookRoutePath path) async {
     if (path.isUnknown) {
       appState.selectedBook = null;
