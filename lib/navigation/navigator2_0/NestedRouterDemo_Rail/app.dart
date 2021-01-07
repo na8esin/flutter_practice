@@ -8,7 +8,7 @@ class NestedRouterDemo extends StatefulWidget {
 }
 
 class _NestedRouterDemoState extends State<NestedRouterDemo> {
-  // ここをどんどん増やして行けばいいのか。
+  // ここをどんどん増やして行けばいいのか？
   // CatRouterDelegate　とか DogRouterDelegate とか
   BookRouterDelegate _routerDelegate = BookRouterDelegate();
   BookRouteInformationParser _routeInformationParser =
