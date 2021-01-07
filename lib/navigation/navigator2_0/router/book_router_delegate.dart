@@ -1,36 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'unknown_screen.dart';
 import 'book_route_path.dart';
 import 'books_list_screen.dart';
 import 'book_details_page.dart';
 import 'book.dart';
+import 'books_app_state.dart';
 
+// StateNotifierに書き換えると
+// Missing concrete implementation of 'Listenable.removeListener'.
+// ただ、StateNotifierはmixinで使えない
+/**
+   // removeListener, addListenerが実装できれば ChangeNotifierは
+  // なくせる気がする
+  @override
+  void removeListener(listener) {}
+  @override
+  void addListener(listener) {}
+
+ */
 class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BookRoutePath> {
   final GlobalKey<NavigatorState> navigatorKey;
 
-  Book _selectedBook;
-  bool show404 = false;
+  // これをStateNotifierにしてもStateNotifierProviderが使えないなぁ
+  BooksAppState appState = BooksAppState();
 
-  // TODO: この辺は分離したい
-  List<Book> books = [
-    Book('Stranger in a Strange Land', 'Robert A. Heinlein'),
-    Book('Foundation', 'Isaac Asimov'),
-    Book('Fahrenheit 451', 'Ray Bradbury'),
-  ];
-
-  BookRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>();
-
-  BookRoutePath get currentConfiguration {
-    if (show404) {
-      return BookRoutePath.unknown();
-    }
-    return _selectedBook == null
-        ? BookRoutePath.home()
-        : BookRoutePath.details(books.indexOf(_selectedBook));
+  BookRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
+    appState.addListener(notifyListeners);
   }
 
+  BookRoutePath get currentConfiguration {
+    if (appState.show404) {
+      return BookRoutePath.unknown();
+    }
+    return appState.selectedBook == null
+        ? BookRoutePath.home()
+        : BookRoutePath.details(appState.books.indexOf(appState.selectedBook));
+  }
+
+  // from RouterDelegate
   @override
   Widget build(BuildContext context) {
     return Navigator(
@@ -41,14 +51,14 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
           key: ValueKey('BooksListPage'),
           // ☆☆☆☆☆
           child: BooksListScreen(
-            books: books,
+            books: appState.books,
             onTapped: _handleBookTapped,
           ),
         ),
-        if (show404)
+        if (appState.show404)
           MaterialPage(key: ValueKey('UnknownPage'), child: UnknownScreen())
-        else if (_selectedBook != null)
-          BookDetailsPage(book: _selectedBook)
+        else if (appState.selectedBook != null)
+          BookDetailsPage(book: appState.selectedBook)
       ],
       onPopPage: (route, result) {
         if (!route.didPop(result)) {
@@ -56,39 +66,39 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
         }
 
         // Update the list of pages by setting _selectedBook to null
-        _selectedBook = null;
-        show404 = false;
+        appState.selectedBook = null;
+        appState.show404 = false;
         notifyListeners();
-
         return true;
       },
     );
   }
 
+  // ここには、もとからnotifyListeners()はない
   @override
   Future<void> setNewRoutePath(BookRoutePath path) async {
     if (path.isUnknown) {
-      _selectedBook = null;
-      show404 = true;
+      appState.selectedBook = null;
+      appState.show404 = true;
       return;
     }
 
     if (path.isDetailsPage) {
-      if (path.id < 0 || path.id > books.length - 1) {
-        show404 = true;
+      if (path.id < 0 || path.id > appState.books.length - 1) {
+        appState.show404 = true;
         return;
       }
 
-      _selectedBook = books[path.id];
+      appState.selectedBook = appState.books[path.id];
     } else {
-      _selectedBook = null;
+      appState.selectedBook = null;
     }
 
-    show404 = false;
+    appState.show404 = false;
   }
 
   void _handleBookTapped(Book book) {
-    _selectedBook = book;
+    appState.selectedBook = book;
     notifyListeners();
   }
 }
