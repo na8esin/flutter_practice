@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_practice/navigation/navigator2_0/NestedRouterDemo_Rail/author.dart';
 
 import 'BookRoutePath.dart';
 import 'BooksAppState.dart';
 import 'FadeAnimationPage.dart';
 import 'BooksListScreen.dart';
-import 'BookDetailsScreen.dart';
+import 'BookDetailScreen.dart';
 import 'settings_screen.dart';
-import 'authors_screen.dart';
+import 'AuthorsScreen.dart';
 import 'book.dart';
 
 // Navigatorあります
@@ -44,7 +45,7 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
           if (appState.selectedBook != null)
             MaterialPage(
               key: ValueKey(appState.selectedBook),
-              child: BookDetailsScreen(book: appState.selectedBook),
+              child: BookDetailScreen(book: appState.selectedBook),
             ),
         ] else if (appState.selectedIndex == 1) ...[
           FadeAnimationPage(
@@ -52,9 +53,21 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
             key: ValueKey('SettingsPage'),
           ),
         ] else if (appState.selectedIndex == 2) ...[
+          // toStringShort()は「Instance of 」がとれてAuthorsScreenだけになる
+          // でも引数が必要な時は使えない
           FadeAnimationPage(
-              child: AuthorsScreen(),
-              key: ValueKey(AuthorsScreen().toStringShort())),
+            child: AuthorsScreen(
+              models: [
+                Author(name: 'Robert A. Heinlein', age: 32, id: 0),
+                Author(name: 'Isaac Asimov', age: 54, id: 1),
+                Author(name: 'Ray Bradbury', age: 22, id: 2),
+              ],
+              onTapped: (Author model) {
+                return;
+              },
+            ),
+            key: ValueKey('AuthorsScreen'),
+          )
         ]
       ],
       onPopPage: (route, result) {

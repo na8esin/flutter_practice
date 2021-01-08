@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'book.dart';
+import 'author.dart';
 
-class BookDetailsScreen extends StatelessWidget {
-  final Book book;
+class AuthorDetailsScreen extends StatelessWidget {
+  final Author author;
 
-  BookDetailsScreen({
-    @required this.book,
+  AuthorDetailsScreen({
+    @required this.author,
   });
 
   @override
@@ -22,9 +22,10 @@ class BookDetailsScreen extends StatelessWidget {
               },
               child: Text('Back'),
             ),
-            if (book != null) ...[
-              Text(book.title, style: Theme.of(context).textTheme.headline6),
-              Text(book.author, style: Theme.of(context).textTheme.subtitle1),
+            if (author != null) ...[
+              Text(author.name, style: Theme.of(context).textTheme.headline6),
+              Text("${author.age}",
+                  style: Theme.of(context).textTheme.subtitle1),
             ],
           ],
         ),

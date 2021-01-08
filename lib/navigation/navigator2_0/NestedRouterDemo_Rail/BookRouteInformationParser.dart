@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'BookRoutePath.dart';
 
+// クラス名が悪いBookStoreとかBookLibraryにしないと
 class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
   @override
   Future<BookRoutePath> parseRouteInformation(
       RouteInformation routeInformation) async {
     final uri = Uri.parse(routeInformation.location);
 
-    // ここってbookだけじゃなくてもっと汎用的に使えると思うけどなー。
     if (uri.pathSegments.isNotEmpty && uri.pathSegments.first == 'settings') {
       return BooksSettingsPath();
     } else if (uri.pathSegments.isNotEmpty &&

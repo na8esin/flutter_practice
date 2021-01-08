@@ -1,3 +1,4 @@
+// idとauthorIdが必要
 class Book {
   final String title;
   final String author;

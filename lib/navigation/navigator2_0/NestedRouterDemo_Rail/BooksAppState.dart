@@ -13,6 +13,8 @@ class BooksAppState extends ChangeNotifier {
     Book('Fahrenheit 451', 'Ray Bradbury'),
   ];
 
+  // ここにauthorsをおきたくないね。。。
+
   BooksAppState() : _selectedIndex = 0;
 
   int get selectedIndex => _selectedIndex;
