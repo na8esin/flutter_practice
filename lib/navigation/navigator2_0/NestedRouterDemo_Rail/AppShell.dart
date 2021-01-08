@@ -62,17 +62,17 @@ class _AppShellState extends State<AppShell> {
             NavigationRailDestination(
               icon: Icon(Icons.favorite_border),
               selectedIcon: Icon(Icons.favorite),
-              label: Text('First'),
+              label: Text('BooksListScreen'),
             ),
             NavigationRailDestination(
               icon: Icon(Icons.bookmark_border),
               selectedIcon: Icon(Icons.book),
-              label: Text('Second'),
+              label: Text('SettingsScreen'),
             ),
             NavigationRailDestination(
               icon: Icon(Icons.star_border),
               selectedIcon: Icon(Icons.star),
-              label: Text('Third'),
+              label: Text('AuthorsScreen'),
             ),
           ],
         ),

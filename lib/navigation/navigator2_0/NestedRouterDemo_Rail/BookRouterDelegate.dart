@@ -15,9 +15,12 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     appState.addListener(notifyListeners);
   }
 
+  @override
   BookRoutePath get currentConfiguration {
     if (appState.selectedIndex == 1) {
       return BooksSettingsPath();
+    } else if (appState.selectedIndex == 2) {
+      return AuthorsScreenPath();
     } else {
       if (appState.selectedBook == null) {
         return BooksListPath();
@@ -58,6 +61,8 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
       appState.selectedBook = null;
     } else if (path is BooksSettingsPath) {
       appState.selectedIndex = 1;
+    } else if (path is AuthorsScreenPath) {
+      appState.selectedIndex = 2;
     } else if (path is BooksDetailsPath) {
       // https://gist.github.com/johnpryan/bbca91e23bbb4d39247fa922533be7c9#gistcomment-3511502
       // うまくいった！

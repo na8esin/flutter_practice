@@ -11,6 +11,9 @@ class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
     // ここってbookだけじゃなくてもっと汎用的に使えると思うけどなー。
     if (uri.pathSegments.isNotEmpty && uri.pathSegments.first == 'settings') {
       return BooksSettingsPath();
+    } else if (uri.pathSegments.isNotEmpty &&
+        uri.pathSegments.first == 'authors') {
+      return AuthorsScreenPath();
     } else {
       if (uri.pathSegments.length >= 2) {
         if (uri.pathSegments[0] == 'book') {
@@ -28,6 +31,9 @@ class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
     }
     if (configuration is BooksSettingsPath) {
       return RouteInformation(location: '/settings');
+    }
+    if (configuration is AuthorsScreenPath) {
+      return RouteInformation(location: '/authors');
     }
     if (configuration is BooksDetailsPath) {
       return RouteInformation(location: '/book/${configuration.id}');

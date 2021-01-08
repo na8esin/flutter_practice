@@ -6,9 +6,11 @@ import 'FadeAnimationPage.dart';
 import 'BooksListScreen.dart';
 import 'BookDetailsScreen.dart';
 import 'settings_screen.dart';
+import 'authors_screen.dart';
 import 'book.dart';
 
 // Navigatorあります
+// currentConfigurationがないね
 class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BookRoutePath> {
   @override // from PopNavigatorRouterDelegateMixin
@@ -25,6 +27,7 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
 
   InnerRouterDelegate(this._appState);
 
+  // RouterDelegateのbuildはNavigatorを返すだけ
   @override
   Widget build(BuildContext context) {
     return Navigator(
@@ -43,11 +46,16 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
               key: ValueKey(appState.selectedBook),
               child: BookDetailsScreen(book: appState.selectedBook),
             ),
-        ] else
+        ] else if (appState.selectedIndex == 1) ...[
           FadeAnimationPage(
             child: SettingsScreen(),
             key: ValueKey('SettingsPage'),
           ),
+        ] else if (appState.selectedIndex == 2) ...[
+          FadeAnimationPage(
+              child: AuthorsScreen(),
+              key: ValueKey(AuthorsScreen().toStringShort())),
+        ]
       ],
       onPopPage: (route, result) {
         appState.selectedBook = null;

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'book.dart';
 
 class BooksAppState extends ChangeNotifier {
+  // NavigationRailが変更されるたびに変わる
   int _selectedIndex;
-
   Book _selectedBook;
 
   final List<Book> books = [
@@ -23,8 +23,6 @@ class BooksAppState extends ChangeNotifier {
     // _selectedIndex == 1の時って要するにsettingの時
     // BottomNavigationBarのstateをBooksAppStateみたいな名前のstateで
     // 管理してるのが違和感。。。
-    // それと、/book/1 -> Settings
-    // で遷移した時にブラウザバックで戻れない
     if (_selectedIndex == 1) {
       // Remove this line if you want to keep the selected book when navigating
       // between "settings" and "home" which book was selected when Settings is
