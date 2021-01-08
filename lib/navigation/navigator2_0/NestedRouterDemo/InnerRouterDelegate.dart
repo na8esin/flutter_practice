@@ -40,11 +40,12 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
               key: ValueKey(appState.selectedBook),
               child: BookDetailsScreen(book: appState.selectedBook),
             ),
-        ] else
+        ] else if (appState.selectedIndex == 1)
           FadeAnimationPage(
             child: SettingsScreen(),
             key: ValueKey('SettingsPage'),
           ),
+        // else がなくても大丈夫なのか？ ->
       ],
       onPopPage: (route, result) {
         appState.selectedBook = null;
