@@ -1,24 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'BookRoutePath.dart';
-import 'BooksAppState.dart';
-import 'book.dart';
+import 'NestedRouterDemo_main.dart';
 import 'BooksListScreen.dart';
-import 'BookDetailScreen.dart';
-import 'AuthorDetailScreen.dart';
-import 'AuthorsScreen.dart';
-import 'author.dart';
+import 'BookDetailsScreen.dart';
 import 'settings_screen.dart';
-import 'FadeAnimationPage.dart';
+import 'book.dart';
 
 // Navigatorあります
-// currentConfigurationがないね
 class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BookRoutePath> {
-  @override // from PopNavigatorRouterDelegateMixin
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
-  // この辺見るとうぇーってなる
   BooksAppState get appState => _appState;
   BooksAppState _appState;
   set appState(BooksAppState value) {
@@ -31,7 +22,6 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
 
   InnerRouterDelegate(this._appState);
 
-  // RouterDelegateのbuildはNavigatorを返すだけ
   @override
   Widget build(BuildContext context) {
     return Navigator(
@@ -48,36 +38,16 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
           if (appState.selectedBook != null)
             MaterialPage(
               key: ValueKey(appState.selectedBook),
-              child: BookDetailScreen(book: appState.selectedBook),
+              child: BookDetailsScreen(book: appState.selectedBook),
             ),
-        ] else if (appState.selectedIndex == 1) ...[
+        ] else
           FadeAnimationPage(
             child: SettingsScreen(),
             key: ValueKey('SettingsPage'),
           ),
-        ] else if (appState.selectedIndex == 2) ...[
-          // toStringShort()は「Instance of 」がとれてAuthorsScreenだけになる
-          // でも引数が必要な時は使えない
-          FadeAnimationPage(
-            child: AuthorsScreen(
-              models: appState.authors,
-              onTapped: _handleAuthorTapped,
-            ),
-            key: ValueKey('AuthorsScreen'),
-          ),
-          if (appState.authorsState.selectedModel != null)
-            MaterialPage(
-              key: ValueKey(appState.authorsState.selectedModel),
-              child: AuthorDetailScreen(
-                  model: appState.authorsState.selectedModel),
-            ),
-        ]
       ],
       onPopPage: (route, result) {
         appState.selectedBook = null;
-        // TODO: どんな意味かわかんね。
-        // さっきはここが追加されてなかった。
-        appState.authorsState.selectedModel = null;
         notifyListeners();
         return route.didPop(result);
       },
@@ -93,11 +63,6 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
 
   void _handleBookTapped(Book book) {
     appState.selectedBook = book;
-    notifyListeners();
-  }
-
-  void _handleAuthorTapped(Author model) {
-    appState.authorsState.selectedModel = model;
     notifyListeners();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'book.dart';
+import 'author.dart';
 import 'AuthorsState.dart';
 
 // StateNotifierに変更可能
@@ -22,6 +23,12 @@ class BooksAppState extends ChangeNotifier {
     Book('Stranger in a Strange Land', 'Robert A. Heinlein'),
     Book('Foundation', 'Isaac Asimov'),
     Book('Fahrenheit 451', 'Ray Bradbury'),
+  ];
+
+  final List<Author> authors = [
+    Author(name: 'Robert A. Heinlein', age: 32, id: 0),
+    Author(name: 'Isaac Asimov', age: 54, id: 1),
+    Author(name: 'Ray Bradbury', age: 22, id: 2),
   ];
 
   // ここにauthorsをおきたくないね。。。
@@ -66,3 +73,5 @@ class BooksAppState extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+// bookStateを分離するとbookは動かなくなるか検証

@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'BooksAppState.dart';
 import 'InnerRouterDelegate.dart';
-import 'AuthorsState.dart';
 
 // Widget that contains the AdaptiveNavigationScaffold
 class AppShell extends StatefulWidget {
