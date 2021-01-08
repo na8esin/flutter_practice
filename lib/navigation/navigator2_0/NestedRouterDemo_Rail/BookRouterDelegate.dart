@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'AppShell.dart';
 import 'BooksAppState.dart';
 import 'BookRoutePath.dart';
+import 'AuthorsState.dart';
 
 // Navigatorあります
 class BookRouterDelegate extends RouterDelegate<BookRoutePath>
@@ -11,8 +12,14 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
 
   BooksAppState appState = BooksAppState();
 
+  // ここにAuthorsStateとか追加していくかんじかぁ。。。それなら、
+  // appStateに集約しててもいいのかぁ。
+  // まずは、集約しないパターンで。
+  AuthorsState authorsState = AuthorsState();
+
   BookRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
     appState.addListener(notifyListeners);
+    authorsState.addListener(notifyListeners);
   }
 
   @override
@@ -20,7 +27,11 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     if (appState.selectedIndex == 1) {
       return BooksSettingsPath();
     } else if (appState.selectedIndex == 2) {
-      return AuthorsScreenPath();
+      if (authorsState.selectedModel == null) {
+        return AuthorsScreenPath();
+      } else {
+        return AuthorDetailScreenPath(authorsState.getSelectedModelById());
+      }
     } else {
       if (appState.selectedBook == null) {
         return BooksListPath();
@@ -37,7 +48,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
       pages: [
         MaterialPage(
           // ☆☆☆☆☆☆☆☆☆☆
-          child: AppShell(appState: appState),
+          child: AppShell(appState: appState, authorsState: authorsState),
         ),
       ],
       onPopPage: (route, result) {
@@ -48,6 +59,10 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
         if (appState.selectedBook != null) {
           appState.selectedBook = null;
         }
+        if (authorsState.selectedModel != null) {
+          authorsState.selectedModel = null;
+        }
+
         notifyListeners();
         return true;
       },
@@ -59,15 +74,19 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     if (path is BooksListPath) {
       appState.selectedIndex = 0;
       appState.selectedBook = null;
-    } else if (path is BooksSettingsPath) {
-      appState.selectedIndex = 1;
-    } else if (path is AuthorsScreenPath) {
-      appState.selectedIndex = 2;
     } else if (path is BooksDetailsPath) {
       // https://gist.github.com/johnpryan/bbca91e23bbb4d39247fa922533be7c9#gistcomment-3511502
       // うまくいった！
       appState.selectedIndex = 0; // This was missing!
       appState.setSelectedBookById(path.id);
+    } else if (path is AuthorsScreenPath) {
+      appState.selectedIndex = 2;
+      authorsState.selectedModel = null;
+    } else if (path is AuthorDetailScreenPath) {
+      appState.selectedIndex = 2;
+      authorsState.setSelectedModelById(path.id);
+    } else if (path is BooksSettingsPath) {
+      appState.selectedIndex = 1;
     }
   }
 }

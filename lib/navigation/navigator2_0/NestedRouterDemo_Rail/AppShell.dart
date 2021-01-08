@@ -5,13 +5,18 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'BooksAppState.dart';
 import 'InnerRouterDelegate.dart';
+import 'AuthorsState.dart';
 
 // Widget that contains the AdaptiveNavigationScaffold
 class AppShell extends StatefulWidget {
   final BooksAppState appState;
+  final AuthorsState authorsState;
 
+  // ここの引数渡しもウェーってなる。。。
   AppShell({
     @required this.appState,
+    @required this.authorsState,
+    // さらに出版社とか追加、publishersState,
   });
 
   @override
@@ -24,7 +29,8 @@ class _AppShellState extends State<AppShell> {
 
   void initState() {
     super.initState();
-    _routerDelegate = InnerRouterDelegate(widget.appState);
+    // ここはauthorsState追加しなくていいのか？よさそう。。。
+    _routerDelegate = InnerRouterDelegate(widget.appState, widget.authorsState);
   }
 
   @override

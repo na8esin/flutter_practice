@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'book.dart';
 
+// StateNotifierに変更可能
 class BooksAppState extends ChangeNotifier {
   // NavigationRailが変更されるたびに変わる
   int _selectedIndex;
+
+  // ここが増えてくのかぁ。。。
+  // getterとsetterもガンガン増えてくなぁ。
   Book _selectedBook;
 
   final List<Book> books = [

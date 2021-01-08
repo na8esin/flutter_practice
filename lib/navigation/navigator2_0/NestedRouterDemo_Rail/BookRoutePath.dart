@@ -12,3 +12,8 @@ class BooksDetailsPath extends BookRoutePath {
 }
 
 class AuthorsScreenPath extends BookRoutePath {}
+
+class AuthorDetailScreenPath extends BookRoutePath {
+  final int id;
+  AuthorDetailScreenPath(this.id);
+}

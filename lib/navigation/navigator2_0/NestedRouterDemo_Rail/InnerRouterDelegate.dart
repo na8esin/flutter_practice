@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_practice/navigation/navigator2_0/NestedRouterDemo_Rail/author.dart';
 
 import 'BookRoutePath.dart';
 import 'BooksAppState.dart';
-import 'FadeAnimationPage.dart';
+import 'book.dart';
 import 'BooksListScreen.dart';
 import 'BookDetailScreen.dart';
-import 'settings_screen.dart';
+import 'AuthorDetailScreen.dart';
 import 'AuthorsScreen.dart';
-import 'book.dart';
+import 'author.dart';
+import 'AuthorsState.dart';
+import 'settings_screen.dart';
+import 'FadeAnimationPage.dart';
 
 // Navigatorあります
 // currentConfigurationがないね
@@ -16,6 +18,8 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BookRoutePath> {
   @override // from PopNavigatorRouterDelegateMixin
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+  // この辺見るとうぇーってなる
   BooksAppState get appState => _appState;
   BooksAppState _appState;
   set appState(BooksAppState value) {
@@ -26,7 +30,15 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
     notifyListeners();
   }
 
-  InnerRouterDelegate(this._appState);
+  AuthorsState _authorsState;
+  AuthorsState get authorsState => _authorsState;
+  set authorsState(AuthorsState state) {
+    if (state == _authorsState) return null;
+    _authorsState = state;
+    notifyListeners();
+  }
+
+  InnerRouterDelegate(this._appState, this._authorsState);
 
   // RouterDelegateのbuildはNavigatorを返すだけ
   @override
@@ -62,12 +74,15 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
                 Author(name: 'Isaac Asimov', age: 54, id: 1),
                 Author(name: 'Ray Bradbury', age: 22, id: 2),
               ],
-              onTapped: (Author model) {
-                return;
-              },
+              onTapped: _handleAuthorTapped,
             ),
             key: ValueKey('AuthorsScreen'),
-          )
+          ),
+          if (authorsState.selectedModel != null)
+            MaterialPage(
+              key: ValueKey(authorsState.selectedModel),
+              child: AuthorDetailScreen(model: authorsState.selectedModel),
+            ),
         ]
       ],
       onPopPage: (route, result) {
@@ -87,6 +102,11 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
 
   void _handleBookTapped(Book book) {
     appState.selectedBook = book;
+    notifyListeners();
+  }
+
+  void _handleAuthorTapped(Author model) {
+    authorsState.selectedModel = model;
     notifyListeners();
   }
 }

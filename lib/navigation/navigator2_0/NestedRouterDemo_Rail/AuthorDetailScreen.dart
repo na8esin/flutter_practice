@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'author.dart';
 
-class AuthorDetailsScreen extends StatelessWidget {
-  final Author author;
+class AuthorDetailScreen extends StatelessWidget {
+  // 一つだけなら、modelって感じで抽象化しとくと他で使うときに修正が少なくなる
+  final Author model;
 
-  AuthorDetailsScreen({
-    @required this.author,
+  AuthorDetailScreen({
+    @required this.model,
   });
 
   @override
@@ -22,9 +23,9 @@ class AuthorDetailsScreen extends StatelessWidget {
               },
               child: Text('Back'),
             ),
-            if (author != null) ...[
-              Text(author.name, style: Theme.of(context).textTheme.headline6),
-              Text("${author.age}",
+            if (model != null) ...[
+              Text(model.name, style: Theme.of(context).textTheme.headline6),
+              Text("${model.age}",
                   style: Theme.of(context).textTheme.subtitle1),
             ],
           ],
