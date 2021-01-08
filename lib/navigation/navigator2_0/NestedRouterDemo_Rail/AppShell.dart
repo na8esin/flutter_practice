@@ -10,13 +10,9 @@ import 'AuthorsState.dart';
 // Widget that contains the AdaptiveNavigationScaffold
 class AppShell extends StatefulWidget {
   final BooksAppState appState;
-  final AuthorsState authorsState;
 
-  // ここの引数渡しもウェーってなる。。。
   AppShell({
     @required this.appState,
-    @required this.authorsState,
-    // さらに出版社とか追加、publishersState,
   });
 
   @override
@@ -29,8 +25,7 @@ class _AppShellState extends State<AppShell> {
 
   void initState() {
     super.initState();
-    // ここはauthorsState追加しなくていいのか？よさそう。。。
-    _routerDelegate = InnerRouterDelegate(widget.appState, widget.authorsState);
+    _routerDelegate = InnerRouterDelegate(widget.appState);
   }
 
   @override
@@ -71,13 +66,13 @@ class _AppShellState extends State<AppShell> {
               label: Text('BooksListScreen'),
             ),
             NavigationRailDestination(
-              icon: Icon(Icons.bookmark_border),
+              icon: Icon(Icons.book_outlined),
               selectedIcon: Icon(Icons.book),
               label: Text('SettingsScreen'),
             ),
             NavigationRailDestination(
-              icon: Icon(Icons.star_border),
-              selectedIcon: Icon(Icons.star),
+              icon: Icon(Icons.person_outline),
+              selectedIcon: Icon(Icons.person),
               label: Text('AuthorsScreen'),
             ),
           ],

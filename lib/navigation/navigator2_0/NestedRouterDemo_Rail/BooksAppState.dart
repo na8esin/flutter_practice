@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'book.dart';
+import 'AuthorsState.dart';
 
 // StateNotifierに変更可能
 class BooksAppState extends ChangeNotifier {
@@ -10,6 +11,12 @@ class BooksAppState extends ChangeNotifier {
   // ここが増えてくのかぁ。。。
   // getterとsetterもガンガン増えてくなぁ。
   Book _selectedBook;
+  AuthorsState _authorsState = AuthorsState();
+  AuthorsState get authorsState => _authorsState;
+  set authorsState(value) {
+    _authorsState = value;
+    notifyListeners();
+  }
 
   final List<Book> books = [
     Book('Stranger in a Strange Land', 'Robert A. Heinlein'),

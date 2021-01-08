@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'AppShell.dart';
 import 'BooksAppState.dart';
 import 'BookRoutePath.dart';
-import 'AuthorsState.dart';
 
 // Navigatorあります
 class BookRouterDelegate extends RouterDelegate<BookRoutePath>
@@ -12,14 +11,8 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
 
   BooksAppState appState = BooksAppState();
 
-  // ここにAuthorsStateとか追加していくかんじかぁ。。。それなら、
-  // appStateに集約しててもいいのかぁ。
-  // まずは、集約しないパターンで。
-  AuthorsState authorsState = AuthorsState();
-
   BookRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
     appState.addListener(notifyListeners);
-    authorsState.addListener(notifyListeners);
   }
 
   @override
@@ -27,10 +20,11 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     if (appState.selectedIndex == 1) {
       return BooksSettingsPath();
     } else if (appState.selectedIndex == 2) {
-      if (authorsState.selectedModel == null) {
+      if (appState.authorsState.selectedModel == null) {
         return AuthorsScreenPath();
       } else {
-        return AuthorDetailScreenPath(authorsState.getSelectedModelById());
+        return AuthorDetailScreenPath(
+            appState.authorsState.getSelectedModelById());
       }
     } else {
       if (appState.selectedBook == null) {
@@ -48,7 +42,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
       pages: [
         MaterialPage(
           // ☆☆☆☆☆☆☆☆☆☆
-          child: AppShell(appState: appState, authorsState: authorsState),
+          child: AppShell(appState: appState),
         ),
       ],
       onPopPage: (route, result) {
@@ -59,8 +53,9 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
         if (appState.selectedBook != null) {
           appState.selectedBook = null;
         }
-        if (authorsState.selectedModel != null) {
-          authorsState.selectedModel = null;
+        // TODO: ここのソースがどんな意味かわかんね
+        if (appState.authorsState.selectedModel != null) {
+          appState.authorsState.selectedModel = null;
         }
 
         notifyListeners();
@@ -69,6 +64,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     );
   }
 
+  // 継承元の引数の名前は、configurationなのかよ！
   @override
   Future<void> setNewRoutePath(BookRoutePath path) async {
     if (path is BooksListPath) {
@@ -81,10 +77,10 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
       appState.setSelectedBookById(path.id);
     } else if (path is AuthorsScreenPath) {
       appState.selectedIndex = 2;
-      authorsState.selectedModel = null;
+      appState.authorsState.selectedModel = null;
     } else if (path is AuthorDetailScreenPath) {
       appState.selectedIndex = 2;
-      authorsState.setSelectedModelById(path.id);
+      appState.authorsState.setSelectedModelById(path.id);
     } else if (path is BooksSettingsPath) {
       appState.selectedIndex = 1;
     }

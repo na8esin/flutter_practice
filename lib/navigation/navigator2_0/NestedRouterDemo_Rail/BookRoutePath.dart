@@ -1,4 +1,6 @@
 // Path
+// ここが本当はconfigurationだとしても、羅列すると
+// 鬱陶しすぎる
 // enumを使うやり方もあるけど、呼び出すときにゴチャっとする
 abstract class BookRoutePath {}
 

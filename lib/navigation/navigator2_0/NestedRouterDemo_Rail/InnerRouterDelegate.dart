@@ -8,7 +8,6 @@ import 'BookDetailScreen.dart';
 import 'AuthorDetailScreen.dart';
 import 'AuthorsScreen.dart';
 import 'author.dart';
-import 'AuthorsState.dart';
 import 'settings_screen.dart';
 import 'FadeAnimationPage.dart';
 
@@ -30,15 +29,7 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
     notifyListeners();
   }
 
-  AuthorsState _authorsState;
-  AuthorsState get authorsState => _authorsState;
-  set authorsState(AuthorsState state) {
-    if (state == _authorsState) return null;
-    _authorsState = state;
-    notifyListeners();
-  }
-
-  InnerRouterDelegate(this._appState, this._authorsState);
+  InnerRouterDelegate(this._appState);
 
   // RouterDelegateのbuildはNavigatorを返すだけ
   @override
@@ -78,15 +69,19 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
             ),
             key: ValueKey('AuthorsScreen'),
           ),
-          if (authorsState.selectedModel != null)
+          if (appState.authorsState.selectedModel != null)
             MaterialPage(
-              key: ValueKey(authorsState.selectedModel),
-              child: AuthorDetailScreen(model: authorsState.selectedModel),
+              key: ValueKey(appState.authorsState.selectedModel),
+              child: AuthorDetailScreen(
+                  model: appState.authorsState.selectedModel),
             ),
         ]
       ],
       onPopPage: (route, result) {
         appState.selectedBook = null;
+        // TODO: どんな意味かわかんね。
+        // さっきはここが追加されてなかった。
+        appState.authorsState.selectedModel = null;
         notifyListeners();
         return route.didPop(result);
       },
@@ -106,7 +101,7 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
   }
 
   void _handleAuthorTapped(Author model) {
-    authorsState.selectedModel = model;
+    appState.authorsState.selectedModel = model;
     notifyListeners();
   }
 }
