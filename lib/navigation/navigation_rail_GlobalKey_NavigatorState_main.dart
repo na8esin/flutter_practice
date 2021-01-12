@@ -28,21 +28,36 @@ class MyApp extends HookWidget {
   }
 }
 
+class SelectedIndexController extends StateNotifier<int> {
+  SelectedIndexController(int state) : super(state);
+  int get selectedIndex => state;
+  set selectedIndex(int value) {
+    state = value;
+  }
+}
+
+final selectedIndexProvider =
+    StateNotifierProvider<SelectedIndexController>((ref) {
+  return SelectedIndexController(0);
+});
+
 /// This is the stateful widget that the main application instantiates.
 class MyStatefulWidget extends HookWidget {
   MyStatefulWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<int> _selectedIndex = useState(0);
+    final selectedIndex = useProvider(selectedIndexProvider.state);
+    final _controller = useProvider(selectedIndexProvider);
+
     final navKey = GlobalObjectKey<NavigatorState>(context);
     return Scaffold(
       body: Row(
         children: <Widget>[
           NavigationRail(
-            selectedIndex: _selectedIndex.value,
+            selectedIndex: selectedIndex,
             onDestinationSelected: (int index) {
-              _selectedIndex.value = index;
+              _controller.selectedIndex = index;
               switch (index) {
                 case 0:
                   navKey.currentState.pushNamed(MailNavigator.inboxRoute);
