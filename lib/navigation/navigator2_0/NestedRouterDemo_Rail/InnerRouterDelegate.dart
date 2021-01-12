@@ -7,7 +7,6 @@ import 'BooksListScreen.dart';
 import 'BookDetailScreen.dart';
 import 'AuthorDetailScreen.dart';
 import 'AuthorsScreen.dart';
-import 'AuthorsState.dart';
 import 'author.dart';
 import 'settings_screen.dart';
 import 'FadeAnimationPage.dart';
@@ -41,15 +40,16 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
         if (appState.selectedIndex == 0) ...[
           FadeAnimationPage(
             child: BooksListScreen(
-              books: appState.books,
+              books: appState.booksController.models,
               onTapped: _handleBookTapped,
             ),
             key: ValueKey('BooksListPage'),
           ),
-          if (appState.selectedBook != null)
+          if (appState.booksController.selectedModel != null)
             MaterialPage(
-              key: ValueKey(appState.selectedBook),
-              child: BookDetailScreen(book: appState.selectedBook),
+              key: ValueKey(appState.booksController.selectedModel),
+              child: BookDetailScreen(
+                  book: appState.booksController.selectedModel),
             ),
         ] else if (appState.selectedIndex == 1) ...[
           FadeAnimationPage(
@@ -75,7 +75,7 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
         ]
       ],
       onPopPage: (route, result) {
-        appState.selectedBook = null;
+        appState.booksController.selectedModel = null;
         // TODO: どんな意味かわかんね。
         // さっきはここが追加されてなかった。
         appState.authorsController.selectedModel = null;
@@ -93,7 +93,7 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
   }
 
   void _handleBookTapped(Book book) {
-    appState.selectedBook = book;
+    appState.booksController.selectedModel = book;
     notifyListeners();
   }
 

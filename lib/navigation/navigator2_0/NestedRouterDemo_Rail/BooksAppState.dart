@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'book.dart';
 import 'AuthorsState.dart';
+import 'BooksState.dart';
 
 // StateNotifierに変更可能
 class BooksAppState extends ChangeNotifier {
   // NavigationRailが変更されるたびに変わる
   int _selectedIndex;
-
-  // ここが増えてくのかぁ。。。
-  // getterとsetterもガンガン増えてくなぁ。
-  Book _selectedBook;
 
   AuthorsController _authorsController;
   AuthorsController get authorsController => _authorsController;
@@ -19,11 +15,12 @@ class BooksAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  final List<Book> books = [
-    Book('Stranger in a Strange Land', 'Robert A. Heinlein'),
-    Book('Foundation', 'Isaac Asimov'),
-    Book('Fahrenheit 451', 'Ray Bradbury'),
-  ];
+  BooksController _booksController;
+  BooksController get booksController => _booksController;
+  set booksController(controller) {
+    _booksController = controller;
+    notifyListeners();
+  }
 
   BooksAppState() : _selectedIndex = 0;
 
@@ -41,25 +38,6 @@ class BooksAppState extends ChangeNotifier {
       // tapped.
       //selectedBook = null;
     }
-    notifyListeners();
-  }
-
-  Book get selectedBook => _selectedBook;
-  set selectedBook(Book book) {
-    _selectedBook = book;
-    notifyListeners();
-  }
-
-  int getSelectedBookById() {
-    if (!books.contains(_selectedBook)) return 0;
-    return books.indexOf(_selectedBook);
-  }
-
-  void setSelectedBookById(int id) {
-    if (id < 0 || id > books.length - 1) {
-      return;
-    }
-    _selectedBook = books[id];
     notifyListeners();
   }
 }
