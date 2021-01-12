@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'unknown_screen.dart';
 import 'book_route_path.dart';
 import 'books_list_screen.dart';
 import 'book_details_page.dart';
 import 'book.dart';
-import 'books_app_state.dart';
 import 'books_app_state_notifier.dart';
 
 // StateNotifierに書き換えると
