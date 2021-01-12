@@ -65,11 +65,10 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
             ),
             key: ValueKey('AuthorsScreen'),
           ),
-          if (appState.authorsState.selectedModel != null)
+          if (appState.selectedAuthor != null)
             MaterialPage(
-              key: ValueKey(appState.authorsState.selectedModel),
-              child: AuthorDetailScreen(
-                  model: appState.authorsState.selectedModel),
+              key: ValueKey(appState.selectedAuthor),
+              child: AuthorDetailScreen(model: appState.selectedAuthor),
             ),
         ]
       ],
@@ -77,7 +76,7 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
         appState.selectedBook = null;
         // TODO: どんな意味かわかんね。
         // さっきはここが追加されてなかった。
-        appState.authorsState.selectedModel = null;
+        appState.selectedAuthor = null;
         notifyListeners();
         return route.didPop(result);
       },
@@ -97,7 +96,7 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
   }
 
   void _handleAuthorTapped(Author model) {
-    appState.authorsState.selectedModel = model;
+    appState.selectedAuthor = model;
     notifyListeners();
   }
 }

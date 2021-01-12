@@ -12,12 +12,7 @@ class BooksAppState extends ChangeNotifier {
   // ここが増えてくのかぁ。。。
   // getterとsetterもガンガン増えてくなぁ。
   Book _selectedBook;
-  AuthorsState _authorsState;
-  AuthorsState get authorsState => _authorsState;
-  set authorsState(value) {
-    _authorsState = value;
-    notifyListeners();
-  }
+  Author _selectedAuthor;
 
   final List<Book> books = [
     Book('Stranger in a Strange Land', 'Robert A. Heinlein'),
@@ -30,11 +25,7 @@ class BooksAppState extends ChangeNotifier {
     Author(name: 'Ray Bradbury', age: 22, id: 2),
   ];
 
-  // ここにauthorsをおきたくないね。。。
-
-  BooksAppState() : _selectedIndex = 0 {
-    _authorsState = AuthorsState(authors);
-  }
+  BooksAppState() : _selectedIndex = 0;
 
   int get selectedIndex => _selectedIndex;
 
@@ -54,7 +45,6 @@ class BooksAppState extends ChangeNotifier {
   }
 
   Book get selectedBook => _selectedBook;
-
   set selectedBook(Book book) {
     _selectedBook = book;
     notifyListeners();
@@ -69,10 +59,26 @@ class BooksAppState extends ChangeNotifier {
     if (id < 0 || id > books.length - 1) {
       return;
     }
-
     _selectedBook = books[id];
     notifyListeners();
   }
-}
 
-// bookStateを分離するとbookは動かなくなるか検証
+  Author get selectedAuthor => _selectedAuthor;
+  set selectedAuthor(Author author) {
+    _selectedAuthor = author;
+    notifyListeners();
+  }
+
+  int getSelectedAuthorById() {
+    if (!authors.contains(_selectedAuthor)) return 0;
+    return authors.indexOf(_selectedAuthor);
+  }
+
+  void setSelectedAuthorById(int id) {
+    if (id < 0 || id > authors.length - 1) {
+      return;
+    }
+    _selectedAuthor = authors[id];
+    notifyListeners();
+  }
+}

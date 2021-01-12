@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'author.dart';
 
-class AuthorsState extends SelectedModel<Author> {
-  AuthorsState(this.models);
-  List<Author> models;
-}
-
 // 抽象化するならこういうのが必要そう
 class SelectedModel<T> extends ChangeNotifier {
   T _selectedModel;

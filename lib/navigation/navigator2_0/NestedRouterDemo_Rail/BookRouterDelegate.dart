@@ -20,11 +20,10 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     if (appState.selectedIndex == 1) {
       return BooksSettingsPath();
     } else if (appState.selectedIndex == 2) {
-      if (appState.authorsState.selectedModel == null) {
+      if (appState.selectedAuthor == null) {
         return AuthorsScreenPath();
       } else {
-        return AuthorDetailScreenPath(
-            appState.authorsState.getSelectedModelById());
+        return AuthorDetailScreenPath(appState.getSelectedAuthorById());
       }
     } else {
       if (appState.selectedBook == null) {
@@ -54,8 +53,8 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
           appState.selectedBook = null;
         }
         // TODO: ここのソースがどんな意味かわかんね
-        if (appState.authorsState.selectedModel != null) {
-          appState.authorsState.selectedModel = null;
+        if (appState.selectedAuthor != null) {
+          appState.selectedAuthor = null;
         }
 
         notifyListeners();
@@ -77,10 +76,10 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
       appState.setSelectedBookById(path.id);
     } else if (path is AuthorsScreenPath) {
       appState.selectedIndex = 2;
-      appState.authorsState.selectedModel = null;
+      appState.selectedAuthor = null;
     } else if (path is AuthorDetailScreenPath) {
       appState.selectedIndex = 2;
-      appState.authorsState.setSelectedModelById(path.id);
+      appState.setSelectedAuthorById(path.id);
     } else if (path is BooksSettingsPath) {
       appState.selectedIndex = 1;
     }
