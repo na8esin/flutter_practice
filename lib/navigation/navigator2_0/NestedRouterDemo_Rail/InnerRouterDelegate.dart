@@ -7,6 +7,7 @@ import 'BooksListScreen.dart';
 import 'BookDetailScreen.dart';
 import 'AuthorDetailScreen.dart';
 import 'AuthorsScreen.dart';
+import 'AuthorsState.dart';
 import 'author.dart';
 import 'settings_screen.dart';
 import 'FadeAnimationPage.dart';
@@ -19,8 +20,8 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   // この辺見るとうぇーってなる
-  BooksAppState get appState => _appState;
   BooksAppState _appState;
+  BooksAppState get appState => _appState;
   set appState(BooksAppState value) {
     if (value == _appState) {
       return;
@@ -60,15 +61,16 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
           // でも引数が必要な時は使えない
           FadeAnimationPage(
             child: AuthorsScreen(
-              models: appState.authors,
+              models: appState.authorsController.models,
               onTapped: _handleAuthorTapped,
             ),
             key: ValueKey('AuthorsScreen'),
           ),
-          if (appState.selectedAuthor != null)
+          if (appState.authorsController.selectedModel != null)
             MaterialPage(
-              key: ValueKey(appState.selectedAuthor),
-              child: AuthorDetailScreen(model: appState.selectedAuthor),
+              key: ValueKey(appState.authorsController.selectedModel),
+              child: AuthorDetailScreen(
+                  model: appState.authorsController.selectedModel),
             ),
         ]
       ],
@@ -76,7 +78,7 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
         appState.selectedBook = null;
         // TODO: どんな意味かわかんね。
         // さっきはここが追加されてなかった。
-        appState.selectedAuthor = null;
+        appState.authorsController.selectedModel = null;
         notifyListeners();
         return route.didPop(result);
       },
@@ -96,7 +98,7 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
   }
 
   void _handleAuthorTapped(Author model) {
-    appState.selectedAuthor = model;
+    appState.authorsController.selectedModel = model;
     notifyListeners();
   }
 }

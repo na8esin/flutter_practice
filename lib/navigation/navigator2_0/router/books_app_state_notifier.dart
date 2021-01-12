@@ -11,6 +11,7 @@ class BooksStatus {
   final bool show404;
 }
 
+// Controller
 class BooksAppStateNotifier extends StateNotifier<BooksStatus> {
   BooksAppStateNotifier(state) : super(state);
 

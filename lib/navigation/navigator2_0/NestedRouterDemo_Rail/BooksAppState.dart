@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'book.dart';
-import 'author.dart';
 import 'AuthorsState.dart';
 
 // StateNotifierに変更可能
@@ -12,17 +11,18 @@ class BooksAppState extends ChangeNotifier {
   // ここが増えてくのかぁ。。。
   // getterとsetterもガンガン増えてくなぁ。
   Book _selectedBook;
-  Author _selectedAuthor;
+
+  AuthorsController _authorsController;
+  AuthorsController get authorsController => _authorsController;
+  set authorsController(controller) {
+    _authorsController = controller;
+    notifyListeners();
+  }
 
   final List<Book> books = [
     Book('Stranger in a Strange Land', 'Robert A. Heinlein'),
     Book('Foundation', 'Isaac Asimov'),
     Book('Fahrenheit 451', 'Ray Bradbury'),
-  ];
-  final List<Author> authors = [
-    Author(name: 'Robert A. Heinlein', age: 32, id: 0),
-    Author(name: 'Isaac Asimov', age: 54, id: 1),
-    Author(name: 'Ray Bradbury', age: 22, id: 2),
   ];
 
   BooksAppState() : _selectedIndex = 0;
@@ -60,25 +60,6 @@ class BooksAppState extends ChangeNotifier {
       return;
     }
     _selectedBook = books[id];
-    notifyListeners();
-  }
-
-  Author get selectedAuthor => _selectedAuthor;
-  set selectedAuthor(Author author) {
-    _selectedAuthor = author;
-    notifyListeners();
-  }
-
-  int getSelectedAuthorById() {
-    if (!authors.contains(_selectedAuthor)) return 0;
-    return authors.indexOf(_selectedAuthor);
-  }
-
-  void setSelectedAuthorById(int id) {
-    if (id < 0 || id > authors.length - 1) {
-      return;
-    }
-    _selectedAuthor = authors[id];
     notifyListeners();
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'AppShell.dart';
 import 'BooksAppState.dart';
 import 'BookRoutePath.dart';
+import 'AuthorsState.dart';
 
 // Navigatorあります
 class BookRouterDelegate extends RouterDelegate<BookRoutePath>
@@ -10,9 +11,15 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   final GlobalKey<NavigatorState> navigatorKey;
 
   BooksAppState appState = BooksAppState();
+  AuthorsController authorsController =
+      AuthorsController(AuthorsState(selectedModel: null));
 
   BookRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
     appState.addListener(notifyListeners);
+    authorsController.addListener((state) {
+      notifyListeners();
+    });
+    appState.authorsController = authorsController;
   }
 
   @override
@@ -20,10 +27,10 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     if (appState.selectedIndex == 1) {
       return BooksSettingsPath();
     } else if (appState.selectedIndex == 2) {
-      if (appState.selectedAuthor == null) {
+      if (authorsController.selectedModel == null) {
         return AuthorsScreenPath();
       } else {
-        return AuthorDetailScreenPath(appState.getSelectedAuthorById());
+        return AuthorDetailScreenPath(authorsController.getSelectedModelById());
       }
     } else {
       if (appState.selectedBook == null) {
@@ -53,8 +60,8 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
           appState.selectedBook = null;
         }
         // TODO: ここのソースがどんな意味かわかんね
-        if (appState.selectedAuthor != null) {
-          appState.selectedAuthor = null;
+        if (authorsController.selectedModel != null) {
+          authorsController.selectedModel = null;
         }
 
         notifyListeners();
@@ -76,10 +83,10 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
       appState.setSelectedBookById(path.id);
     } else if (path is AuthorsScreenPath) {
       appState.selectedIndex = 2;
-      appState.selectedAuthor = null;
+      authorsController.selectedModel = null;
     } else if (path is AuthorDetailScreenPath) {
       appState.selectedIndex = 2;
-      appState.setSelectedAuthorById(path.id);
+      authorsController.setSelectedModelById(path.id);
     } else if (path is BooksSettingsPath) {
       appState.selectedIndex = 1;
     }
