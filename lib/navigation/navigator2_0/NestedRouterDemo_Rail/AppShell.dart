@@ -6,44 +6,29 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'AppState.dart';
 import 'InnerRouterDelegate.dart';
 
+final _routerDelegateProvider = StateProvider<InnerRouterDelegate>((ref) {
+  //final appController = ref.watch(appProvider);
+  return InnerRouterDelegate();
+});
+
+final _backButtonDispatcherProvider =
+    StateProvider.family<ChildBackButtonDispatcher, Router>((ref, router) {
+  return router.backButtonDispatcher.createChildBackButtonDispatcher();
+});
+
 /*
   ここのHookWidget化は難しそう
   AppShellはBookRouterDelegateから呼ばれるので、
 */
 // Widget that contains the AdaptiveNavigationScaffold
-class AppShell extends StatefulWidget {
-  final AppController appController;
-
-  AppShell({
-    @required this.appController,
-  });
-
-  @override
-  _AppShellState createState() => _AppShellState();
-}
-
-class _AppShellState extends State<AppShell> {
-  InnerRouterDelegate _routerDelegate;
-  ChildBackButtonDispatcher _backButtonDispatcher;
-
-  @override
-  void initState() {
-    super.initState();
-    _routerDelegate = InnerRouterDelegate(widget.appController);
-  }
-
-  @override
-  void didUpdateWidget(covariant AppShell oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _routerDelegate.appState = widget.appController;
-  }
+class AppShell extends HookWidget {
+  AppShell();
 
   @override
   Widget build(BuildContext context) {
-    var appState = widget.appController;
-    _backButtonDispatcher = Router.of(context)
-        .backButtonDispatcher
-        .createChildBackButtonDispatcher();
+    final controller = useProvider(appProvider);
+    var _backButtonDispatcher =
+        useProvider(_backButtonDispatcherProvider(Router.of(context))).state;
 
     // Claim priority, If there are parallel sub router, you will need
     // to pick which one should take priority;
@@ -52,9 +37,9 @@ class _AppShellState extends State<AppShell> {
     return Row(
       children: [
         NavigationRail(
-          selectedIndex: appState.selectedIndex,
+          selectedIndex: controller.selectedIndex,
           onDestinationSelected: (int newIndex) {
-            appState.selectedIndex = newIndex;
+            controller.selectedIndex = newIndex;
           },
           labelType: NavigationRailLabelType.selected,
           destinations: [
@@ -82,7 +67,7 @@ class _AppShellState extends State<AppShell> {
             child: Scaffold(
               appBar: AppBar(),
               body: Router(
-                routerDelegate: _routerDelegate,
+                routerDelegate: useProvider(_routerDelegateProvider).state,
                 backButtonDispatcher: _backButtonDispatcher,
               ),
             ),

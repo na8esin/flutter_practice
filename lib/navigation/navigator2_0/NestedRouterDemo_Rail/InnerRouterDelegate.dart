@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'BookRoutePath.dart';
 import 'AppState.dart';
+import 'AuthorDetailScreen.dart';
+import 'AuthorsScreen.dart';
+import 'AuthorsState.dart';
+import 'author.dart';
+import 'BookRoutePath.dart';
 import 'book.dart';
 import 'BooksListScreen.dart';
 import 'BookDetailScreen.dart';
-import 'AuthorDetailScreen.dart';
-import 'AuthorsScreen.dart';
-import 'author.dart';
+import 'BooksState.dart';
 import 'settings_screen.dart';
 import 'FadeAnimationPage.dart';
 
@@ -17,39 +20,34 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BookRoutePath> {
   @override // from PopNavigatorRouterDelegateMixin
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  final _container = ProviderContainer();
 
-  // この辺見るとうぇーってなる
-  AppController _appController;
-  AppController get appController => _appController;
-  set appState(AppController value) {
-    if (value == _appController) {
-      return;
-    }
-    _appController = value;
-    notifyListeners();
-  }
-
-  InnerRouterDelegate(this._appController);
+  InnerRouterDelegate();
 
   // RouterDelegateのbuildはNavigatorを返すだけ
   @override
   Widget build(BuildContext context) {
+    final appController = _container.read(appProvider);
+    final authorsController = _container.read(authorsProvider);
+    final booksController = _container.read(booksProvider);
+
     return Navigator(
       key: navigatorKey,
       pages: [
         if (appController.selectedIndex == 0) ...[
           FadeAnimationPage(
             child: BooksListScreen(
-              books: appController.booksController.models,
-              onTapped: _handleBookTapped,
-            ),
+                books: booksController.models,
+                onTapped: (Book book) {
+                  booksController.selectedModel = book;
+                  notifyListeners();
+                }),
             key: ValueKey('BooksListPage'),
           ),
-          if (appController.booksController.selectedModel != null)
+          if (booksController.selectedModel != null)
             MaterialPage(
-              key: ValueKey(appController.booksController.selectedModel),
-              child: BookDetailScreen(
-                  book: appController.booksController.selectedModel),
+              key: ValueKey(booksController.selectedModel),
+              child: BookDetailScreen(book: booksController.selectedModel),
             ),
         ] else if (appController.selectedIndex == 1) ...[
           FadeAnimationPage(
@@ -61,24 +59,26 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
           // でも引数が必要な時は使えない
           FadeAnimationPage(
             child: AuthorsScreen(
-              models: appController.authorsController.models,
-              onTapped: _handleAuthorTapped,
+              models: authorsController.models,
+              onTapped: (Author model) {
+                authorsController.selectedModel = model;
+                notifyListeners();
+              },
             ),
             key: ValueKey('AuthorsScreen'),
           ),
-          if (appController.authorsController.selectedModel != null)
+          if (authorsController.selectedModel != null)
             MaterialPage(
-              key: ValueKey(appController.authorsController.selectedModel),
-              child: AuthorDetailScreen(
-                  model: appController.authorsController.selectedModel),
+              key: ValueKey(authorsController.selectedModel),
+              child: AuthorDetailScreen(model: authorsController.selectedModel),
             ),
         ]
       ],
       onPopPage: (route, result) {
-        appController.booksController.selectedModel = null;
+        booksController.selectedModel = null;
         // TODO: どんな意味かわかんね。
         // さっきはここが追加されてなかった。
-        appController.authorsController.selectedModel = null;
+        authorsController.selectedModel = null;
         notifyListeners();
         return route.didPop(result);
       },
@@ -90,15 +90,5 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
     // This is not required for inner router delegate because it does not
     // parse route
     assert(false);
-  }
-
-  void _handleBookTapped(Book book) {
-    appController.booksController.selectedModel = book;
-    notifyListeners();
-  }
-
-  void _handleAuthorTapped(Author model) {
-    appController.authorsController.selectedModel = model;
-    notifyListeners();
   }
 }

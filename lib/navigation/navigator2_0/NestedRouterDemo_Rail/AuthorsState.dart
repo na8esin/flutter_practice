@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'author.dart';
 
+final authorsProvider = StateNotifierProvider(
+    (ref) => AuthorsController(AuthorsState(selectedModel: null)));
+
 class AuthorsState {
   AuthorsState({this.selectedModel});
   final Author selectedModel;

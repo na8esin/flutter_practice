@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'AuthorsState.dart';
 import 'AppState.dart';
 import 'AppShell.dart';
+import 'BooksState.dart';
 import 'BookRoutePath.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Navigatorあります
 // TODO: Controller.Controllerになったから長くなった
@@ -13,14 +15,13 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   final _container = ProviderContainer();
 
   BookRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
-    final controller = _container.read(appProvider);
-    controller.addListener((state) {
+    _container.read(appProvider).addListener((state) {
       notifyListeners();
     });
-    controller.authorsController.addListener((state) {
+    _container.read(authorsProvider).addListener((state) {
       notifyListeners();
     });
-    controller.booksController.addListener((state) {
+    _container.read(booksProvider).addListener((state) {
       notifyListeners();
     });
   }
@@ -28,34 +29,35 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   @override
   BookRoutePath get currentConfiguration {
     final controller = _container.read(appProvider);
+    final authorsController = _container.read(authorsProvider);
+    final booksController = _container.read(booksProvider);
     if (controller.selectedIndex == 1) {
       return BooksSettingsPath();
     } else if (controller.selectedIndex == 2) {
-      if (controller.authorsController.selectedModel == null) {
+      if (authorsController.selectedModel == null) {
         return AuthorsScreenPath();
       } else {
-        return AuthorDetailScreenPath(
-            controller.authorsController.getSelectedModelById());
+        return AuthorDetailScreenPath(authorsController.getSelectedModelById());
       }
     } else {
-      if (controller.booksController.selectedModel == null) {
+      if (booksController.selectedModel == null) {
         return BooksListPath();
       } else {
-        return BooksDetailsPath(
-            controller.booksController.getSelectedModelById());
+        return BooksDetailsPath(booksController.getSelectedModelById());
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final controller = _container.read(appProvider);
+    final authorsController = _container.read(authorsProvider);
+    final booksController = _container.read(booksProvider);
     return Navigator(
       key: navigatorKey,
       pages: [
         MaterialPage(
           // ☆☆☆☆☆☆☆☆☆☆
-          child: AppShell(appController: controller),
+          child: AppShell(),
         ),
       ],
       onPopPage: (route, result) {
@@ -63,12 +65,12 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
           return false;
         }
 
-        if (controller.booksController.selectedModel != null) {
-          controller.booksController.selectedModel = null;
+        if (booksController.selectedModel != null) {
+          booksController.selectedModel = null;
         }
         // TODO: ここのソースがどんな意味かわかんね
-        if (controller.authorsController.selectedModel != null) {
-          controller.authorsController.selectedModel = null;
+        if (authorsController.selectedModel != null) {
+          authorsController.selectedModel = null;
         }
 
         notifyListeners();
@@ -81,21 +83,23 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   @override
   Future<void> setNewRoutePath(BookRoutePath path) async {
     final controller = _container.read(appProvider);
+    final authorsController = _container.read(authorsProvider);
+    final booksController = _container.read(booksProvider);
 
     if (path is BooksListPath) {
       controller.selectedIndex = 0;
-      controller.booksController.selectedModel = null;
+      booksController.selectedModel = null;
     } else if (path is BooksDetailsPath) {
       // https://gist.github.com/johnpryan/bbca91e23bbb4d39247fa922533be7c9#gistcomment-3511502
       // うまくいった！
       controller.selectedIndex = 0; // This was missing!
-      controller.booksController.setSelectedModelById(path.id);
+      booksController.setSelectedModelById(path.id);
     } else if (path is AuthorsScreenPath) {
       controller.selectedIndex = 2;
-      controller.authorsController.selectedModel = null;
+      authorsController.selectedModel = null;
     } else if (path is AuthorDetailScreenPath) {
       controller.selectedIndex = 2;
-      controller.authorsController.setSelectedModelById(path.id);
+      authorsController.setSelectedModelById(path.id);
     } else if (path is BooksSettingsPath) {
       controller.selectedIndex = 1;
     }

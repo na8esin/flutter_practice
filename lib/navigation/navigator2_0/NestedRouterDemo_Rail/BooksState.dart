@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'book.dart';
 
+final booksProvider = StateNotifierProvider(
+    (ref) => BooksController(BooksState(selectedModel: null)));
+
 class BooksState {
   BooksState({this.selectedModel});
   final Book selectedModel;
