@@ -4,6 +4,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'AuthorsState.dart';
 import 'BooksState.dart';
 
+final appProvider = StateNotifierProvider((ref) => AppController(AppState(
+    authorsController: AuthorsController(AuthorsState(selectedModel: null)),
+    booksController: BooksController(BooksState(selectedModel: null)),
+    selectedIndex: 0)));
+
 class AppState {
   AppState({this.selectedIndex, this.authorsController, this.booksController});
   // NavigationRailが変更されるたびに変わる
@@ -12,7 +17,6 @@ class AppState {
   final BooksController booksController;
 }
 
-// StateNotifierに変更可能
 class AppController extends StateNotifier<AppState> {
   AppController(AppState state) : super(state);
 

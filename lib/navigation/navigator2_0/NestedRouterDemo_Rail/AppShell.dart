@@ -6,6 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'AppState.dart';
 import 'InnerRouterDelegate.dart';
 
+/*
+  ここのHookWidget化は難しそう
+  AppShellはBookRouterDelegateから呼ばれるので、
+*/
 // Widget that contains the AdaptiveNavigationScaffold
 class AppShell extends StatefulWidget {
   final AppController appController;
