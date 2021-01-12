@@ -22,6 +22,7 @@ class _AppShellState extends State<AppShell> {
   InnerRouterDelegate _routerDelegate;
   ChildBackButtonDispatcher _backButtonDispatcher;
 
+  @override
   void initState() {
     super.initState();
     _routerDelegate = InnerRouterDelegate(widget.appController);
@@ -34,17 +35,11 @@ class _AppShellState extends State<AppShell> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Defer back button dispatching to the child router
+  Widget build(BuildContext context) {
+    var appState = widget.appController;
     _backButtonDispatcher = Router.of(context)
         .backButtonDispatcher
         .createChildBackButtonDispatcher();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var appState = widget.appController;
 
     // Claim priority, If there are parallel sub router, you will need
     // to pick which one should take priority;
