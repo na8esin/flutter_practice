@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'BookRouterDelegate.dart';
 import 'BookRouteInformationParser.dart';
 
-class NestedRouterDemo extends StatefulWidget {
-  @override
-  _NestedRouterDemoState createState() => _NestedRouterDemoState();
-}
+final _routerDelegateProvider = StateProvider((ref) => BookRouterDelegate());
+final _routeInformationParserProvider =
+    StateProvider((ref) => BookRouteInformationParser());
 
-class _NestedRouterDemoState extends State<NestedRouterDemo> {
-  BookRouterDelegate _routerDelegate = BookRouterDelegate();
-  BookRouteInformationParser _routeInformationParser =
-      BookRouteInformationParser();
-
+class NestedRouterDemo extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Books App',
-      routerDelegate: _routerDelegate,
-      routeInformationParser: _routeInformationParser,
+      routerDelegate: useProvider(_routerDelegateProvider).state,
+      routeInformationParser:
+          useProvider(_routeInformationParserProvider).state,
     );
   }
 }
