@@ -12,7 +12,7 @@ class BooksAppState extends ChangeNotifier {
   // ここが増えてくのかぁ。。。
   // getterとsetterもガンガン増えてくなぁ。
   Book _selectedBook;
-  AuthorsState _authorsState = AuthorsState();
+  AuthorsState _authorsState;
   AuthorsState get authorsState => _authorsState;
   set authorsState(value) {
     _authorsState = value;
@@ -24,7 +24,6 @@ class BooksAppState extends ChangeNotifier {
     Book('Foundation', 'Isaac Asimov'),
     Book('Fahrenheit 451', 'Ray Bradbury'),
   ];
-
   final List<Author> authors = [
     Author(name: 'Robert A. Heinlein', age: 32, id: 0),
     Author(name: 'Isaac Asimov', age: 54, id: 1),
@@ -33,7 +32,9 @@ class BooksAppState extends ChangeNotifier {
 
   // ここにauthorsをおきたくないね。。。
 
-  BooksAppState() : _selectedIndex = 0;
+  BooksAppState() : _selectedIndex = 0 {
+    _authorsState = AuthorsState(authors);
+  }
 
   int get selectedIndex => _selectedIndex;
 
