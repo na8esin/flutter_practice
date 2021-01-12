@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'BookRoutePath.dart';
-import 'BooksAppState.dart';
+import 'AppState.dart';
 import 'book.dart';
 import 'BooksListScreen.dart';
 import 'BookDetailScreen.dart';
@@ -19,17 +19,17 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   // この辺見るとうぇーってなる
-  BooksAppState _appState;
-  BooksAppState get appState => _appState;
-  set appState(BooksAppState value) {
-    if (value == _appState) {
+  AppController _appController;
+  AppController get appController => _appController;
+  set appState(AppController value) {
+    if (value == _appController) {
       return;
     }
-    _appState = value;
+    _appController = value;
     notifyListeners();
   }
 
-  InnerRouterDelegate(this._appState);
+  InnerRouterDelegate(this._appController);
 
   // RouterDelegateのbuildはNavigatorを返すだけ
   @override
@@ -37,48 +37,48 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
     return Navigator(
       key: navigatorKey,
       pages: [
-        if (appState.selectedIndex == 0) ...[
+        if (appController.selectedIndex == 0) ...[
           FadeAnimationPage(
             child: BooksListScreen(
-              books: appState.booksController.models,
+              books: appController.booksController.models,
               onTapped: _handleBookTapped,
             ),
             key: ValueKey('BooksListPage'),
           ),
-          if (appState.booksController.selectedModel != null)
+          if (appController.booksController.selectedModel != null)
             MaterialPage(
-              key: ValueKey(appState.booksController.selectedModel),
+              key: ValueKey(appController.booksController.selectedModel),
               child: BookDetailScreen(
-                  book: appState.booksController.selectedModel),
+                  book: appController.booksController.selectedModel),
             ),
-        ] else if (appState.selectedIndex == 1) ...[
+        ] else if (appController.selectedIndex == 1) ...[
           FadeAnimationPage(
             child: SettingsScreen(),
             key: ValueKey('SettingsPage'),
           ),
-        ] else if (appState.selectedIndex == 2) ...[
+        ] else if (appController.selectedIndex == 2) ...[
           // toStringShort()は「Instance of 」がとれてAuthorsScreenだけになる
           // でも引数が必要な時は使えない
           FadeAnimationPage(
             child: AuthorsScreen(
-              models: appState.authorsController.models,
+              models: appController.authorsController.models,
               onTapped: _handleAuthorTapped,
             ),
             key: ValueKey('AuthorsScreen'),
           ),
-          if (appState.authorsController.selectedModel != null)
+          if (appController.authorsController.selectedModel != null)
             MaterialPage(
-              key: ValueKey(appState.authorsController.selectedModel),
+              key: ValueKey(appController.authorsController.selectedModel),
               child: AuthorDetailScreen(
-                  model: appState.authorsController.selectedModel),
+                  model: appController.authorsController.selectedModel),
             ),
         ]
       ],
       onPopPage: (route, result) {
-        appState.booksController.selectedModel = null;
+        appController.booksController.selectedModel = null;
         // TODO: どんな意味かわかんね。
         // さっきはここが追加されてなかった。
-        appState.authorsController.selectedModel = null;
+        appController.authorsController.selectedModel = null;
         notifyListeners();
         return route.didPop(result);
       },
@@ -93,12 +93,12 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
   }
 
   void _handleBookTapped(Book book) {
-    appState.booksController.selectedModel = book;
+    appController.booksController.selectedModel = book;
     notifyListeners();
   }
 
   void _handleAuthorTapped(Author model) {
-    appState.authorsController.selectedModel = model;
+    appController.authorsController.selectedModel = model;
     notifyListeners();
   }
 }

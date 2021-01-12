@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'BooksAppState.dart';
+import 'AppState.dart';
 import 'InnerRouterDelegate.dart';
 
 // Widget that contains the AdaptiveNavigationScaffold
 class AppShell extends StatefulWidget {
-  final BooksAppState appState;
+  final AppController appController;
 
   AppShell({
-    @required this.appState,
+    @required this.appController,
   });
 
   @override
@@ -24,13 +24,13 @@ class _AppShellState extends State<AppShell> {
 
   void initState() {
     super.initState();
-    _routerDelegate = InnerRouterDelegate(widget.appState);
+    _routerDelegate = InnerRouterDelegate(widget.appController);
   }
 
   @override
   void didUpdateWidget(covariant AppShell oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _routerDelegate.appState = widget.appState;
+    _routerDelegate.appState = widget.appController;
   }
 
   @override
@@ -44,7 +44,7 @@ class _AppShellState extends State<AppShell> {
 
   @override
   Widget build(BuildContext context) {
-    var appState = widget.appState;
+    var appState = widget.appController;
 
     // Claim priority, If there are parallel sub router, you will need
     // to pick which one should take priority;
