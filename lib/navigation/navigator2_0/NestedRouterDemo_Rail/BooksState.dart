@@ -2,41 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'book.dart';
 
-final booksProvider = StateNotifierProvider(
-    (ref) => BooksController(BooksState(selectedModel: null)));
+final booksProvider = StateNotifierProvider((ref) => BooksController(Book()));
 
-class BooksState {
-  BooksState({this.selectedModel});
-  final Book selectedModel;
-}
-
-class BooksController extends StateNotifier<BooksState> {
-  BooksController(BooksState state) : super(state);
+class BooksController extends StateNotifier<Book> {
+  BooksController(Book state) : super(state);
 
   final List<Book> _models = [
-    Book('Stranger in a Strange Land', 'Robert A. Heinlein'),
-    Book('Foundation', 'Isaac Asimov'),
-    Book('Fahrenheit 451', 'Ray Bradbury'),
+    Book(title: 'Stranger in a Strange Land', author: 'Robert A. Heinlein'),
+    Book(title: 'Foundation', author: 'Isaac Asimov'),
+    Book(title: 'Fahrenheit 451', author: 'Ray Bradbury'),
   ];
 
-  Book get selectedModel => state.selectedModel;
+  Book get selectedModel => state;
 
   set selectedModel(Book model) {
-    state = BooksState(
-      selectedModel: model,
-    );
+    state = model;
   }
 
   int getSelectedModelById() {
-    if (!models.contains(state.selectedModel)) return 0;
-    return models.indexOf(state.selectedModel);
+    if (!models.contains(state)) return 0;
+    return models.indexOf(state);
   }
 
   void setSelectedModelById(int id) {
     if (id < 0 || id > models.length - 1) {
       return;
     }
-    state = BooksState(selectedModel: models[id]);
+    state = models[id];
   }
 
   List<Book> get models => _models;
