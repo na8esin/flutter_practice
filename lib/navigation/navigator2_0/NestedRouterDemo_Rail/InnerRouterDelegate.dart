@@ -20,21 +20,20 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BookRoutePath> {
   @override // from PopNavigatorRouterDelegateMixin
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  final _container = ProviderContainer();
 
-  InnerRouterDelegate();
+  InnerRouterDelegate(
+      this.selectedIndex, this.authorsController, this.booksController);
+  int selectedIndex;
+  BooksController booksController;
+  AuthorsController authorsController;
 
   // RouterDelegateのbuildはNavigatorを返すだけ
   @override
   Widget build(BuildContext context) {
-    final appController = _container.read(appProvider);
-    final authorsController = _container.read(authorsProvider);
-    final booksController = _container.read(booksProvider);
-
     return Navigator(
       key: navigatorKey,
       pages: [
-        if (appController.selectedIndex == 0) ...[
+        if (selectedIndex == 0) ...[
           FadeAnimationPage(
             child: BooksListScreen(
                 books: booksController.models,
@@ -49,12 +48,12 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
               key: ValueKey(booksController.selectedModel),
               child: BookDetailScreen(book: booksController.selectedModel),
             ),
-        ] else if (appController.selectedIndex == 1) ...[
+        ] else if (selectedIndex == 1) ...[
           FadeAnimationPage(
             child: SettingsScreen(),
             key: ValueKey('SettingsPage'),
           ),
-        ] else if (appController.selectedIndex == 2) ...[
+        ] else if (selectedIndex == 2) ...[
           // toStringShort()は「Instance of 」がとれてAuthorsScreenだけになる
           // でも引数が必要な時は使えない
           FadeAnimationPage(

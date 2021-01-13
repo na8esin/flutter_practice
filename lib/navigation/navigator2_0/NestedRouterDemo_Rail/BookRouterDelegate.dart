@@ -28,12 +28,12 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
 
   @override
   BookRoutePath get currentConfiguration {
-    final controller = _container.read(appProvider);
+    final int selectedIndex = _container.read(appProvider.state);
     final authorsController = _container.read(authorsProvider);
     final booksController = _container.read(booksProvider);
-    if (controller.selectedIndex == 1) {
+    if (selectedIndex == 1) {
       return BooksSettingsPath();
-    } else if (controller.selectedIndex == 2) {
+    } else if (selectedIndex == 2) {
       if (authorsController.selectedModel == null) {
         return AuthorsScreenPath();
       } else {
@@ -87,21 +87,21 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     final booksController = _container.read(booksProvider);
 
     if (path is BooksListPath) {
-      controller.selectedIndex = 0;
+      controller.state = 0;
       booksController.selectedModel = null;
     } else if (path is BooksDetailsPath) {
       // https://gist.github.com/johnpryan/bbca91e23bbb4d39247fa922533be7c9#gistcomment-3511502
       // うまくいった！
-      controller.selectedIndex = 0; // This was missing!
+      controller.setIndex(0); // This was missing!
       booksController.setSelectedModelById(path.id);
     } else if (path is AuthorsScreenPath) {
-      controller.selectedIndex = 2;
+      controller.setIndex(2);
       authorsController.selectedModel = null;
     } else if (path is AuthorDetailScreenPath) {
-      controller.selectedIndex = 2;
+      controller.setIndex(2);
       authorsController.setSelectedModelById(path.id);
     } else if (path is BooksSettingsPath) {
-      controller.selectedIndex = 1;
+      controller.setIndex(1);
     }
   }
 }
