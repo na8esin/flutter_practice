@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'NestedRouterDemo_main.dart';
-import 'BooksListScreen.dart';
-import 'BookDetailsScreen.dart';
-import 'settings_screen.dart';
+import 'BooksAppState.dart';
+import 'BookRoutePath.dart';
+import 'screen/BooksListScreen.dart';
+import 'screen/BookDetailsScreen.dart';
+import 'screen/settings_screen.dart';
 import 'book.dart';
+import 'FadeAnimationPage.dart';
 
 // Navigatorあります
 class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
