@@ -6,6 +6,7 @@ import 'AppState.dart';
 import 'AppShell.dart';
 import 'BooksState.dart';
 import 'BookRoutePath.dart';
+import 'InnerRouterDelegate.dart';
 
 // Navigatorあります
 // TODO: Controller.Controllerになったから長くなった
@@ -57,7 +58,8 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
       pages: [
         MaterialPage(
           // ☆☆☆☆☆☆☆☆☆☆
-          child: AppShell(),
+          child: AppShell(InnerRouterDelegate(_container.read(appProvider),
+              authorsController, booksController)),
         ),
       ],
       onPopPage: (route, result) {

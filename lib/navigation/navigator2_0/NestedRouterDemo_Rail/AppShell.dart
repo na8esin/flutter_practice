@@ -8,12 +8,14 @@ import 'AuthorsState.dart';
 import 'BooksState.dart';
 import 'InnerRouterDelegate.dart';
 
+/*
 final _routerDelegateProvider = StateProvider<InnerRouterDelegate>((ref) {
   int index = ref.watch(appProvider.state);
   AuthorsController authorsController = ref.watch(authorsProvider);
   BooksController booksController = ref.watch(booksProvider);
   return InnerRouterDelegate(index, authorsController, booksController);
 });
+*/
 
 final _backButtonDispatcherProvider =
     StateProvider.family<ChildBackButtonDispatcher, Router>((ref, router) {
@@ -26,10 +28,13 @@ final _backButtonDispatcherProvider =
 */
 // Widget that contains the AdaptiveNavigationScaffold
 class AppShell extends HookWidget {
+  AppShell(this.routerDelegate);
+  final InnerRouterDelegate routerDelegate;
+
   @override
   Widget build(BuildContext context) {
-    final int selectedIndex = useProvider(appProvider.state);
-    final controller = useProvider(appProvider);
+    final int selectedIndex = routerDelegate.appController.getIndex;
+    final controller = routerDelegate.appController;
     final _backButtonDispatcher =
         useProvider(_backButtonDispatcherProvider(Router.of(context))).state;
 
@@ -68,7 +73,7 @@ class AppShell extends HookWidget {
             child: Scaffold(
               appBar: AppBar(),
               body: Router(
-                routerDelegate: useProvider(_routerDelegateProvider).state,
+                routerDelegate: routerDelegate,
                 backButtonDispatcher: _backButtonDispatcher,
               ),
             ),

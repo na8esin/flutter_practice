@@ -12,4 +12,6 @@ class AppController extends StateNotifier<int> {
   setIndex(int value) {
     state = value;
   }
+
+  get getIndex => state;
 }

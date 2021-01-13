@@ -22,14 +22,15 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   InnerRouterDelegate(
-      this.selectedIndex, this.authorsController, this.booksController);
-  int selectedIndex;
+      this.appController, this.authorsController, this.booksController) {}
+  AppController appController;
   BooksController booksController;
   AuthorsController authorsController;
 
   // RouterDelegateのbuildはNavigatorを返すだけ
   @override
   Widget build(BuildContext context) {
+    final selectedIndex = appController.getIndex;
     return Navigator(
       key: navigatorKey,
       pages: [
