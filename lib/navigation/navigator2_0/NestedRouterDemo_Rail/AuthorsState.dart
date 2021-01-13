@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'author.dart';
+import 'model/author.dart';
 
 final authorsProvider = StateNotifierProvider((ref) => AuthorsController(null));
 

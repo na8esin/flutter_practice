@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'author.dart';
+import '../model/author.dart';
 
 class AuthorsScreen extends StatelessWidget {
   final List<Author> models;

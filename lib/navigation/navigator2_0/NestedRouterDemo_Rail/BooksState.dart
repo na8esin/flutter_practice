@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'book.dart';
+import 'model/book.dart';
 
 final booksProvider = StateNotifierProvider((ref) => BooksController(null));
 

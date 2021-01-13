@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'author.dart';
+import '../model/author.dart';
 
 class AuthorDetailScreen extends StatelessWidget {
   // 一つだけなら、modelって感じで抽象化しとくと他で使うときに修正が少なくなる
