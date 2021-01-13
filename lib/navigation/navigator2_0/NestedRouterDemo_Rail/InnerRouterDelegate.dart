@@ -44,6 +44,8 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
             key: ValueKey('BooksListPage'),
           ),
           if (booksController.selectedModel != null)
+            // TODO:  bookもcategoryも選択されているときは、categoryの詳細画面へ
+
             MaterialPage(
               key: ValueKey(booksController.selectedModel),
               child: BookDetailScreen(book: booksController.selectedModel),

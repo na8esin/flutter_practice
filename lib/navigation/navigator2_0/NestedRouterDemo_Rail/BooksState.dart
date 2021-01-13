@@ -8,9 +8,12 @@ class BooksController extends StateNotifier<Book> {
   BooksController(Book state) : super(state);
 
   final List<Book> _models = [
-    Book(title: 'Stranger in a Strange Land', author: 'Robert A. Heinlein'),
-    Book(title: 'Foundation', author: 'Isaac Asimov'),
-    Book(title: 'Fahrenheit 451', author: 'Ray Bradbury'),
+    Book(
+        id: 0,
+        title: 'Stranger in a Strange Land',
+        author: 'Robert A. Heinlein'),
+    Book(id: 1, title: 'Foundation', author: 'Isaac Asimov'),
+    Book(id: 2, title: 'Fahrenheit 451', author: 'Ray Bradbury'),
   ];
 
   Book get selectedModel => state;

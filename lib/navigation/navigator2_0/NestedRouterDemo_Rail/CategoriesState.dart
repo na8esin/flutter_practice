@@ -20,6 +20,7 @@ class CategoriesController extends StateNotifier<Category> {
 
   // bookIdに紐づく全カテゴリ
   List<Category> getModelsByBookId(int id) {
+    if (id > _models.length - 1) return [];
     return _models.elementAt(id);
   }
 }
