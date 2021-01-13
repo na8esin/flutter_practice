@@ -10,17 +10,39 @@ class CategoriesController extends StateNotifier<Category> {
   // 1つのbookに複数のCategoryが紐づく
   final List<List<Category>> _models = [
     [
-      Category(0, 'Society'),
-      Category(0, 'Literature'),
+      Category(id: 0, name: 'Society'),
+      Category(id: 1, name: 'Literature'),
     ],
     [
-      Category(0, 'Literature'),
+      Category(id: 2, name: 'Literature'),
     ],
   ];
+  Category get selectedModel => state;
+
+  set selectedModel(Category model) {
+    state = model;
+  }
 
   // bookIdに紐づく全カテゴリ
   List<Category> getModelsByBookId(int id) {
     if (id > _models.length - 1) return [];
     return _models.elementAt(id);
+  }
+
+  void setSelectedModelById(int bookId, int id) {
+    if (id < 0 || id > getModelsByBookId(bookId).length - 1) {
+      return;
+    }
+    state = getModelsByBookId(bookId)[id];
+  }
+
+  int getSelectedModelById(int bookId) {
+    List<Category> modelList = getModelsByBookId(bookId);
+    if (!modelList.contains(state)) return 0;
+    return getModelsByBookId(bookId).indexOf(state);
+  }
+
+  onTapped(Category model) {
+    state = model;
   }
 }

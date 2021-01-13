@@ -14,6 +14,9 @@ class BooksListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('BooksListScreen'),
+      ),
       body: ListView(
         children: [
           for (var book in books)

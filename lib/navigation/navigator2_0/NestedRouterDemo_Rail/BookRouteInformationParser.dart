@@ -20,7 +20,13 @@ class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
       return AuthorsScreenPath();
     } else {
       if (uri.pathSegments.length >= 2) {
-        if (uri.pathSegments[0] == 'book') {
+        if (uri.pathSegments[0] == 'books' &&
+            uri.pathSegments.length >= 4 &&
+            uri.pathSegments[2] == 'categories') {
+          return CategoryDetailScreenPath(int.tryParse(uri.pathSegments[1]),
+              int.tryParse(uri.pathSegments[3]));
+        }
+        if (uri.pathSegments[0] == 'books') {
           return BooksDetailsPath(int.tryParse(uri.pathSegments[1]));
         }
       }
@@ -31,10 +37,10 @@ class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
   @override
   RouteInformation restoreRouteInformation(BookRoutePath configuration) {
     if (configuration is BooksListPath) {
-      return RouteInformation(location: '/home');
+      return RouteInformation(location: '/books');
     }
     if (configuration is BooksDetailsPath) {
-      return RouteInformation(location: '/book/${configuration.id}');
+      return RouteInformation(location: '/books/${configuration.id}');
     }
     if (configuration is AuthorsScreenPath) {
       return RouteInformation(location: '/authors');
@@ -44,6 +50,11 @@ class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
     }
     if (configuration is BooksSettingsPath) {
       return RouteInformation(location: '/settings');
+    }
+    if (configuration is CategoryDetailScreenPath) {
+      return RouteInformation(
+          location:
+              '/books/${configuration.bookId}/categories/${configuration.id}');
     }
     return null;
   }
