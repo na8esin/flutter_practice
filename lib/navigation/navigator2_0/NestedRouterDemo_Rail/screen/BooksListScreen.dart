@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../model/book.dart';
 
+// HookWidgetにしてStreamProviderでfirestoreからとるようにすればいいのか
 class BooksListScreen extends StatelessWidget {
   final List<Book> books;
   final ValueChanged<Book> onTapped;

@@ -40,7 +40,6 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
                 books: booksController.models,
                 onTapped: (Book book) {
                   booksController.selectedModel = book;
-                  notifyListeners();
                 }),
             key: ValueKey('BooksListPage'),
           ),
@@ -60,7 +59,6 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
               models: authorsController.models,
               onTapped: (Author model) {
                 authorsController.selectedModel = model;
-                notifyListeners();
               },
             ),
             key: ValueKey('AuthorsScreen'),
