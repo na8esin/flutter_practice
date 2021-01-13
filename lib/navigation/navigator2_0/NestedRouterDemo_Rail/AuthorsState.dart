@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'author.dart';
 
-final authorsProvider =
-    StateNotifierProvider((ref) => AuthorsController(Author()));
+final authorsProvider = StateNotifierProvider((ref) => AuthorsController(null));
 
 class AuthorsController extends StateNotifier<Author> {
   AuthorsController(Author state) : super(state);

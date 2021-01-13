@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'book.dart';
 
-final booksProvider = StateNotifierProvider((ref) => BooksController(Book()));
+final booksProvider = StateNotifierProvider((ref) => BooksController(null));
 
 class BooksController extends StateNotifier<Book> {
   BooksController(Book state) : super(state);
