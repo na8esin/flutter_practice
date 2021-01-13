@@ -12,7 +12,7 @@ import 'screen/BooksListScreen.dart';
 import 'screen/BookDetailScreen.dart';
 import 'BooksState.dart';
 import 'settings_screen.dart';
-import 'FadeAnimationPage.dart';
+import 'page/FadeAnimationPage.dart';
 
 // Navigatorあります
 // currentConfigurationがないね
