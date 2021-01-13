@@ -9,7 +9,6 @@ import 'BookRoutePath.dart';
 import 'InnerRouterDelegate.dart';
 
 // Navigatorあります
-// TODO: Controller.Controllerになったから長くなった
 class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BookRoutePath> {
   final GlobalKey<NavigatorState> navigatorKey;
@@ -89,7 +88,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     final booksController = _container.read(booksProvider);
 
     if (path is BooksListPath) {
-      controller.state = 0;
+      controller.setIndex(0);
       booksController.selectedModel = null;
     } else if (path is BooksDetailsPath) {
       // https://gist.github.com/johnpryan/bbca91e23bbb4d39247fa922533be7c9#gistcomment-3511502

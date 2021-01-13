@@ -1,31 +1,14 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'AppState.dart';
-import 'AuthorsState.dart';
-import 'BooksState.dart';
 import 'InnerRouterDelegate.dart';
-
-/*
-final _routerDelegateProvider = StateProvider<InnerRouterDelegate>((ref) {
-  int index = ref.watch(appProvider.state);
-  AuthorsController authorsController = ref.watch(authorsProvider);
-  BooksController booksController = ref.watch(booksProvider);
-  return InnerRouterDelegate(index, authorsController, booksController);
-});
-*/
 
 final _backButtonDispatcherProvider =
     StateProvider.family<ChildBackButtonDispatcher, Router>((ref, router) {
   return router.backButtonDispatcher.createChildBackButtonDispatcher();
 });
 
-/*
-  ここのHookWidget化は難しそう
-  AppShellはBookRouterDelegateから呼ばれるので、
-*/
 // Widget that contains the AdaptiveNavigationScaffold
 class AppShell extends HookWidget {
   AppShell(this.routerDelegate);
@@ -52,17 +35,17 @@ class AppShell extends HookWidget {
             NavigationRailDestination(
               icon: Icon(Icons.favorite_border),
               selectedIcon: Icon(Icons.favorite),
-              label: Text('BooksListScreen'),
+              label: Text('Books'),
             ),
             NavigationRailDestination(
               icon: Icon(Icons.book_outlined),
               selectedIcon: Icon(Icons.book),
-              label: Text('SettingsScreen'),
+              label: Text('Settings'),
             ),
             NavigationRailDestination(
               icon: Icon(Icons.person_outline),
               selectedIcon: Icon(Icons.person),
-              label: Text('AuthorsScreen'),
+              label: Text('Authors'),
             ),
           ],
         ),

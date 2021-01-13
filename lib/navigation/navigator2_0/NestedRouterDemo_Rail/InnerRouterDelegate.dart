@@ -55,8 +55,6 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
             key: ValueKey('SettingsPage'),
           ),
         ] else if (selectedIndex == 2) ...[
-          // toStringShort()は「Instance of 」がとれてAuthorsScreenだけになる
-          // でも引数が必要な時は使えない
           FadeAnimationPage(
             child: AuthorsScreen(
               models: authorsController.models,
