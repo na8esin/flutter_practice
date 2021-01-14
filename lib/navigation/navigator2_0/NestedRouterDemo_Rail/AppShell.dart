@@ -27,6 +27,7 @@ class AppShell extends HookWidget {
 
     return Row(
       children: [
+        // 分離はできるけど、controllerは引数渡しになる
         NavigationRail(
           selectedIndex: selectedIndex,
           onDestinationSelected: controller.onDestinationSelected,
