@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'BookRouterDelegate.dart';
 import 'BookRouteInformationParser.dart';
 
-final _routerDelegateProvider = StateProvider((ref) => BookRouterDelegate());
+//final _routerDelegateProvider = StateProvider((ref) => BookRouterDelegate());
 final _routeInformationParserProvider =
     StateProvider((ref) => BookRouteInformationParser());
 
@@ -14,7 +14,7 @@ class NestedRouterDemo extends HookWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Books App',
-      routerDelegate: useProvider(_routerDelegateProvider).state,
+      routerDelegate: BookRouterDelegate(context),
       routeInformationParser:
           useProvider(_routeInformationParserProvider).state,
     );

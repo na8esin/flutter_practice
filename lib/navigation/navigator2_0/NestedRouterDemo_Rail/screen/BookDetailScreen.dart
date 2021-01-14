@@ -17,7 +17,6 @@ class BookDetailScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var categoriesController = useProvider(categoriesProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('BookDetailScreen'),
@@ -38,12 +37,17 @@ class BookDetailScreen extends HookWidget {
               Text(book.author, style: Theme.of(context).textTheme.subtitle1),
               SizedBox(height: 20),
               Text('categories', style: Theme.of(context).textTheme.headline6),
-              for (var category
-                  in categoriesController.getModelsByBookId(book.id))
-                ListTile(
-                  title: Text(category.name),
-                  onTap: () => onTapped(category),
-                )
+              ...useProvider(categoriesStreamProvider(book.id)).when(
+                  data: (data) {
+                    return data
+                        .map((category) => ListTile(
+                              title: Text(category.name),
+                              onTap: () => onTapped(category),
+                            ))
+                        .toList();
+                  },
+                  loading: () => [ListTile(title: Text('loading'))],
+                  error: (o, s) => [ListTile(title: Text('error'))])
             ],
           ],
         ),

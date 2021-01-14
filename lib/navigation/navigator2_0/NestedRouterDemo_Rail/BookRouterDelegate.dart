@@ -13,27 +13,26 @@ import 'InnerRouterDelegate.dart';
 class BookRouterDelegate extends RouterDelegate<BookRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BookRoutePath> {
   final GlobalKey<NavigatorState> navigatorKey;
-  final _container = ProviderContainer();
+  ProviderContainer container;
 
-  BookRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
-    _container.read(appProvider).addNotifyListeners(notifyListeners);
-    _container.read(authorsProvider).addListener((state) {
+  BookRouterDelegate(BuildContext context)
+      : navigatorKey = GlobalKey<NavigatorState>() {
+    container = ProviderScope.containerOf(context);
+    container.read(appProvider).addNotifyListeners(notifyListeners);
+    container.read(authorsProvider).addListener((state) {
       notifyListeners();
     });
-    _container.read(booksProvider).addListener((state) {
-      notifyListeners();
-    });
-    _container.read(categoriesProvider).addListener((state) {
+    container.read(categoriesProvider).addListener((state) {
       notifyListeners();
     });
   }
 
   @override
   BookRoutePath get currentConfiguration {
-    final int selectedIndex = _container.read(appProvider.state);
-    final authorsController = _container.read(authorsProvider);
-    final booksController = _container.read(booksProvider);
-    final categoriesController = _container.read(categoriesProvider);
+    final int selectedIndex = container.read(appProvider.state).index;
+    final appController = container.read(appProvider);
+    final authorsController = container.read(authorsProvider);
+    final categoriesController = container.read(categoriesProvider);
     if (selectedIndex == 1) {
       return BooksSettingsPath();
     } else if (selectedIndex == 2) {
@@ -43,30 +42,31 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
         return AuthorDetailScreenPath(authorsController.getSelectedModelById());
       }
     } else {
-      if (booksController.selectedModel == null) {
+      if (appController.books.selectedModel == null) {
         return BooksListPath();
       } else {
         if (categoriesController.selectedModel != null) {
-          var bookId = booksController.getSelectedModelById();
+          var bookId = appController.books.getSelectedModelById();
           return CategoryDetailScreenPath(
-              bookId, categoriesController.getSelectedModelById(bookId));
+              bookId, categoriesController.selectedModel.id);
         }
-        return BooksDetailsPath(booksController.getSelectedModelById());
+        return BooksDetailsPath(appController.books.getSelectedModelById());
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final authorsController = _container.read(authorsProvider);
-    final booksController = _container.read(booksProvider);
-    final categoriesController = _container.read(categoriesProvider);
+    final controller = container.read(appProvider);
+    final authorsController = container.read(authorsProvider);
+    final booksController = controller.books;
+    final categoriesController = container.read(categoriesProvider);
     return Navigator(
       key: navigatorKey,
       pages: [
         MaterialPage(
           // ☆☆☆☆☆☆☆☆☆☆
-          child: AppShell(InnerRouterDelegate(_container.read(appProvider),
+          child: AppShell(InnerRouterDelegate(container.read(appProvider),
               authorsController, booksController, categoriesController)),
         ),
       ],
@@ -95,20 +95,19 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   // 継承元の引数の名前は、configurationなのかよ！
   @override
   Future<void> setNewRoutePath(BookRoutePath path) async {
-    final controller = _container.read(appProvider);
-    final authorsController = _container.read(authorsProvider);
-    final booksController = _container.read(booksProvider);
-    final categoriesController = _container.read(categoriesProvider);
+    final controller = container.read(appProvider);
+    final authorsController = container.read(authorsProvider);
+    final categoriesController = container.read(categoriesProvider);
 
     if (path is BooksListPath) {
       controller.setIndex(0);
-      booksController.selectedModel = null;
+      controller.books.selectedModel = null;
       categoriesController.selectedModel = null;
     } else if (path is BooksDetailsPath) {
       // https://gist.github.com/johnpryan/bbca91e23bbb4d39247fa922533be7c9#gistcomment-3511502
       // うまくいった！
       controller.setIndex(0); // This was missing!
-      booksController.setSelectedModelById(path.id);
+      controller.books.setSelectedModelById(path.id);
       // BooksDetail = categories
       categoriesController.selectedModel = null;
     } else if (path is AuthorsScreenPath) {

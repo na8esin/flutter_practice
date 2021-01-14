@@ -1,13 +1,18 @@
+import 'dart:async';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'model/category.dart';
 
 final categoriesProvider =
     StateNotifierProvider((ref) => CategoriesController(null));
 
-class CategoriesController extends StateNotifier<Category> {
-  CategoriesController(Category state) : super(state);
+final categoriesStreamProvider =
+    StreamProvider.family<List<Category>, int>((ref, int bookId) {
+  return categoriesStore(bookId);
+});
 
-  // 1つのbookに複数のCategoryが紐づく
+// 疑似firestore
+Stream<List<Category>> categoriesStore(int bookId) {
   final List<List<Category>> _models = [
     [
       Category(id: 0, name: 'Society'),
@@ -17,6 +22,14 @@ class CategoriesController extends StateNotifier<Category> {
       Category(id: 2, name: 'Literature'),
     ],
   ];
+  var streamController = StreamController<List<Category>>();
+  streamController.sink.add(_models[bookId]);
+  return streamController.stream;
+}
+
+class CategoriesController extends StateNotifier<Category> {
+  CategoriesController(Category state) : super(state);
+
   Category get selectedModel => state;
 
   set selectedModel(Category model) {
@@ -24,22 +37,28 @@ class CategoriesController extends StateNotifier<Category> {
   }
 
   // bookIdに紐づく全カテゴリ
-  List<Category> getModelsByBookId(int id) {
-    if (id > _models.length - 1) return [];
-    return _models.elementAt(id);
+  // _modelsがstreamで変化する場合はどうすればいいんだ？
+  // モデルそのものを記録しておくんじゃなくて、IDを記録しないとだめなのか。
+  // IDを記録したときIDが削除されて、新しく振り直しすると
+  // ブラウザバックした時に別の画面になったりするから、やっぱりIDはUUIDみたいなのがいい。
+  Future<List<Category>> getModelsByBookId(int id) async {
+    var _models = await categoriesStore(id).last;
+    return _models;
   }
 
-  void setSelectedModelById(int bookId, int id) {
-    if (id < 0 || id > getModelsByBookId(bookId).length - 1) {
+  void setSelectedModelById(int bookId, int id) async {
+    var models = await getModelsByBookId(bookId);
+    if (id < 0 || id > models.length - 1) {
       return;
     }
-    state = getModelsByBookId(bookId)[id];
+    state = models[id];
   }
 
-  int getSelectedModelById(int bookId) {
-    List<Category> modelList = getModelsByBookId(bookId);
+  Future<int> getSelectedModelById(int bookId) async {
+    List<Category> modelList = await getModelsByBookId(bookId);
     if (!modelList.contains(state)) return 0;
-    return getModelsByBookId(bookId).indexOf(state);
+
+    return modelList.indexOf(state);
   }
 
   onTapped(Category model) {
