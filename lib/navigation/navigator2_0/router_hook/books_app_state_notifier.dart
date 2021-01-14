@@ -11,6 +11,9 @@ class BooksStatus {
   final bool show404;
 }
 
+final booksAppProvider = StateNotifierProvider((ref) =>
+    BooksAppStateNotifier(BooksStatus(selectedBook: null, show404: false)));
+
 // Controller
 class BooksAppStateNotifier extends StateNotifier<BooksStatus> {
   BooksAppStateNotifier(state) : super(state);

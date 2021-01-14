@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'unknown_screen.dart';
 import 'book_route_path.dart';
@@ -26,17 +27,21 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
 
   // これをStateNotifierにしてもStateNotifierProviderが使えないなぁ
   //BooksAppState appState = BooksAppState();
-  BooksAppStateNotifier appState =
-      BooksAppStateNotifier(BooksStatus(selectedBook: null, show404: false));
+//  BooksAppStateNotifier appState =
+//      BooksAppStateNotifier(BooksStatus(selectedBook: null, show404: false));
 
-  BookRouterDelegate() {
-    appState.addListener((state) {
+  ProviderContainer container;
+
+  BookRouterDelegate(BuildContext context) {
+    container = ProviderScope.containerOf(context);
+    container.read(booksAppProvider).addListener((state) {
       notifyListeners();
     });
   }
 
   @override
   BookRoutePath get currentConfiguration {
+    var appState = container.read(booksAppProvider);
     if (appState.show404) {
       return BookRoutePath.unknown();
     }
@@ -50,6 +55,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   // from RouterDelegate
   @override
   Widget build(BuildContext context) {
+    var appState = container.read(booksAppProvider);
     return Navigator(
       key: navigatorKey,
       pages: [
@@ -58,7 +64,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
           key: ValueKey('BooksListPage'),
           // ☆☆☆☆☆
           child: BooksListScreen(
-            books: appState.books,
+            //books: appState.books,
             onTapped: _handleBookTapped,
           ),
         ),
@@ -83,6 +89,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   // ここには、もとからnotifyListeners()はない
   @override // from RouterDelegate
   Future<void> setNewRoutePath(BookRoutePath path) async {
+    var appState = container.read(booksAppProvider);
     if (path.isUnknown) {
       appState.selectedBook = null;
       appState.show404 = true;
@@ -104,6 +111,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   }
 
   void _handleBookTapped(Book book) {
+    var appState = container.read(booksAppProvider);
     appState.selectedBook = book;
   }
 }

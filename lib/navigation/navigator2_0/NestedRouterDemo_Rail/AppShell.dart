@@ -30,6 +30,7 @@ class AppShell extends HookWidget {
         // 分離はできるけど、controllerは引数渡しになる
         NavigationRail(
           selectedIndex: selectedIndex,
+          // TODO: 押したところのモデルはnullにした方がいいのか？
           onDestinationSelected: controller.onDestinationSelected,
           labelType: NavigationRailLabelType.selected,
           destinations: [
