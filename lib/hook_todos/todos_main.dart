@@ -93,6 +93,7 @@ class Home extends HookWidget {
     final todos = useProvider(filteredTodos);
     final newTodoController = useTextEditingController();
 
+    //GestureDetector extends StatelessWidget
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -217,9 +218,13 @@ class Title extends StatelessWidget {
 ///
 /// By retreiving the [Todo] through a provider instead of through its
 /// constructor, this allows [TodoItem] to be instantiated using the `const` keyword.
+/// コンストラクターではなくプロバイダーを介して[Todo]を取得することにより、
+/// `const`キーワードを使用して[TodoItem]をインスタンス化できます。
 ///
 /// This ensures that when we add/remove/edit todos, only what the
 /// impacted widgets rebuilds, instead of the entire list of items.
+/// これにより、ToDoを追加/削除/編集するときに、
+/// アイテムのリスト全体ではなく、影響を受けるウィジェットが再構築されます。
 final _currentTodo = ScopedProvider<Todo>(null);
 
 class TodoItem extends HookWidget {
