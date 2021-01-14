@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_practice/navigation/navigator2_0/NestedRouterDemo_Rail/AppState.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'InnerRouterDelegate.dart';
@@ -11,13 +12,13 @@ final _backButtonDispatcherProvider =
 
 // Widget that contains the AdaptiveNavigationScaffold
 class AppShell extends HookWidget {
-  AppShell(this.routerDelegate);
-  final InnerRouterDelegate routerDelegate;
+  AppShell();
 
   @override
   Widget build(BuildContext context) {
-    final int selectedIndex = routerDelegate.appController.getIndex;
-    final controller = routerDelegate.appController;
+    //final int selectedIndex = routerDelegate.appController.getIndex;
+    final int selectedIndex = useProvider(appProvider).getIndex;
+    final controller = useProvider(appProvider);
     final _backButtonDispatcher =
         useProvider(_backButtonDispatcherProvider(Router.of(context))).state;
 
@@ -58,7 +59,9 @@ class AppShell extends HookWidget {
             child: Scaffold(
               appBar: AppBar(),
               body: Router(
-                routerDelegate: routerDelegate,
+                // ここのDelegateの引数もcontextを追加してよさそうだが、
+                // 手間があんまり変わんない
+                routerDelegate: InnerRouterDelegate(context),
                 backButtonDispatcher: _backButtonDispatcher,
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'model/author.dart';
 import 'model/book.dart';
@@ -24,8 +25,13 @@ class InnerRouterDelegate extends RouterDelegate<BookRoutePath>
   @override // from PopNavigatorRouterDelegateMixin
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  InnerRouterDelegate(this.appController, this.authorsController,
-      this.booksController, this.categoriesController) {}
+  InnerRouterDelegate(BuildContext context) {
+    ProviderContainer container = ProviderScope.containerOf(context);
+    appController = container.read(appProvider);
+    booksController = appController.books;
+    authorsController = container.read(authorsProvider);
+    categoriesController = container.read(categoriesProvider);
+  }
   AppController appController;
   BooksController booksController;
   AuthorsController authorsController;

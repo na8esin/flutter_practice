@@ -66,8 +66,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
       pages: [
         MaterialPage(
           // ☆☆☆☆☆☆☆☆☆☆
-          child: AppShell(InnerRouterDelegate(container.read(appProvider),
-              authorsController, booksController, categoriesController)),
+          child: AppShell(),
         ),
       ],
       onPopPage: (route, result) {
