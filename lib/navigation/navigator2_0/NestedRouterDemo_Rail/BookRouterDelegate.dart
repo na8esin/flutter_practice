@@ -16,9 +16,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
   final _container = ProviderContainer();
 
   BookRouterDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
-    _container.read(appProvider).addListener((state) {
-      notifyListeners();
-    });
+    _container.read(appProvider).addNotifyListeners(notifyListeners);
     _container.read(authorsProvider).addListener((state) {
       notifyListeners();
     });
