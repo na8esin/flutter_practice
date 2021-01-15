@@ -7,6 +7,7 @@ final booksProvider = StateNotifierProvider((ref) => BooksController(null));
 class BooksController extends StateNotifier<Book> {
   BooksController(Book state) : super(state);
 
+  // こいつは本来ここじゃない
   final List<Book> _models = [
     Book(
         id: 0,
