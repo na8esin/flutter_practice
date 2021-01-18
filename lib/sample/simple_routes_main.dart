@@ -18,7 +18,7 @@ void main() {
         );
       },
       '/no_sca': (BuildContext context) {
-        return Text('hello');
+        return Text('こんにちは');
       },
     },
   ));

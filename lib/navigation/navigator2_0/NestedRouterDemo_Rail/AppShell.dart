@@ -27,7 +27,6 @@ class AppShell extends HookWidget {
 
     return Row(
       children: [
-        // 分離はできるけど、controllerは引数渡しになる
         MyNavigationRail(),
         VerticalDivider(thickness: 1, width: 1),
         // This is the main content.
