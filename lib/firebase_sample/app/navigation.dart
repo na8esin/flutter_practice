@@ -45,7 +45,8 @@ class Navigation extends StatelessWidget {
         if (uri.pathSegments.first == 'public_hook') {
           return MaterialPageRoute(builder: (context) => PublicView());
         }
-        if (uri.pathSegments.first == 'public_stream_hook') {
+        if (uri.pathSegments.first ==
+            StreamRiverPodPublicScreen().toStringShort()) {
           return MaterialPageRoute(
               builder: (context) => StreamRiverPodPublicScreen());
         }

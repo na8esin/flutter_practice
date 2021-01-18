@@ -7,7 +7,7 @@ import '../common/error.dart';
 import '../common/loading.dart';
 
 final publicProvider = StreamProvider<QuerySnapshot>((ref) {
-  CollectionReference public = FirebaseFirestore.instance.collection('public');
+  CollectionReference public = FirebaseFirestore.instance.collection('publics');
   public.doc().collection('details');
   return public.snapshots();
 });
@@ -30,6 +30,8 @@ class StreamRiverPodPublicScreen extends HookWidget {
                   title: Text(document.data()['name']),
                   subtitle: Text(document.data()['subname']),
                   trailing: Text('tr'),
+                  // あたりまえだけど、前半はnullになる
+                  leading: Text('${document.data()['id']} : ${document.id}'),
                 );
               }).toList(),
             ))));

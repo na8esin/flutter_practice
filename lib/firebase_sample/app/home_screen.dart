@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'navigation.dart';
+import 'stream_hook_public_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -41,6 +42,15 @@ class HomeScreen extends StatelessWidget {
             Navigator.pushNamed(
               context,
               '/public_hook',
+            );
+          },
+        ),
+        FlatButton(
+          child: Text(StreamRiverPodPublicScreen().toStringShort()),
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              '/${StreamRiverPodPublicScreen().toStringShort()}',
             );
           },
         ),
