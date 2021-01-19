@@ -25,16 +25,16 @@ dependencies:
     sdk: flutter
   async: ^2.4.2
   animations: ^1.1.2
-  provider: ^4.3.2+3
+  provider: ^4.3.3
   flutter_hooks: ^0.15.0
-  hooks_riverpod: ^0.12.1
+  hooks_riverpod: ^0.12.2
   freezed_annotation:
-  firebase_core: ^0.5.3
-  firebase_auth: ^0.18.4+1
-  cloud_firestore: ^0.14.4
+  firebase_core: ^0.7.0
+  firebase_auth: ^0.20.0+1
+  cloud_firestore: ^0.16.0
   flutter_signin_button: ^1.1.0
   firestore_ref: ^0.9.2
-  google_sign_in: ^4.5.6
+  google_sign_in: ^4.5.9
   uuid: ^2.2.2
   firebase_admin_interop: ^2.1.0
 
@@ -45,8 +45,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^1.10.10
-  freezed: ^0.12.6
+  build_runner: ^1.10.13
+  freezed: ^0.12.7
   json_serializable: ^3.5.1
 
 # For information on the generic Dart part of this file, see the
