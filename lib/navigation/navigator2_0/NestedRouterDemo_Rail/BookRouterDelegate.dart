@@ -107,6 +107,9 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
       controller.books.setSelectedModelById(path.id);
       // BooksDetail = categories
       categoriesController.selectedModel = null;
+    } else if (path is CategoryDetailScreenPath) {
+      controller.setIndex(0);
+      categoriesController.setSelectedModelById(path.bookId, path.id);
     } else if (path is AuthorsScreenPath) {
       controller.setIndex(2);
       authorsController.selectedModel = null;
@@ -115,9 +118,6 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
       authorsController.setSelectedModelById(path.id);
     } else if (path is BooksSettingsPath) {
       controller.setIndex(1);
-    } else if (path is CategoryDetailScreenPath) {
-      controller.setIndex(0);
-      categoriesController.setSelectedModelById(path.bookId, path.id);
     }
   }
 }
