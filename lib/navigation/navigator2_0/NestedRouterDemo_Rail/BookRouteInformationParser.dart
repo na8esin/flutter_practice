@@ -27,7 +27,7 @@ class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
               int.tryParse(uri.pathSegments[3]));
         }
         if (uri.pathSegments[0] == 'books') {
-          return BooksDetailsPath(int.tryParse(uri.pathSegments[1]));
+          return BookDetailPath(int.tryParse(uri.pathSegments[1]));
         }
       }
       return BooksListPath();
@@ -39,7 +39,7 @@ class BookRouteInformationParser extends RouteInformationParser<BookRoutePath> {
     if (configuration is BooksListPath) {
       return RouteInformation(location: '/books');
     }
-    if (configuration is BooksDetailsPath) {
+    if (configuration is BookDetailPath) {
       return RouteInformation(location: '/books/${configuration.id}');
     }
     if (configuration is AuthorsScreenPath) {

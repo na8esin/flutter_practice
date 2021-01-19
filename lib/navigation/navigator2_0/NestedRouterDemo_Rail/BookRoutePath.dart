@@ -8,9 +8,9 @@ class BooksListPath extends BookRoutePath {}
 
 class BooksSettingsPath extends BookRoutePath {}
 
-class BooksDetailsPath extends BookRoutePath {
+class BookDetailPath extends BookRoutePath {
   final int id;
-  BooksDetailsPath(this.id);
+  BookDetailPath(this.id);
 }
 
 class AuthorsScreenPath extends BookRoutePath {}

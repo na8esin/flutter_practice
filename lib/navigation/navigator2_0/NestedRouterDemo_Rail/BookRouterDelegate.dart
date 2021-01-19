@@ -4,10 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'AuthorsState.dart';
 import 'AppState.dart';
 import 'AppShell.dart';
-import 'BooksState.dart';
 import 'BookRoutePath.dart';
 import 'CategoriesState.dart';
-import 'InnerRouterDelegate.dart';
 
 // Navigatorあります
 class BookRouterDelegate extends RouterDelegate<BookRoutePath>
@@ -50,7 +48,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
           return CategoryDetailScreenPath(
               bookId, categoriesController.selectedModel.id);
         }
-        return BooksDetailsPath(appController.books.getSelectedModelById());
+        return BookDetailPath(appController.books.getSelectedModelById());
       }
     }
   }
@@ -102,7 +100,7 @@ class BookRouterDelegate extends RouterDelegate<BookRoutePath>
       controller.setIndex(0);
       controller.books.selectedModel = null;
       categoriesController.selectedModel = null;
-    } else if (path is BooksDetailsPath) {
+    } else if (path is BookDetailPath) {
       // https://gist.github.com/johnpryan/bbca91e23bbb4d39247fa922533be7c9#gistcomment-3511502
       // うまくいった！
       controller.setIndex(0); // This was missing!
