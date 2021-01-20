@@ -8,8 +8,9 @@ import '../common/empty_content.dart';
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
-final authStateChangesProvider = StreamProvider<User>(
-    (ref) => ref.watch(firebaseAuthProvider).authStateChanges());
+final authStateChangesProvider = StreamProvider<User>((ref) {
+  return ref.watch(firebaseAuthProvider).authStateChanges();
+});
 
 class AuthWidget extends HookWidget {
   const AuthWidget({
@@ -22,7 +23,7 @@ class AuthWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var authStateChanges = useProvider(authStateChangesProvider);
+    final authStateChanges = useProvider(authStateChangesProvider);
     return authStateChanges.when(
       data: (user) => _data(context, user),
       loading: () => const Scaffold(
