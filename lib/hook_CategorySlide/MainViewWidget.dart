@@ -66,9 +66,7 @@ class _MainViewWidgetState extends State<MainViewWidget> {
              */
             Expanded(
               child: Container(
-                color: Colors.blue,
-                child: Image.asset(_getContentsImagePath()),
-              ),
+                  color: Colors.blue, child: Icon(_getContentsImagePath())),
             )
           ],
         ),
@@ -77,23 +75,27 @@ class _MainViewWidgetState extends State<MainViewWidget> {
   }
 
   /*
-   * コンテンツに表示する画像のパス文字列を返す
+   * 画像は面倒なのでICONに変更
    */
-  String _getContentsImagePath() {
-    // TODO : このあたりは仮なので適当に実装しました。
+  IconData _getContentsImagePath() {
     bool isDay = _segment == Segment.day;
+    print(isDay);
     switch (_categorySeasons) {
       case CategorySeasons.spring:
-        return isDay ? "images/spring-day.jpg" : "images/spring-night.jpg";
+        return isDay ? Icons.add_a_photo_outlined : Icons.add_a_photo;
 
       case CategorySeasons.summer:
-        return isDay ? "images/summer-day.jpg" : "images/summer-night.jpg";
+        return isDay
+            ? Icons.account_balance_wallet_outlined
+            : Icons.account_balance_wallet;
 
       case CategorySeasons.autumn:
-        return isDay ? "images/autumn-day.jpg" : "images/autumn-night.jpg";
+        return isDay ? Icons.account_box_outlined : Icons.account_box_rounded;
 
       case CategorySeasons.winter:
-        return isDay ? "images/winter-day.jpg" : "images/winter-night.jpg";
+        return isDay ? Icons.account_tree_outlined : Icons.account_tree_rounded;
+      default:
+        return Icons.adb;
     }
   }
 }
