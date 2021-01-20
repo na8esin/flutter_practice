@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /*
  * カテゴリー
@@ -10,15 +12,13 @@ enum CategorySeasons {
   winter,
 }
 
-/*
- * カテゴリーコールバック
- */
-typedef CategoryCallback = void Function(CategorySeasons season);
+final categorySeasonsProvider =
+    StateProvider<CategorySeasons>((ref) => CategorySeasons.spring);
 
 /*
  * カテゴリウィジェット
  */
-class CategorySlideWidget extends StatelessWidget {
+class CategorySlideWidget extends HookWidget {
   final List<CategorySeasons> _categoryList = [
     CategorySeasons.spring,
     CategorySeasons.summer,
@@ -26,13 +26,9 @@ class CategorySlideWidget extends StatelessWidget {
     CategorySeasons.winter,
   ];
 
-  // カテゴリー選択コールバック
-  final CategoryCallback callback;
-
-  CategorySlideWidget(this.callback) : super();
-
   @override
   Widget build(BuildContext context) {
+    final categorySeasonsController = useProvider(categorySeasonsProvider);
     return Container(
       color: Colors.yellow,
       height: 100.0,
@@ -43,9 +39,7 @@ class CategorySlideWidget extends StatelessWidget {
             width: 120.0,
             child: InkWell(
               onTap: () {
-                if (callback != null) {
-                  callback(_categoryList[index]);
-                }
+                categorySeasonsController.state = _categoryList[index];
                 print(
                     "on tap -> ${_categoryList[index].toString().split('.')[1]}");
               },

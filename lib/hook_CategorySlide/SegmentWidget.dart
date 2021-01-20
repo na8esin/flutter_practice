@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /*
  * セグメント
@@ -8,69 +10,49 @@ enum Segment {
   night,
 }
 
-/*
- * セグメントコールバック
- */
-typedef SegmentCallback = void Function(Segment segment);
+class SegmentController extends StateNotifier<Segment> {
+  SegmentController(Segment state) : super(state);
+
+  setSegment(segment) {
+    state = segment;
+  }
+
+  Color getButtonColor(segment) {
+    if (state == segment) {
+      return Colors.red;
+    }
+    return Colors.grey;
+  }
+}
+
+final segmentProvider =
+    StateNotifierProvider((ref) => SegmentController(Segment.day));
 
 /*
- * セグメントウィジェット
+ * dayとnightを切り替える
  */
-class SegmentWidget extends StatelessWidget {
-  // セグメント選択コールバック
-  final SegmentCallback callback;
-
-  // セグメント
-  Segment segment = Segment.day;
-
-  SegmentWidget(this.segment, this.callback) : super();
+class SegmentWidget extends HookWidget {
+  SegmentWidget() : super();
 
   @override
   Widget build(BuildContext context) {
+    final segmentController = useProvider(segmentProvider);
     return Container(
       height: 80.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FlatButton(
-            onPressed: () {
-              _updateButtonState(Segment.day);
-            },
-            child: Text("day"),
-            color: _getButtonColor(Segment.day),
-          ),
+              onPressed: () => segmentController.setSegment(Segment.day),
+              child: Text("day"),
+              color: segmentController.getButtonColor(Segment.day)),
           FlatButton(
-            onPressed: () {
-              _updateButtonState(Segment.night);
-            },
+            onPressed: () => segmentController.setSegment(Segment.night),
             child: Text("night"),
-            color: _getButtonColor(Segment.night),
+            color: segmentController.getButtonColor(Segment.night),
           ),
         ],
       ),
     );
-  }
-
-  /*
-   * ボタンの状態を更新
-   */
-  void _updateButtonState(Segment seg) {
-    if (segment == seg) {
-      return;
-    }
-
-    if (callback != null) {
-      callback(seg);
-    }
-  }
-
-  /*
-   * 状態に応じたボタン色を返す
-   */
-  Color _getButtonColor(Segment seg) {
-    if (segment == seg) {
-      return Colors.red;
-    }
-    return Colors.grey;
   }
 }

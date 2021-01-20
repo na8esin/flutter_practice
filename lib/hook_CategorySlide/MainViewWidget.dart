@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/all.dart';
 
 import 'CategorySlideWidget.dart';
 import 'SegmentWidget.dart';
 
-void main() => runApp(Main());
+void main() => runApp(ProviderScope(
+      child: Main(),
+    ));
 
 class Main extends StatelessWidget {
   @override
@@ -18,17 +22,30 @@ class Main extends StatelessWidget {
   }
 }
 
-class MainViewWidget extends StatefulWidget {
-  @override
-  _MainViewWidgetState createState() => _MainViewWidgetState();
-}
+final iconDataProvider = StateProvider<IconData>((ref) {
+  final segment = ref.watch(segmentProvider.state);
+  bool isDay = segment == Segment.day;
+  final categorySeasons = ref.watch(categorySeasonsProvider).state;
+  switch (categorySeasons) {
+    case CategorySeasons.spring:
+      return isDay ? Icons.add_a_photo_outlined : Icons.add_a_photo;
 
-class _MainViewWidgetState extends State<MainViewWidget> {
-  // カテゴリー
-  CategorySeasons _categorySeasons = CategorySeasons.spring;
-  // セグメント
-  Segment _segment = Segment.day;
+    case CategorySeasons.summer:
+      return isDay
+          ? Icons.account_balance_wallet_outlined
+          : Icons.account_balance_wallet;
 
+    case CategorySeasons.autumn:
+      return isDay ? Icons.account_box_outlined : Icons.account_box_rounded;
+
+    case CategorySeasons.winter:
+      return isDay ? Icons.account_tree_outlined : Icons.account_tree_rounded;
+    default:
+      return Icons.adb;
+  }
+});
+
+class MainViewWidget extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,63 +56,21 @@ class _MainViewWidgetState extends State<MainViewWidget> {
         margin: EdgeInsets.all(5.0),
         child: Column(
           children: <Widget>[
-            /*
-             * カテゴリーウィジェット
-             */
-            CategorySlideWidget(
-              (CategorySeasons season) {
-                // ステート更新
-                setState(() {
-                  _categorySeasons = season;
-                });
-              },
-            ),
-
-            /*
-             * セグメントウィジェット
-             */
-            SegmentWidget(_segment, (Segment segment) {
-              // ステート更新
-              setState(() {
-                _segment = segment;
-              });
-            }),
+            CategorySlideWidget(),
+            SegmentWidget(),
 
             /*
              * コンテンツと想定
              */
             Expanded(
-              child: Container(
-                  color: Colors.blue, child: Icon(_getContentsImagePath())),
-            )
+                child: Container(
+              color: Colors.blue,
+              // 画像は面倒なので、Iconを表示
+              child: Icon(useProvider(iconDataProvider).state),
+            ))
           ],
         ),
       ),
     );
-  }
-
-  /*
-   * 画像は面倒なのでICONに変更
-   */
-  IconData _getContentsImagePath() {
-    bool isDay = _segment == Segment.day;
-    print(isDay);
-    switch (_categorySeasons) {
-      case CategorySeasons.spring:
-        return isDay ? Icons.add_a_photo_outlined : Icons.add_a_photo;
-
-      case CategorySeasons.summer:
-        return isDay
-            ? Icons.account_balance_wallet_outlined
-            : Icons.account_balance_wallet;
-
-      case CategorySeasons.autumn:
-        return isDay ? Icons.account_box_outlined : Icons.account_box_rounded;
-
-      case CategorySeasons.winter:
-        return isDay ? Icons.account_tree_outlined : Icons.account_tree_rounded;
-      default:
-        return Icons.adb;
-    }
   }
 }
