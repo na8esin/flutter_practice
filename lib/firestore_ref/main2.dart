@@ -9,6 +9,7 @@ import 'details_last2.dart';
 import 'NoHookNestStreamBuilder.dart';
 import 'NestStreamBuilderRoles.dart';
 import 'NestStreamBody.dart';
+import 'NestStreamBuilderRolesHook.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +38,10 @@ List<Map<String, dynamic>> listListTile = [
   {
     'title': Text(NestStreamBuilderRoles().toStringShort()),
     'builder': NestStreamBuilderRoles()
+  },
+  {
+    'title': Text(NestStreamBuilderRolesHook().toStringShort()),
+    'builder': NestStreamBuilderRolesHook()
   },
 ];
 

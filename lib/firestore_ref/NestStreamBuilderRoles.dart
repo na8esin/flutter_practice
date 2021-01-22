@@ -2,19 +2,19 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+final publicProvider = StreamProvider((ref) {
+  return FirebaseFirestore.instance.collection('publics').snapshots();
+});
 
 class NestStreamBuilderRoles extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('publics').snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot1) {
-          if (snapshot1.hasError) return Text('Something went wrong');
-          if (snapshot1.connectionState == ConnectionState.waiting)
-            return Text("Loading");
-
+    return useProvider(publicProvider).when(
+        data: (snapshot1) {
           // List<DocumentReference>
-          List<UserRoles> userRolesList = snapshot1.data.docs
+          List<UserRoles> userRolesList = snapshot1.docs
               .map((docSnap) => UserRoles(docSnap.id, docSnap.data()['roles']))
               .toList();
 
@@ -46,7 +46,9 @@ class NestStreamBuilderRoles extends HookWidget {
           return ListView(
             children: listTiles,
           );
-        });
+        },
+        loading: () => Text('loading'),
+        error: (e, s) => Text(e.toString()));
   }
 }
 
