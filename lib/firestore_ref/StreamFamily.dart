@@ -32,8 +32,14 @@ class StreamFamily extends HookWidget {
         data: (data) => data,
         loading: () => ['loading'],
         error: (e, s) => [e.toString()]);
+
+    List<Widget> widget = [];
+    for (String id in ids) {
+      widget.add(StreamHookWidget(id));
+    }
+
     return ListView(
-      children: ids.map((e) => StreamHookWidget(e)).toList(),
+      children: widget,
     );
   }
 }
