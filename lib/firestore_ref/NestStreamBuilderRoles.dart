@@ -19,16 +19,7 @@ class NestStreamBuilderRoles extends HookWidget {
             // 1つのpublicは複数のroleがある
             List<Widget> nameWidgets = [];
             for (var role in userRoles.roles) {
-              nameWidgets.add(StreamBuilder(
-                stream: (role as DocumentReference).snapshots(),
-                builder: (context, snap2) {
-                  if (snap2.hasError) return Text('snap2 error');
-                  if (snap2.connectionState == ConnectionState.waiting)
-                    return Text("snap2 Loading");
-
-                  return Text(snap2.data['name']);
-                },
-              ));
+              nameWidgets.add(MyStreamBuilder(role));
             }
             Widget namesWidget = Column(
               children: nameWidgets,
@@ -53,4 +44,22 @@ class UserRoles {
   // いきなりDocumentReferenceにキャストできないからこんな感じ
   final roles;
   UserRoles(this.id, this.roles);
+}
+
+class MyStreamBuilder extends HookWidget {
+  MyStreamBuilder(this.role);
+  final role;
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: (role as DocumentReference).snapshots(),
+      builder: (context, snap2) {
+        if (snap2.hasError) return Text('snap2 error');
+        if (snap2.connectionState == ConnectionState.waiting)
+          return Text("snap2 Loading");
+
+        return Text(snap2.data['name']);
+      },
+    );
+  }
 }
