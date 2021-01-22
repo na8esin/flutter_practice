@@ -14,33 +14,37 @@ class NestStreamBuilderRoles extends HookWidget {
             return Text("Loading");
 
           // List<DocumentReference>
-          List<UserRoles> rolesList = snapshot1.data.docs
+          List<UserRoles> userRolesList = snapshot1.data.docs
               .map((docSnap) => UserRoles(docSnap.id, docSnap.data()['roles']))
               .toList();
-          List<Widget> widgets = [];
-          for (var roles in rolesList) {
-            {
-              for (var role in roles.roles) {
-                print(role);
-                widgets.add(StreamBuilder(
-                  stream: (role as DocumentReference).snapshots(),
-                  builder: (context, snap2) {
-                    if (snap2.hasError) return Text('snap2 error');
-                    if (snap2.connectionState == ConnectionState.waiting)
-                      return Text("snap2 Loading");
 
-                    return ListTile(
-                      title: Text(roles.id),
-                      subtitle: Text(snap2.data['name']),
-                    );
-                  },
-                ));
-              }
+          List<Widget> listTiles = [];
+          for (var userRoles in userRolesList) {
+            // 1つのpublicは複数のroleがある
+            List<Widget> nameWidgets = [];
+            for (var role in userRoles.roles) {
+              nameWidgets.add(StreamBuilder(
+                stream: (role as DocumentReference).snapshots(),
+                builder: (context, snap2) {
+                  if (snap2.hasError) return Text('snap2 error');
+                  if (snap2.connectionState == ConnectionState.waiting)
+                    return Text("snap2 Loading");
+
+                  return Text(snap2.data['name']);
+                },
+              ));
             }
+            Widget namesWidget = Column(
+              children: nameWidgets,
+            );
+            listTiles.add(ListTile(
+              title: Text(userRoles.id),
+              subtitle: namesWidget,
+            ));
           }
 
           return ListView(
-            children: widgets,
+            children: listTiles,
           );
         });
   }
