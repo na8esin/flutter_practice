@@ -11,6 +11,7 @@ import 'NestStreamBuilderRoles.dart';
 import 'NestStreamBody.dart';
 import 'NestStreamBuilderRolesHook.dart';
 import 'StreamFamily.dart';
+import 'OnePublicRoles.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,6 +46,10 @@ List<Map<String, dynamic>> listListTile = [
     'builder': NestStreamBuilderRolesHook()
   },
   {'title': Text(StreamFamily().toStringShort()), 'builder': StreamFamily()},
+  {
+    'title': Text(OnePublicRoles().toStringShort()),
+    'builder': OnePublicRoles()
+  },
 ];
 
 class MyApp extends HookWidget {

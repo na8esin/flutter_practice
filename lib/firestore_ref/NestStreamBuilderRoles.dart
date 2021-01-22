@@ -46,6 +46,7 @@ class UserRoles {
   UserRoles(this.id, this.roles);
 }
 
+// こっちは動く
 class MyStreamBuilder extends HookWidget {
   MyStreamBuilder(this.role);
   final role;
@@ -78,6 +79,9 @@ class MyStreamHookWidget extends HookWidget {
   final role;
   @override
   Widget build(BuildContext context) {
+    // リファレンスちゃんと表示されるけどね。。。
+    // ただ、永遠に出ちゃう
+    print(role);
     return useProvider(roleProvider(role)).when(
         data: (data) => Text(data),
         loading: () => Text('lo'),
