@@ -4,18 +4,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+final publicProvider = StreamProvider((ref) {
+  return FirebaseFirestore.instance.collection('publics').snapshots();
+});
+
+final rolesProvider =
+    StreamProvider.family((ref, List<UserRoles> userRolesList) {});
+
 class NestStreamBuilderRolesHook extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('publics').snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot1) {
-          if (snapshot1.hasError) return Text('Something went wrong');
-          if (snapshot1.connectionState == ConnectionState.waiting)
-            return Text("Loading");
-
+    return useProvider(publicProvider).when(
+        data: (snapshot1) {
           // List<DocumentReference>
-          List<UserRoles> userRolesList = snapshot1.data.docs
+          List<UserRoles> userRolesList = snapshot1.docs
               .map((docSnap) => UserRoles(docSnap.id, docSnap.data()['roles']))
               .toList();
 
@@ -24,7 +26,16 @@ class NestStreamBuilderRolesHook extends HookWidget {
             // 1つのpublicは複数のroleがある
             List<Widget> nameWidgets = [];
             for (var role in userRoles.roles) {
-              nameWidgets.add(RoleToNameWidget(role));
+              nameWidgets.add(StreamBuilder(
+                stream: (role as DocumentReference).snapshots(),
+                builder: (context, snap2) {
+                  if (snap2.hasError) return Text('snap2 error');
+                  if (snap2.connectionState == ConnectionState.waiting)
+                    return Text("snap2 Loading");
+
+                  return Text(snap2.data['name']);
+                },
+              ));
             }
             Widget namesWidget = Column(
               children: nameWidgets,
@@ -38,7 +49,9 @@ class NestStreamBuilderRolesHook extends HookWidget {
           return ListView(
             children: listTiles,
           );
-        });
+        },
+        loading: () => Text('loading'),
+        error: (e, s) => Text(e.toString()));
   }
 }
 
@@ -46,24 +59,4 @@ class UserRoles {
   final id;
   final roles;
   UserRoles(this.id, this.roles);
-}
-
-var $family = StreamProvider.autoDispose.family;
-var nameProvider = $family((ref, role) {
-  return (role as DocumentReference).snapshots();
-});
-
-class RoleToNameWidget extends HookWidget {
-  RoleToNameWidget(this.role);
-  final role;
-  @override
-  Widget build(BuildContext context) {
-    final nameAsync = useProvider(nameProvider(role));
-    return nameAsync.when(
-        data: (docSnap) {
-          return Text(docSnap.data()['name']);
-        },
-        loading: () => Text("RoleToNameWidget Loading"),
-        error: (o, s) => Text(o.toString()));
-  }
 }

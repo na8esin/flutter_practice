@@ -33,9 +33,9 @@ class NoHookNestStreamBuilder extends HookWidget {
           return Text("Loading");
 
         return ListView(children: [
-          for (DocumentSnapshot document in snapshot1.data.docs)
+          for (DocumentSnapshot pubDoc in snapshot1.data.docs)
             StreamBuilder(
-                stream: document.reference.collection('details').snapshots(),
+                stream: pubDoc.reference.collection('details').snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot2) {
                   if (snapshot1.hasError) return Text('Something went wrong');
 
@@ -48,7 +48,7 @@ class NoHookNestStreamBuilder extends HookWidget {
                       children: snapshot2.data.docs.map((e) {
                     return ListTile(
                       title: Text(e.data()['title']),
-                      subtitle: Text(document.data()['name']),
+                      subtitle: Text(pubDoc.data()['name']),
                     );
                   }).toList());
                 })
