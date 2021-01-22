@@ -4,54 +4,67 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final publicProvider = StreamProvider((ref) {
-  return FirebaseFirestore.instance.collection('publics').snapshots();
+final publicProvider = StreamProvider.autoDispose((ref) {
+  return FirebaseFirestore.instance.collection('publics').snapshots().map(
+      (e) => e.docs.map((e) => UserRoles(e.id, e.data()['roles'])).toList());
 });
 
-final rolesProvider =
-    StreamProvider.family((ref, List<UserRoles> userRolesList) {});
+final rolesProvider = StateProvider.autoDispose((ref) {
+  var asyncValue = ref.watch(publicProvider);
 
+  return asyncValue.whenData(
+    (userRolesList) {
+      List<UserNamesAsync> userNamesList = [];
+      for (var userRoles in userRolesList) {
+        List<AsyncValue<String>> names = [];
+        for (var role in userRoles.roles) {
+          // ここはストリーム
+          var roleAsync = ref.watch(nameProvider(role));
+          var name = roleAsync.whenData(
+            (data) => data,
+          );
+          names.add(name);
+        }
+        userNamesList.add(UserNamesAsync(userRoles.id, names));
+      }
+      // ここのprint文は無限に出続ける
+      //print("aaa");
+      return userNamesList;
+    },
+  );
+});
+
+final $family = StreamProvider.autoDispose.family;
+final nameProvider = $family<String, dynamic>((ref, role) {
+  return (role as DocumentReference)
+      .snapshots()
+      .map((event) => event.data()['name']);
+});
+
+// loadingが変わらない
 class NestStreamBuilderRolesHook extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    return useProvider(publicProvider).when(
-        data: (snapshot1) {
-          // List<DocumentReference>
-          List<UserRoles> userRolesList = snapshot1.docs
-              .map((docSnap) => UserRoles(docSnap.id, docSnap.data()['roles']))
-              .toList();
-
-          List<Widget> listTiles = [];
-          for (var userRoles in userRolesList) {
-            // 1つのpublicは複数のroleがある
-            List<Widget> nameWidgets = [];
-            for (var role in userRoles.roles) {
-              nameWidgets.add(StreamBuilder(
-                stream: (role as DocumentReference).snapshots(),
-                builder: (context, snap2) {
-                  if (snap2.hasError) return Text('snap2 error');
-                  if (snap2.connectionState == ConnectionState.waiting)
-                    return Text("snap2 Loading");
-
-                  return Text(snap2.data['name']);
-                },
-              ));
-            }
-            Widget namesWidget = Column(
-              children: nameWidgets,
-            );
-            listTiles.add(ListTile(
-              title: Text(userRoles.id),
-              subtitle: namesWidget,
-            ));
-          }
-
+    var state = useProvider(rolesProvider).state;
+    return state.when(
+        data: (data) {
           return ListView(
-            children: listTiles,
-          );
+              children: data
+                  .map((e) => ListTile(
+                        title: Text(e.id),
+                        subtitle: Column(
+                          children: e.names
+                              .map((AsyncValue<String> e) => Text(e.when(
+                                  data: (data) => data,
+                                  loading: () => 'loading',
+                                  error: (o, s) => o.toString())))
+                              .toList(),
+                        ),
+                      ))
+                  .toList());
         },
         loading: () => Text('loading'),
-        error: (e, s) => Text(e.toString()));
+        error: (o, s) => Text(o.toString()));
   }
 }
 
@@ -59,4 +72,16 @@ class UserRoles {
   final id;
   final roles;
   UserRoles(this.id, this.roles);
+}
+
+class UserNames {
+  final String id;
+  final List<String> names;
+  UserNames(this.id, this.names);
+}
+
+class UserNamesAsync {
+  final String id;
+  final List<AsyncValue<String>> names;
+  UserNamesAsync(this.id, this.names);
 }

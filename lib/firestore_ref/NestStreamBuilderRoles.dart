@@ -4,20 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final publicProvider = StreamProvider((ref) {
-  return FirebaseFirestore.instance.collection('publics').snapshots();
+final publicProvider = StreamProvider.autoDispose((ref) {
+  return FirebaseFirestore.instance.collection('publics').snapshots().map(
+      (e) => e.docs.map((e) => UserRoles(e.id, e.data()['roles'])).toList());
 });
 
 class NestStreamBuilderRoles extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return useProvider(publicProvider).when(
-        data: (snapshot1) {
-          // List<DocumentReference>
-          List<UserRoles> userRolesList = snapshot1.docs
-              .map((docSnap) => UserRoles(docSnap.id, docSnap.data()['roles']))
-              .toList();
-
+        data: (userRolesList) {
           List<Widget> listTiles = [];
           for (var userRoles in userRolesList) {
             // 1つのpublicは複数のroleがある
@@ -54,6 +50,7 @@ class NestStreamBuilderRoles extends HookWidget {
 
 class UserRoles {
   final id;
+  // いきなりDocumentReferenceにキャストできないからこんな感じ
   final roles;
   UserRoles(this.id, this.roles);
 }
