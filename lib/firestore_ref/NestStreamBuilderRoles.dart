@@ -19,7 +19,7 @@ class NestStreamBuilderRoles extends HookWidget {
             // 1つのpublicは複数のroleがある
             List<Widget> nameWidgets = [];
             for (var role in userRoles.roles) {
-              nameWidgets.add(MyStreamBuilder(role));
+              nameWidgets.add(MyStreamHookWidget(role));
             }
             Widget namesWidget = Column(
               children: nameWidgets,
@@ -61,5 +61,26 @@ class MyStreamBuilder extends HookWidget {
         return Text(snap2.data['name']);
       },
     );
+  }
+}
+
+final $family = StreamProvider.family;
+final roleProvider = $family<String, dynamic>((ref, role) {
+  return (role as DocumentReference)
+      .snapshots()
+      .map((event) => event.data()['name']);
+});
+
+// StreamProviderに置き換えるとどうか？
+// これは動かない。。。
+class MyStreamHookWidget extends HookWidget {
+  MyStreamHookWidget(this.role);
+  final role;
+  @override
+  Widget build(BuildContext context) {
+    return useProvider(roleProvider(role)).when(
+        data: (data) => Text(data),
+        loading: () => Text('lo'),
+        error: (e, s) => Text(e.toString()));
   }
 }
