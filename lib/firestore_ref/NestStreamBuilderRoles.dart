@@ -9,6 +9,7 @@ final publicProvider = StreamProvider.autoDispose((ref) {
       (e) => e.docs.map((e) => UserRoles(e.id, e.data()['roles'])).toList());
 });
 
+// StreamBuilderを分離した例
 class NestStreamBuilderRoles extends HookWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class NestStreamBuilderRoles extends HookWidget {
             // 1つのpublicは複数のroleがある
             List<Widget> nameWidgets = [];
             for (var role in userRoles.roles) {
-              nameWidgets.add(MyStreamHookWidget(role));
+              nameWidgets.add(MyStreamBuilder(role));
             }
             Widget namesWidget = Column(
               children: nameWidgets,
@@ -46,7 +47,6 @@ class UserRoles {
   UserRoles(this.id, this.roles);
 }
 
-// こっちは動く
 class MyStreamBuilder extends HookWidget {
   MyStreamBuilder(this.role);
   final role;
@@ -71,20 +71,3 @@ final roleProvider = $family<String, dynamic>((ref, role) {
       .snapshots()
       .map((event) => event.data()['name']);
 });
-
-// StreamProviderに置き換えるとどうか？
-// これは動かない。。。
-class MyStreamHookWidget extends HookWidget {
-  MyStreamHookWidget(this.role);
-  final role;
-  @override
-  Widget build(BuildContext context) {
-    // リファレンスちゃんと表示されるけどね。。。
-    // ただ、永遠に出ちゃう
-    print(role);
-    return useProvider(roleProvider(role)).when(
-        data: (data) => Text(data),
-        loading: () => Text('lo'),
-        error: (e, s) => Text(e.toString()));
-  }
-}

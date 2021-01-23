@@ -11,7 +11,6 @@ final publicProvider = StreamProvider.autoDispose((ref) {
 
 final rolesProvider = StateProvider.autoDispose((ref) {
   var asyncValue = ref.watch(publicProvider);
-
   return asyncValue.whenData(
     (userRolesList) {
       List<UserNamesAsync> userNamesList = [];
@@ -19,7 +18,9 @@ final rolesProvider = StateProvider.autoDispose((ref) {
         List<AsyncValue<String>> names = [];
         for (var role in userRoles.roles) {
           // ここはストリーム
-          var roleAsync = ref.watch(nameProvider(role));
+          var roleAsync =
+              ref.watch(nameProvider((role as DocumentReference).id));
+          // whenDataで解決を延期してるっぽい
           var name = roleAsync.whenData(
             (data) => data,
           );
@@ -27,21 +28,20 @@ final rolesProvider = StateProvider.autoDispose((ref) {
         }
         userNamesList.add(UserNamesAsync(userRoles.id, names));
       }
-      // ここのprint文は無限に出続ける
-      //print("aaa");
       return userNamesList;
     },
   );
 });
 
 final $family = StreamProvider.autoDispose.family;
-final nameProvider = $family<String, dynamic>((ref, role) {
-  return (role as DocumentReference)
+final nameProvider = $family<String, String>((ref, String id) {
+  return FirebaseFirestore.instance
+      .collection('roles')
+      .doc(id)
       .snapshots()
       .map((event) => event.data()['name']);
 });
 
-// loadingが変わらない
 class NestStreamBuilderRolesHook extends HookWidget {
   @override
   Widget build(BuildContext context) {

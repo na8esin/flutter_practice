@@ -39,8 +39,6 @@ class OnePublicRoles extends HookWidget {
   }
 }
 
-// StreamProviderに置き換えるとどうか？
-// これは動かない。。。
 class MyStreamHookWidget extends HookWidget {
   MyStreamHookWidget(this.role);
   final role;

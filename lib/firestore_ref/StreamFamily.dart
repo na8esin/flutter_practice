@@ -4,10 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// - そもそもstream.familyって動くの？ OK
-// - loop とuseProviderが一緒につかない そんなことない
-// - asyncValueのネストがだめ？
-
 final publicIdsProvider = StreamProvider<List<String>>((ref) {
   return FirebaseFirestore.instance
       .collection('publics')
