@@ -79,8 +79,11 @@ class DemoApp extends StatelessWidget {
         child: Column(
           children: [
             Text(DemoLocalizations.of(context).title),
-            // 日本語で[通知]。これじゃあ使えないね。
+            // 日本語で[通知]
             // 英語はAlert
+            // 他の日本語の例：
+            // https://github.com/flutter/flutter/blob/master/packages/flutter_localizations/lib/src/l10n/material_ja.arb
+            //   使えそうなのもある
             Text(MaterialLocalizations.of(context).alertDialogLabel)
           ],
         ),
