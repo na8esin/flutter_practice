@@ -73,10 +73,17 @@ class DemoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(DemoLocalizations.of(context).title),
-      ),
+//        title: Text(DemoLocalizations.of(context).title),
+          ),
       body: Center(
-        child: Text(DemoLocalizations.of(context).title),
+        child: Column(
+          children: [
+            Text(DemoLocalizations.of(context).title),
+            // 日本語で[通知]。これじゃあ使えないね。
+            // 英語はAlert
+            Text(MaterialLocalizations.of(context).alertDialogLabel)
+          ],
+        ),
       ),
     );
   }
