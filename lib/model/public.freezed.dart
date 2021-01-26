@@ -31,6 +31,7 @@ mixin _$Public {
   String get name;
   String get subname;
 
+  @JsonKey(ignore: true)
   $PublicCopyWith<Public> get copyWith;
 }
 
@@ -131,6 +132,7 @@ class _$_Public with DiagnosticableTreeMixin implements _Public {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(subname);
 
+  @JsonKey(ignore: true)
   @override
   _$PublicCopyWith<_Public> get copyWith =>
       __$PublicCopyWithImpl<_Public>(this, _$identity);
@@ -145,5 +147,6 @@ abstract class _Public implements Public {
   @override
   String get subname;
   @override
+  @JsonKey(ignore: true)
   _$PublicCopyWith<_Public> get copyWith;
 }

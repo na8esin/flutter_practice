@@ -19,7 +19,7 @@ class _$PublicTearOff {
 // ignore: unused_element
   _Public call(
       {@required String name,
-      @required String subname,
+      String subname,
       @TimestampConverter() DateTime createdAt,
       @TimestampConverter() DateTime updatedAt}) {
     return _Public(
@@ -50,6 +50,7 @@ mixin _$Public {
   DateTime get updatedAt;
 
   Map<String, dynamic> toJson();
+  @JsonKey(ignore: true)
   $PublicCopyWith<Public> get copyWith;
 }
 
@@ -135,11 +136,10 @@ class __$PublicCopyWithImpl<$Res> extends _$PublicCopyWithImpl<$Res>
 class _$_Public implements _Public {
   _$_Public(
       {@required this.name,
-      @required this.subname,
+      this.subname,
       @TimestampConverter() this.createdAt,
       @TimestampConverter() this.updatedAt})
-      : assert(name != null),
-        assert(subname != null);
+      : assert(name != null);
 
   factory _$_Public.fromJson(Map<String, dynamic> json) =>
       _$_$_PublicFromJson(json);
@@ -185,6 +185,7 @@ class _$_Public implements _Public {
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(updatedAt);
 
+  @JsonKey(ignore: true)
   @override
   _$PublicCopyWith<_Public> get copyWith =>
       __$PublicCopyWithImpl<_Public>(this, _$identity);
@@ -198,7 +199,7 @@ class _$_Public implements _Public {
 abstract class _Public implements Public {
   factory _Public(
       {@required String name,
-      @required String subname,
+      String subname,
       @TimestampConverter() DateTime createdAt,
       @TimestampConverter() DateTime updatedAt}) = _$_Public;
 
@@ -215,5 +216,6 @@ abstract class _Public implements Public {
   @TimestampConverter()
   DateTime get updatedAt;
   @override
+  @JsonKey(ignore: true)
   _$PublicCopyWith<_Public> get copyWith;
 }

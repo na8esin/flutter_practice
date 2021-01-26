@@ -31,6 +31,7 @@ mixin _$Category {
   int get id;
   String get name;
 
+  @JsonKey(ignore: true)
   $CategoryCopyWith<Category> get copyWith;
 }
 
@@ -129,6 +130,7 @@ class _$_Category with DiagnosticableTreeMixin implements _Category {
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(name);
 
+  @JsonKey(ignore: true)
   @override
   _$CategoryCopyWith<_Category> get copyWith =>
       __$CategoryCopyWithImpl<_Category>(this, _$identity);
@@ -142,5 +144,6 @@ abstract class _Category implements Category {
   @override
   String get name;
   @override
+  @JsonKey(ignore: true)
   _$CategoryCopyWith<_Category> get copyWith;
 }

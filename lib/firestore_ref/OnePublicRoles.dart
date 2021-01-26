@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-// ユーザ定義型だからか？　→　関係ない
 final publicProvider = StreamProvider<List<dynamic>>((ref) {
   return FirebaseFirestore.instance
       .collection('publics')

@@ -42,6 +42,7 @@ mixin _$Todo {
   bool get completed;
 
   Map<String, dynamic> toJson();
+  @JsonKey(ignore: true)
   $TodoCopyWith<Todo> get copyWith;
 }
 
@@ -151,6 +152,7 @@ class _$_Todo implements _Todo {
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(completed);
 
+  @JsonKey(ignore: true)
   @override
   _$TodoCopyWith<_Todo> get copyWith =>
       __$TodoCopyWithImpl<_Todo>(this, _$identity);
@@ -173,5 +175,6 @@ abstract class _Todo implements Todo {
   @override
   bool get completed;
   @override
+  @JsonKey(ignore: true)
   _$TodoCopyWith<_Todo> get copyWith;
 }

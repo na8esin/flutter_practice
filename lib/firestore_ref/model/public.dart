@@ -9,7 +9,7 @@ abstract class Public with _$Public {
   // TODO: ここにDtailsを入れたくなるが。。。
   factory Public({
     @required String name,
-    @required String subname,
+    String subname,
     @TimestampConverter() DateTime createdAt,
     @TimestampConverter() DateTime updatedAt,
   }) = _Public;

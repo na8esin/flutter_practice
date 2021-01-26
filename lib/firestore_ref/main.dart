@@ -11,6 +11,7 @@ import 'StreamFamily.dart';
 import 'OnePublicRoles.dart';
 import 'CollectionGroupParent.dart';
 import 'HookPubDetail.dart';
+import 'HookPubDetailRef.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,29 +20,19 @@ Future<void> main() async {
 }
 
 List<Map<String, dynamic>> listListTile = [
-  {
-    'title': Text(NoHookNestStreamBuilder().toStringShort()),
-    'builder': NoHookNestStreamBuilder()
-  },
-  {
-    'title': Text(NestStreamBuilderRoles().toStringShort()),
-    'builder': NestStreamBuilderRoles()
-  },
-  {
-    'title': Text(NestStreamBuilderRolesHook().toStringShort()),
-    'builder': NestStreamBuilderRolesHook()
-  },
-  {'title': Text(StreamFamily().toStringShort()), 'builder': StreamFamily()},
-  {
-    'title': Text(OnePublicRoles().toStringShort()),
-    'builder': OnePublicRoles()
-  },
-  {
-    'title': Text(CollectionGroupParent().toStringShort()),
-    'builder': CollectionGroupParent()
-  },
-  {'title': Text(HookPubDetail().toStringShort()), 'builder': HookPubDetail()},
+  titleBuilder(NoHookNestStreamBuilder()),
+  titleBuilder(NestStreamBuilderRoles()),
+  titleBuilder(NestStreamBuilderRolesHook()),
+  titleBuilder(StreamFamily()),
+  titleBuilder(OnePublicRoles()),
+  titleBuilder(CollectionGroupParent()),
+  titleBuilder(HookPubDetail()),
+  titleBuilder(HookPubDetailRef()),
 ];
+
+titleBuilder(Widget clazz) {
+  return {'title': Text(clazz.toStringShort()), 'builder': clazz};
+}
 
 class MyApp extends HookWidget {
   const MyApp();

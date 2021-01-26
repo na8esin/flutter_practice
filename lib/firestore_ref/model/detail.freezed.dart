@@ -47,6 +47,7 @@ mixin _$Detail {
   DateTime get updatedAt;
 
   Map<String, dynamic> toJson();
+  @JsonKey(ignore: true)
   $DetailCopyWith<Detail> get copyWith;
 }
 
@@ -168,6 +169,7 @@ class _$_Detail implements _Detail {
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(updatedAt);
 
+  @JsonKey(ignore: true)
   @override
   _$DetailCopyWith<_Detail> get copyWith =>
       __$DetailCopyWithImpl<_Detail>(this, _$identity);
@@ -195,5 +197,6 @@ abstract class _Detail implements Detail {
   @TimestampConverter()
   DateTime get updatedAt;
   @override
+  @JsonKey(ignore: true)
   _$DetailCopyWith<_Detail> get copyWith;
 }
