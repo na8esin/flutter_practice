@@ -16,6 +16,7 @@ class App extends StatelessWidget {
 
 // https://qiita.com/tabe_unity/items/4c0fa9b167f4d0a7d7c2
 
+// たくさんデータがあるとエラーが出てスクロールできない
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -26,8 +27,8 @@ class Body extends StatelessWidget {
           Text('one list view'),
           ListView.builder(
               shrinkWrap: true, //追加
-              physics: const NeverScrollableScrollPhysics(), //追加
-              itemCount: 10,
+              //physics: const NeverScrollableScrollPhysics(), //追加
+              itemCount: 50,
               itemBuilder: (BuildContext context, int index) {
                 return Text('item no:$index');
               }),
@@ -37,8 +38,8 @@ class Body extends StatelessWidget {
           Text('two list view'),
           ListView.builder(
               shrinkWrap: true, //追加
-              physics: const NeverScrollableScrollPhysics(), //追加
-              itemCount: 10,
+              //physics: const NeverScrollableScrollPhysics(), //追加
+              itemCount: 50,
               itemBuilder: (BuildContext context, int index) {
                 return Text('item no:${index * 2}');
               }),
