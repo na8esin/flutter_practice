@@ -5,20 +5,22 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'Column_listview.dart';
 import 'ListViewHeader.dart';
-import 'MasSliverlist.dart';
+import 'TwoMasSliverlist.dart';
 import 'mass_data_listview.dart';
 import 'SliverlistSample.dart';
 import 'SliverChildBuilderSample.dart';
+import 'MassColumn.dart';
 
 void main() {
   runApp(const ProviderScope(child: MaterialApp(home: MyApp())));
 }
 
 List<Map<String, dynamic>> listListTile = [
+  titleBuilder(MassColumn()),
   titleBuilder(ColumnListview()),
   titleBuilder(ListViewHeader()),
-  titleBuilder(MasSliverlist()),
   titleBuilder(MassDataListview()),
+  titleBuilder(TwoMasSliverlist()),
   titleBuilder(SliverlistSample()),
   titleBuilder(SliverChildBuilderSample()),
 ];
