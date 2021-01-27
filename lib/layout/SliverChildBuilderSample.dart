@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// https://stackoverflow.com/questions/57752853/separator-divider-in-sliverlist-flutter
 // Similar as ListView.separated
 class SliverChildBuilderSample extends StatelessWidget {
   @override
