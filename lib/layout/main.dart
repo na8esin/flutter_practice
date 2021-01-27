@@ -44,6 +44,7 @@ class MyApp extends HookWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => Scaffold(
+                                appBar: AppBar(),
                                 body: listListTile[index]['builder'],
                               ))));
             }));
