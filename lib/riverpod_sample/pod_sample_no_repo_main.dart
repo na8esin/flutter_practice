@@ -31,6 +31,7 @@ final counterControllerProvider =
     StateNotifierProvider((ref) => CounterController());
 
 class Home extends HookWidget {
+  const Home();
   @override
   Widget build(BuildContext context) {
     final CounterController counter = useProvider(counterControllerProvider);
