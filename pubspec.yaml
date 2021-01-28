@@ -40,6 +40,7 @@ dependencies:
   uuid: ^2.2.2
   firebase_admin_interop: ^2.1.0
   intl: ^0.16.1
+  http: ^0.12.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -49,6 +50,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   test: ^1.15.7
+  mockito: ^4.1.4
   build_runner: ^1.10.13
   freezed: ^0.12.7
   json_serializable: ^3.5.1
