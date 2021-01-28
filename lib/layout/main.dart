@@ -10,6 +10,7 @@ import 'mass_data_listview.dart';
 import 'SliverlistSample.dart';
 import 'SliverChildBuilderSample.dart';
 import 'MassColumn.dart';
+import 'broken_render_box.dart';
 
 void main() {
   runApp(const ProviderScope(child: MaterialApp(home: MyApp())));
@@ -23,6 +24,7 @@ List<Map<String, dynamic>> listListTile = [
   titleBuilder(TwoMasSliverlist()),
   titleBuilder(SliverlistSample()),
   titleBuilder(SliverChildBuilderSample()),
+  titleBuilder(BrokenRenderBox()),
 ];
 
 titleBuilder(Widget clazz) {
