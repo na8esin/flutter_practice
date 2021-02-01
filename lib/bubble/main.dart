@@ -16,10 +16,26 @@ class MyApp extends StatelessWidget {
         body: SafeArea(
             child: Stack(
           children: [
-            Align(alignment: Alignment.topCenter, child: Bubble('ふきだしです')),
-            Align(alignment: Alignment.centerLeft, child: Bubble('ふきだしです')),
-            Align(alignment: Alignment.centerRight, child: Bubble('ふきだしです')),
-            Align(alignment: Alignment.bottomCenter, child: Bubble('ふきだしです')),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Align(
+                  alignment: Alignment.topCenter, child: Bubble('ふきだしです')),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Align(
+                  alignment: Alignment.centerLeft, child: Bubble('ふきだしです')),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Align(
+                  alignment: Alignment.centerRight, child: Bubble('ふきだしです')),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Align(
+                  alignment: Alignment.bottomCenter, child: Bubble('ふきだしです')),
+            ),
           ],
         )),
       ),
@@ -75,11 +91,33 @@ class BubbleBorder extends ShapeBorder {
     final r =
         Rect.fromPoints(rect.topLeft, rect.bottomRight - const Offset(0, 12));
     return Path()
-      ..addRRect(RRect.fromRectAndRadius(r, Radius.circular(8)))
-      ..moveTo(r.bottomCenter.dx - 10, r.bottomCenter.dy)
-      ..relativeLineTo(10, 12)
+      // xはマイナスが大きくなると左、プラスだと右。
+      // yは少なくなると上に移動する
+      ..moveTo(r.bottomCenter.dx - 10, r.bottomCenter.dy - 85)
       ..relativeLineTo(10, -12)
+      ..relativeLineTo(10, 12)
+      ..addRRect(RRect.fromRectAndRadius(r, Radius.circular(8)))
       ..close();
+
+    /**
+      上向き
+      ..relativeLineTo(10, -12)
+      ..relativeLineTo(10, 12)
+      
+
+       *下向き
+       *       ..relativeLineTo(10, 12)
+      ..relativeLineTo(10, -12)
+
+       * 
+       * 右向き 
+       ..relativeLineTo(10, 12)
+      ..relativeLineTo(-10, 12)
+
+      ..relativeLineTo(-10, 12)
+      ..relativeLineTo(10, 12)
+      左向き
+       */
   }
 
   @override
