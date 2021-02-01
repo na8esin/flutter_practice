@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// https://note.com/iwatsuru/n/nb646c5e6b62b
+
 void main() {
   runApp(MyApp());
 }
@@ -11,9 +13,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light(),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Center(
-          child: Bubble('ふきだしです'),
-        ),
+        body: SafeArea(
+            child: Stack(
+          children: [
+            Align(alignment: Alignment.topCenter, child: Bubble('ふきだしです')),
+            Align(alignment: Alignment.centerLeft, child: Bubble('ふきだしです')),
+            Align(alignment: Alignment.centerRight, child: Bubble('ふきだしです')),
+            Align(alignment: Alignment.bottomCenter, child: Bubble('ふきだしです')),
+          ],
+        )),
       ),
     );
   }
