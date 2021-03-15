@@ -16,7 +16,7 @@ class CurvedAnimationDemo extends StatefulWidget {
 class CurveChoice {
   final Curve curve;
   final String name;
-  const CurveChoice({this.curve, this.name});
+  const CurveChoice({required this.curve, required this.name});
 }
 
 const List<CurveChoice> curves = [
@@ -38,11 +38,11 @@ class _CurvedAnimationDemoState extends State<CurvedAnimationDemo>
     with SingleTickerProviderStateMixin {
   static const _duration = Duration(seconds: 4);
 
-  CurveChoice selectedForwardCurve, selectedReverseCurve;
-  CurvedAnimation curvedAnimation;
-  AnimationController controller;
-  Animation<double> animationRotation;
-  Animation<Offset> animationTranslation;
+  late CurveChoice selectedForwardCurve, selectedReverseCurve;
+  late CurvedAnimation curvedAnimation;
+  late AnimationController controller;
+  late Animation<double> animationRotation;
+  late Animation<Offset> animationTranslation;
 
   @override
   void initState() {
@@ -51,13 +51,7 @@ class _CurvedAnimationDemoState extends State<CurvedAnimationDemo>
       duration: _duration,
       vsync: this,
     );
-    /* 初期化するとようやくエラーで怒られる
-       // multiple tickers were created.
-      controllerB = AnimationController(
-        duration: _duration,
-        vsync: this,
-      );
-    */
+
     selectedForwardCurve = curves[0];
     selectedReverseCurve = curves[0];
     curvedAnimation = CurvedAnimation(
@@ -112,7 +106,7 @@ class _CurvedAnimationDemoState extends State<CurvedAnimationDemo>
             }).toList(),
             onChanged: (newCurve) {
               setState(() {
-                selectedForwardCurve = newCurve;
+                selectedForwardCurve = newCurve!;
                 curvedAnimation.curve = selectedForwardCurve.curve;
               });
             },
@@ -130,7 +124,7 @@ class _CurvedAnimationDemoState extends State<CurvedAnimationDemo>
             }).toList(),
             onChanged: (newCurve) {
               setState(() {
-                selectedReverseCurve = newCurve;
+                selectedReverseCurve = newCurve!;
                 curvedAnimation.reverseCurve = selectedReverseCurve.curve;
               });
             },

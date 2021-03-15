@@ -16,16 +16,16 @@ class CurvedAnimationDemo extends StatefulWidget {
 class CurveChoice {
   final Curve curve;
   final String name;
-  const CurveChoice({this.curve, this.name});
+  const CurveChoice({required this.curve, required this.name});
 }
 
 class _CurvedAnimationDemoState extends State<CurvedAnimationDemo>
     with SingleTickerProviderStateMixin {
-  AnimationController controller;
+  late AnimationController controller;
   // AnimationControllerを２つ定義しただけじゃ怒られない
-  AnimationController controllerB;
-  Animation<double> animationRotation;
-  Animation<Offset> animationTranslation;
+  AnimationController? controllerB;
+  late Animation<double> animationRotation;
+  late Animation<Offset> animationTranslation;
   static const _duration = Duration(seconds: 4);
   List<CurveChoice> curves = [
     CurveChoice(curve: Curves.bounceIn, name: 'Bounce In'),
@@ -41,8 +41,8 @@ class _CurvedAnimationDemoState extends State<CurvedAnimationDemo>
     CurveChoice(curve: Curves.easeInCirc, name: 'Ease In Circle'),
     CurveChoice(curve: Curves.easeOutCirc, name: 'Ease Out Circle'),
   ];
-  CurveChoice selectedForwardCurve, selectedReverseCurve;
-  CurvedAnimation curvedAnimation;
+  late CurveChoice selectedForwardCurve, selectedReverseCurve;
+  late CurvedAnimation curvedAnimation;
 
   @override
   void initState() {
@@ -112,7 +112,7 @@ class _CurvedAnimationDemoState extends State<CurvedAnimationDemo>
             }).toList(),
             onChanged: (newCurve) {
               setState(() {
-                selectedForwardCurve = newCurve;
+                selectedForwardCurve = newCurve!;
                 curvedAnimation.curve = selectedForwardCurve.curve;
               });
             },
@@ -130,7 +130,7 @@ class _CurvedAnimationDemoState extends State<CurvedAnimationDemo>
             }).toList(),
             onChanged: (newCurve) {
               setState(() {
-                selectedReverseCurve = newCurve;
+                selectedReverseCurve = newCurve!;
                 curvedAnimation.reverseCurve = selectedReverseCurve.curve;
               });
             },

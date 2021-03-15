@@ -84,7 +84,7 @@ class BubbleBorder extends ShapeBorder {
       EdgeInsets.only(bottom: usePadding ? 12 : 0);
 
   @override
-  Path getInnerPath(Rect rect, {TextDirection textDirection}) => null;
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) => null;
 
   @override
   Path getOuterPath(Rect rect, {TextDirection textDirection}) {
