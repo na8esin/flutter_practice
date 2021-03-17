@@ -28,10 +28,11 @@ class StreamPublicScreen extends StatelessWidget {
                 ),
                 body: Center(
                     child: new ListView(
-                  children: snapshot.data.docs.map((DocumentSnapshot document) {
+                  children:
+                      snapshot.data!.docs.map((DocumentSnapshot document) {
                     return new ListTile(
-                      title: new Text(document.data()['name']),
-                      subtitle: new Text(document.data()['subname']),
+                      title: new Text(document.data()!['name']),
+                      subtitle: new Text(document.data()!['subname']),
                     );
                   }).toList(),
                 ))));

@@ -8,15 +8,15 @@ import '../common/empty_content.dart';
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
-final authStateChangesProvider = StreamProvider<User>((ref) {
+final authStateChangesProvider = StreamProvider<User?>((ref) {
   return ref.watch(firebaseAuthProvider).authStateChanges();
 });
 
 class AuthWidget extends HookWidget {
   const AuthWidget({
-    Key key,
-    @required this.signedInBuilder,
-    @required this.nonSignedInBuilder,
+    Key? key,
+    required this.signedInBuilder,
+    required this.nonSignedInBuilder,
   }) : super(key: key);
   final WidgetBuilder nonSignedInBuilder;
   final WidgetBuilder signedInBuilder;
@@ -40,7 +40,7 @@ class AuthWidget extends HookWidget {
     );
   }
 
-  Widget _data(BuildContext context, User user) {
+  Widget _data(BuildContext context, User? user) {
     if (user != null) {
       return signedInBuilder(context);
     }

@@ -1,5 +1,5 @@
 # 概要
-firebase authでログインして、cloud storeからいろいろな方法で取得するサンプル
+firebase authでログインして、firestoreからいろいろな方法で取得するサンプル
 
 ## ファイル
 - app.dart

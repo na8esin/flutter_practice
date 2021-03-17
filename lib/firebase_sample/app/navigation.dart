@@ -16,7 +16,7 @@ const publicStream = 'public_stream';
 
 class Navigation extends StatelessWidget {
   final String _title;
-  Navigation(this._title, {Key key}) : super(key: key);
+  Navigation(this._title, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class Navigation extends StatelessWidget {
         }
 
         // Handle '/details/:id'
-        var uri = Uri.parse(settings.name);
+        var uri = Uri.parse(settings.name!);
         if (uri.pathSegments.length == 2 &&
             uri.pathSegments.first == 'details') {
           var id = uri.pathSegments[1];

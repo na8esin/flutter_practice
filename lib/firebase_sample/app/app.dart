@@ -6,7 +6,7 @@ import 'login.dart';
 import 'navigation.dart';
 
 class App extends HookWidget {
-  App({Key key}) : super(key: key);
+  App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

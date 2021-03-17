@@ -4,7 +4,7 @@ class DetailScreen extends StatelessWidget {
   final String id;
 
   DetailScreen({
-    this.id,
+    required this.id,
   });
 
   @override
@@ -16,7 +16,7 @@ class DetailScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Viewing details for item $id'),
-            FlatButton(
+            TextButton(
               child: Text('Pop!'),
               onPressed: () {
                 Navigator.pop(context);

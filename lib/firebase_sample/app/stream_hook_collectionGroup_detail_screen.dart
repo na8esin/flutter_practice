@@ -25,7 +25,7 @@ class StreamDetailsScreen extends HookWidget {
                 child: ListView(
               children: data.docs.map((DocumentSnapshot doc) {
                 return ListTile(
-                  title: Text(doc.data()['title']),
+                  title: Text(doc.data()!['title']),
                 );
               }).toList(),
             ))));

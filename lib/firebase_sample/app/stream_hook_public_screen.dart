@@ -27,11 +27,11 @@ class StreamRiverPodPublicScreen extends HookWidget {
                 child: ListView(
               children: public.docs.map((DocumentSnapshot document) {
                 return ListTile(
-                  title: Text(document.data()['name']),
-                  subtitle: Text(document.data()['subname']),
+                  title: Text(document.data()!['name']),
+                  subtitle: Text(document.data()!['subname']),
                   trailing: Text('tr'),
                   // あたりまえだけど、前半はnullになる
-                  leading: Text('${document.data()['id']} : ${document.id}'),
+                  leading: Text('${document.data()!['id']} : ${document.id}'),
                 );
               }).toList(),
             ))));

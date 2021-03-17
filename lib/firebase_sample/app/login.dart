@@ -25,8 +25,8 @@ class Login extends StatelessWidget {
 class MyCustomForm extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final emailErrorText = useState<String>(null);
-    final passwordErrorText = useState<String>(null);
+    final emailErrorText = useState<String>('');
+    final passwordErrorText = useState<String>('');
     final emailEditingController = useTextEditingController();
     final passwordEditingController =
         useTextEditingController(text: 'password');
@@ -49,7 +49,7 @@ class MyCustomForm extends HookWidget {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () async {
-                emailErrorText.value = null;
+                emailErrorText.value = '';
                 if (emailEditingController.text.isEmpty) {
                   emailErrorText.value = "some error";
                   return;
