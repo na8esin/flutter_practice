@@ -46,7 +46,7 @@ class MyHomePage extends HookWidget {
             alignment: Alignment.topLeft,
             child: ExpansionTile(
               expandedAlignment: Alignment.centerRight,
-              title: Text('sample title'),
+              title: flex == 2 ? Text('sample title') : Icon(Icons.subtitles),
               children: [
                 // childrenPaddingを使っても子要素同士の空白がうまくあかない
                 Padding(
