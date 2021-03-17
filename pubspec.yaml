@@ -38,7 +38,6 @@ dependencies:
   firestore_ref: ^0.10.0+3
   google_sign_in: ^5.0.0
   uuid: ^3.0.1
-  firebase_admin_interop: ^2.1.0
   intl: ^0.17.0
   http: ^0.13.0
 
