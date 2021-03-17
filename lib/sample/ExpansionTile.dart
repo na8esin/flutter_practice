@@ -50,8 +50,9 @@ class MyHomePage extends HookWidget {
     final flex = useProvider(flexProvider.state);
     return Row(
       children: [
-        Expanded(
-          flex: flex,
+        ConstrainedBox(
+          constraints:
+              BoxConstraints(maxWidth: flex == sideMenuflex ? 200.0 : 50),
           child: Align(
             alignment: Alignment.topCenter,
             child: ListView(
@@ -89,7 +90,6 @@ class MyHomePage extends HookWidget {
         ),
         VerticalDivider(thickness: 1, width: 1),
         Expanded(
-          flex: 13,
           child: Center(
             child: Text('Main'),
           ),
