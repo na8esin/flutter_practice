@@ -18,7 +18,7 @@ class PubDetail {
 
 final publicProvider = StreamProvider<List<Public>>((ref) {
   return FirebaseFirestore.instance.collection('publics').snapshots().map((e) =>
-      e.docs.map<Public>((e) => Public(e.id, e.data()['name'])).toList());
+      e.docs.map<Public>((e) => Public(e.id, e.data()!['name'])).toList());
 });
 
 // 最後がStateProviderでもデータが追加されれば即時反映
@@ -52,8 +52,8 @@ final detailProvider = $family<List<String>, String>((ref, String id) {
       .doc(id)
       .collection('details')
       .snapshots()
-      .map(
-          (event) => event.docs.map<String>((e) => e.data()['title']).toList());
+      .map((event) =>
+          event.docs.map<String>((e) => e.data()!['title']).toList());
 });
 
 class HookPubDetail extends HookWidget {

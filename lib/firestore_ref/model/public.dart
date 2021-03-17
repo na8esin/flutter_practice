@@ -8,7 +8,7 @@ part 'public.g.dart';
 abstract class Public with _$Public {
   // TODO: ここにDtailsを入れたくなるが。。。
   factory Public({
-    @required String name,
+    required String name,
     String subname,
     @TimestampConverter() DateTime createdAt,
     @TimestampConverter() DateTime updatedAt,
@@ -37,7 +37,7 @@ class PublicsRef extends CollectionRef<Public, PublicDoc, PublicRef> {
     assert(docRef != null);
     return PublicDoc(
       docRef,
-      Public.fromJson(snapshot.data()),
+      Public.fromJson(snapshot.data()!),
     );
   }
 
@@ -50,8 +50,8 @@ class PublicsRef extends CollectionRef<Public, PublicDoc, PublicRef> {
 
 class PublicRef extends DocumentRef<Public, PublicDoc> {
   const PublicRef({
-    @required DocumentReference ref,
-    @required this.publicsRef,
+    required DocumentReference ref,
+    required this.publicsRef,
   }) : super(
           ref: ref,
           collectionRef: publicsRef,

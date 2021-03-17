@@ -33,10 +33,10 @@ class CollectionGroupParent extends HookWidget {
 
                     if (snap2.data == null) return Text('parent is null.');
                     return ListTile(
-                      title: Text(docsE.data()['title']),
+                      title: Text(docsE.data()!['title']),
                       // ↓のnameがnullで取れない。
                       // collectionGroupのparentって取れないんじゃない？
-                      subtitle: Text(snap2.data.docs.first.data()['name']),
+                      subtitle: Text(snap2.data!.docs.first.data()!['name']),
                     );
                   });
             },

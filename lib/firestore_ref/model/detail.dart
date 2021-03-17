@@ -35,7 +35,7 @@ class DetailsRef extends CollectionRef<Detail, DetailDoc, DetailRef> {
       : super(publicDoc == null
             ? FirebaseFirestore.instance.collection('details')
             : publicDoc.publicRef.ref.collection('details'));
-  final PublicDoc publicDoc;
+  final PublicDoc? publicDoc;
 
   @override
   Map<String, dynamic> encode(Detail data) =>
@@ -46,7 +46,7 @@ class DetailsRef extends CollectionRef<Detail, DetailDoc, DetailRef> {
     assert(docRef != null);
     return DetailDoc(
       docRef,
-      Detail.fromJson(snapshot.data()),
+      Detail.fromJson(snapshot.data()!),
     );
   }
 
@@ -68,7 +68,7 @@ class DetailsGroupRef extends CollectionGroupRef<Detail, DetailDoc, DetailRef> {
     assert(docRef != null);
     return DetailDoc(
       docRef,
-      Detail.fromJson(snapshot.data()),
+      Detail.fromJson(snapshot.data()!),
     );
   }
 
@@ -81,8 +81,8 @@ class DetailsGroupRef extends CollectionGroupRef<Detail, DetailDoc, DetailRef> {
 
 class DetailRef extends DocumentRef<Detail, DetailDoc> {
   const DetailRef({
-    @required DocumentReference ref,
-    @required this.detailsRef,
+    required DocumentReference ref,
+    required this.detailsRef,
   }) : super(
           ref: ref,
           collectionRef: detailsRef,

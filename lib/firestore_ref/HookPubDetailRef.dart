@@ -28,7 +28,7 @@ final pubDetailProvider = StateProvider<List<PubDetail>>((ref) {
               data: (details) {
                 return details
                     .map<PubDetail>(
-                        (e) => PubDetail(public.entity.name, e.entity.title))
+                        (e) => PubDetail(public.entity!.name, e.entity!.title))
                     .toList();
               },
               loading: () => [PubDetail('lo2', '')],

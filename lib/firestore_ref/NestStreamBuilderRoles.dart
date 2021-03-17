@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final publicProvider = StreamProvider.autoDispose((ref) {
   return FirebaseFirestore.instance.collection('publics').snapshots().map(
-      (e) => e.docs.map((e) => UserRoles(e.id, e.data()['roles'])).toList());
+      (e) => e.docs.map((e) => UserRoles(e.id, e.data()!['roles'])).toList());
 });
 
 // StreamBuilderを分離した例
@@ -43,23 +43,23 @@ class NestStreamBuilderRoles extends HookWidget {
 class UserRoles {
   final id;
   // いきなりDocumentReferenceにキャストできないからこんな感じ
-  final roles;
+  final List roles;
   UserRoles(this.id, this.roles);
 }
 
 class MyStreamBuilder extends HookWidget {
   MyStreamBuilder(this.role);
-  final role;
+  final DocumentReference role;
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: (role as DocumentReference).snapshots(),
-      builder: (context, snap2) {
-        if (snap2.hasError) return Text('snap2 error');
-        if (snap2.connectionState == ConnectionState.waiting)
+      stream: role.snapshots(),
+      builder: (context, AsyncSnapshot snap) {
+        if (snap.hasError) return Text('snap2 error');
+        if (snap.connectionState == ConnectionState.waiting)
           return Text("snap2 Loading");
 
-        return Text(snap2.data['name']);
+        return Text('${snap.data['name']}');
       },
     );
   }
@@ -69,5 +69,5 @@ final $family = StreamProvider.family;
 final roleProvider = $family<String, dynamic>((ref, role) {
   return (role as DocumentReference)
       .snapshots()
-      .map((event) => event.data()['name']);
+      .map((event) => event.data()!['name']);
 });

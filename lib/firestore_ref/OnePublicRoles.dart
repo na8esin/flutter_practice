@@ -9,7 +9,7 @@ final publicProvider = StreamProvider<List<dynamic>>((ref) {
       .collection('publics')
       .doc('0YPJmTVo631kHkpQgP47')
       .snapshots()
-      .map((e) => e.data()['roles']);
+      .map((e) => e.data()!['roles']);
 });
 
 final $family = StreamProvider.family;
@@ -20,7 +20,7 @@ final roleProvider = $family<String, String>((ref, id) {
       .collection('roles')
       .doc(id)
       .snapshots()
-      .map((e) => e.data()['name']);
+      .map((e) => e.data()!['name']);
 });
 
 class OnePublicRoles extends HookWidget {

@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final publicProvider = StreamProvider.autoDispose((ref) {
   return FirebaseFirestore.instance.collection('publics').snapshots().map(
-      (e) => e.docs.map((e) => UserRoles(e.id, e.data()['roles'])).toList());
+      (e) => e.docs.map((e) => UserRoles(e.id, e.data()!['roles'])).toList());
 });
 
 final rolesProvider = StateProvider.autoDispose((ref) {
@@ -39,7 +39,7 @@ final nameProvider = $family<String, String>((ref, String id) {
       .collection('roles')
       .doc(id)
       .snapshots()
-      .map((event) => event.data()['name']);
+      .map((event) => event.data()!['name']);
 });
 
 class NestStreamBuilderRolesHook extends HookWidget {

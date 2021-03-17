@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'NoHookNestStreamBuilder.dart';
 import 'NestStreamBuilderRoles.dart';
 import 'NestStreamBuilderRolesHook.dart';
-import 'StreamFamily.dart';
 import 'OnePublicRoles.dart';
 import 'CollectionGroupParent.dart';
 import 'HookPubDetail.dart';
@@ -23,7 +22,6 @@ List<Map<String, dynamic>> listListTile = [
   titleBuilder(NoHookNestStreamBuilder()),
   titleBuilder(NestStreamBuilderRoles()),
   titleBuilder(NestStreamBuilderRolesHook()),
-  titleBuilder(StreamFamily()),
   titleBuilder(OnePublicRoles()),
   titleBuilder(CollectionGroupParent()),
   titleBuilder(HookPubDetail()),
