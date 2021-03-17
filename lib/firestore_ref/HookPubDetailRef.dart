@@ -6,6 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'model/public.dart';
 import 'model/detail.dart';
 
+/// firestore_refを使ったサンプル
+
 class PubDetail {
   final String pubName;
   final String detailTile;
