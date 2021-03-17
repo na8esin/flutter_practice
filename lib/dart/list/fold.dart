@@ -1,5 +1,5 @@
 void main(List<String> args) {
-  List iterable = [1, 3, 5];
+  final iterable = [1, 3, 5];
   int ret = iterable.fold(0, (prev, element) => prev + element);
   assert(ret == 9);
   print(ret);

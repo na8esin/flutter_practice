@@ -8,8 +8,8 @@ class Post {
 }
 
 Future<Post> fetchPost(http.Client client) async {
-  final response =
-      await client.get('https://jsonplaceholder.typicode.com/posts/1');
+  final uri = Uri.https('jsonplaceholder.typicode.com', '/posts/1');
+  final response = await client.get(uri);
 
   if (response.statusCode == 200) {
     // If the call to the server was successful, parse the JSON.
