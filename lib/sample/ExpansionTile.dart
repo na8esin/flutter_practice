@@ -3,15 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-/// たりない要素としては、ハンバーガー
+/// 足りない要素
+///   ハンバーガー
+///   アニメーションしながら、広げたり閉じたりする
+///     閉じるときって、サブメニューってどうすんの？文字？アイコン
+///     そもそも閉じたり開いたりする必要ある？
+/// 　左メニュの選択状態って同期する？
+///
+/// 足りない要素を補うためには？
+///   パッケージを探す
+///   Drawerを拡張する？
 
 final flexProvider = StateNotifierProvider((ref) => FlexController());
+final sideMenuflex = 3;
 
 class FlexController extends StateNotifier<int> {
-  FlexController() : super(2);
+  FlexController() : super(sideMenuflex);
 
   void change() {
-    state = state == 2 ? 1 : 2;
+    state = state == sideMenuflex ? 1 : sideMenuflex;
   }
 }
 
@@ -43,19 +53,35 @@ class MyHomePage extends HookWidget {
         Expanded(
           flex: flex,
           child: Align(
-            alignment: Alignment.topLeft,
-            child: ExpansionTile(
-              expandedAlignment: Alignment.centerRight,
-              title: flex == 2 ? Text('sample title') : Icon(Icons.subtitles),
+            alignment: Alignment.topCenter,
+            child: ListView(
               children: [
-                // childrenPaddingを使っても子要素同士の空白がうまくあかない
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('Text1'),
+                ExpansionTile(
+                  trailing: flex == sideMenuflex ? null : SizedBox.shrink(),
+                  expandedAlignment: Alignment.centerRight,
+                  title: flex == sideMenuflex
+                      ? Text('sample title')
+                      : Icon(Icons.subtitles),
+                  children: [
+                    // childrenPaddingを使っても子要素同士の空白がうまくあかない
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: flex == sideMenuflex
+                          ? Text('Text1')
+                          : Icon(Icons.edit),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: flex == sideMenuflex
+                          ? Text('Text2')
+                          : Icon(Icons.list),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('Text2'),
+                ListTile(
+                  title: Icon(Icons.person),
+                  // 閉じたときの右側にある微妙な空白を調整するため
+                  trailing: SizedBox.shrink(),
                 ),
               ],
             ),
@@ -63,7 +89,7 @@ class MyHomePage extends HookWidget {
         ),
         VerticalDivider(thickness: 1, width: 1),
         Expanded(
-          flex: 8,
+          flex: 13,
           child: Center(
             child: Text('Main'),
           ),
