@@ -84,10 +84,10 @@ class BubbleBorder extends ShapeBorder {
       EdgeInsets.only(bottom: usePadding ? 12 : 0);
 
   @override
-  Path getInnerPath(Rect rect, {TextDirection? textDirection}) => null;
+  Path getInnerPath(Rect rect, {TextDirection? textDirection}) => Path();
 
   @override
-  Path getOuterPath(Rect rect, {TextDirection textDirection}) {
+  Path getOuterPath(Rect rect, {TextDirection? textDirection}) {
     final r =
         Rect.fromPoints(rect.topLeft, rect.bottomRight - const Offset(0, 12));
     return Path()
@@ -121,7 +121,7 @@ class BubbleBorder extends ShapeBorder {
   }
 
   @override
-  void paint(Canvas canvas, Rect rect, {TextDirection textDirection}) {}
+  void paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) {}
 
   @override
   ShapeBorder scale(double t) => this;
