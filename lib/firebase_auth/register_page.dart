@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_signin_button/button_builder.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -22,8 +22,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  bool _success;
-  String _userEmail;
+  late bool _success;
+  late String _userEmail;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +42,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(labelText: 'Email'),
-                    validator: (String value) {
-                      if (value.isEmpty) {
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
                         return 'Please enter some text';
                       }
                       return null;
@@ -52,8 +52,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   TextFormField(
                     controller: _passwordController,
                     decoration: const InputDecoration(labelText: 'Password'),
-                    validator: (String value) {
-                      if (value.isEmpty) {
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
                         return 'Please enter some text';
                       }
                       return null;
@@ -67,7 +67,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       icon: Icons.person_add,
                       backgroundColor: Colors.blueGrey,
                       onPressed: () async {
-                        if (_formKey.currentState.validate()) {
+                        if (_formKey.currentState!.validate()) {
                           _register();
                         }
                       },
@@ -103,11 +103,11 @@ class _RegisterPageState extends State<RegisterPage> {
       email: _emailController.text,
       password: _passwordController.text,
     ))
-        .user;
+        .user!;
     if (user != null) {
       setState(() {
         _success = true;
-        _userEmail = user.email;
+        _userEmail = user.email!;
       });
     } else {
       _success = false;
