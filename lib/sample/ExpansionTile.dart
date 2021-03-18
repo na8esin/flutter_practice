@@ -4,14 +4,20 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// 足りない要素
-///   ハンバーガー
-///   アニメーションしながら、広げたり閉じたりする
+///   ハンバーガー -> いけそう
+///   アニメーションしながら、広げたり閉じたりする -> 大変
 ///     閉じるときって、サブメニューってどうすんの？文字？アイコン
 ///     そもそも閉じたり開いたりする必要ある？
+///   選択されてるメニューのアイコンを反転させる
+/// 　　icon, selectedIcon
 /// 　左メニュの選択状態って同期する？
 ///
 /// 足りない要素を補うためには？
 ///   パッケージを探す
+///     https://pub.dev/packages/flutter_sidebar
+///     https://github.com/tusharsadhwani/scaffold_responsive
+///       完全に消えるのはいまいち
+///
 ///   Drawerを拡張する？
 
 final flexProvider = StateNotifierProvider((ref) => FlexController());
@@ -50,9 +56,10 @@ class MyHomePage extends HookWidget {
     final flex = useProvider(flexProvider.state);
     return Row(
       children: [
+        // NavigationRailでもConstrainedBoxが使われてる
         ConstrainedBox(
           constraints:
-              BoxConstraints(maxWidth: flex == sideMenuflex ? 200.0 : 50),
+              BoxConstraints(maxWidth: flex == sideMenuflex ? 150.0 : 50),
           child: Align(
             alignment: Alignment.topCenter,
             child: ListView(
@@ -60,8 +67,9 @@ class MyHomePage extends HookWidget {
                 ExpansionTile(
                   trailing: flex == sideMenuflex ? null : SizedBox.shrink(),
                   expandedAlignment: Alignment.centerRight,
+                  // 折り返しを防ぐためにも単語１つで済ます
                   title: flex == sideMenuflex
-                      ? Text('sample title')
+                      ? Text('sampletitle')
                       : Icon(Icons.subtitles),
                   children: [
                     // childrenPaddingを使っても子要素同士の空白がうまくあかない
@@ -80,10 +88,22 @@ class MyHomePage extends HookWidget {
                   ],
                 ),
                 ListTile(
-                  title: Icon(Icons.person),
+                  // そもそもListTileの時点で、titleとtrailingの間の余白が大きい
+                  title: flex == sideMenuflex
+                      ? Text('sampletitle')
+                      : Icon(Icons.person),
                   // 閉じたときの右側にある微妙な空白を調整するため
-                  trailing: SizedBox.shrink(),
+                  trailing: flex == sideMenuflex
+                      ? Icon(Icons.arrow_back)
+                      : SizedBox.shrink(),
+                  selected: true,
                 ),
+                ListTile(
+                  title: Row(
+                    // これだと余白が少なくできる
+                    children: [Text('sample title'), Icon(Icons.arrow_back)],
+                  ),
+                )
               ],
             ),
           ),
