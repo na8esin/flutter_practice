@@ -66,7 +66,7 @@ class MyButton extends StatelessWidget {
 }
 
 class CounterDisplay extends StatelessWidget {
-  CounterDisplay({this.count});
+  CounterDisplay({required this.count});
 
   final int count;
 
@@ -77,7 +77,7 @@ class CounterDisplay extends StatelessWidget {
 }
 
 class CounterIncrementor extends StatelessWidget {
-  CounterIncrementor({this.onPressed});
+  CounterIncrementor({required this.onPressed});
 
   final VoidCallback onPressed;
 

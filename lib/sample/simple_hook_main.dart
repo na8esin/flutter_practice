@@ -17,7 +17,7 @@ final counterControllerProvider =
     StateNotifierProvider((ref) => CounterController());
 
 class MyHomePage extends HookWidget {
-  const MyHomePage({Key key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final counterState = useProvider(counterControllerProvider.state);
