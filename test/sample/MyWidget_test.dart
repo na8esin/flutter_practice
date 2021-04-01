@@ -17,7 +17,7 @@ void main() {
       // Create the widget by telling the tester to build it.
       await tester.pumpWidget(MyWidget(title: 'T', message: 'M'));
       await expectLater(
-          find.byType(MyWidget), matchesGoldenFile('../../goldens/widget.png'));
+          find.byType(MyWidget), matchesGoldenFile('goldens/widget.png'));
       // Create the Finders.
       final titleFinder = find.text('T');
       final messageFinder = find.text('M');
