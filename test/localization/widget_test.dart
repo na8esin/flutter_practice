@@ -8,11 +8,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/intl.dart';
 
 import '../../lib/localization/minimal.dart';
 
-Widget makeTestableWidget({Widget child}) {
+Widget makeTestableWidget({required Widget child}) {
   return MediaQuery(
     data: MediaQueryData(),
     child: MaterialApp(
