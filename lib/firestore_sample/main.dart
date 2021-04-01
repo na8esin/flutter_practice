@@ -10,7 +10,8 @@ import 'NestStreamBuilderRolesHook.dart';
 import 'OnePublicRoles.dart';
 import 'CollectionGroupParent.dart';
 import 'HookPubDetail.dart';
-import 'HookPubDetailRef.dart';
+//import 'HookPubDetailRef.dart';
+import 'SimplePublic.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +26,8 @@ List<Map<String, dynamic>> listListTile = [
   titleBuilder(OnePublicRoles()),
   titleBuilder(CollectionGroupParent()),
   titleBuilder(HookPubDetail()),
-  titleBuilder(HookPubDetailRef()),
+//  titleBuilder(HookPubDetailRef()),
+  titleBuilder(SimplePublic())
 ];
 
 titleBuilder(Widget clazz) {

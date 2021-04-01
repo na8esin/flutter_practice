@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'detail.dart';
 
@@ -8,6 +8,10 @@ part of 'detail.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
 Detail _$DetailFromJson(Map<String, dynamic> json) {
   return _Detail.fromJson(json);
 }
@@ -16,11 +20,10 @@ Detail _$DetailFromJson(Map<String, dynamic> json) {
 class _$DetailTearOff {
   const _$DetailTearOff();
 
-// ignore: unused_element
   _Detail call(
-      {@required String title,
-      @TimestampConverter() DateTime createdAt,
-      @TimestampConverter() DateTime updatedAt}) {
+      {required String title,
+      @TimestampConverter() DateTime? createdAt,
+      @TimestampConverter() DateTime? updatedAt}) {
     return _Detail(
       title: title,
       createdAt: createdAt,
@@ -28,27 +31,25 @@ class _$DetailTearOff {
     );
   }
 
-// ignore: unused_element
   Detail fromJson(Map<String, Object> json) {
     return Detail.fromJson(json);
   }
 }
 
 /// @nodoc
-// ignore: unused_element
 const $Detail = _$DetailTearOff();
 
 /// @nodoc
 mixin _$Detail {
-  String get title;
+  String get title => throw _privateConstructorUsedError;
   @TimestampConverter()
-  DateTime get createdAt;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
   @TimestampConverter()
-  DateTime get updatedAt;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson();
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $DetailCopyWith<Detail> get copyWith;
+  $DetailCopyWith<Detail> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -57,8 +58,8 @@ abstract class $DetailCopyWith<$Res> {
       _$DetailCopyWithImpl<$Res>;
   $Res call(
       {String title,
-      @TimestampConverter() DateTime createdAt,
-      @TimestampConverter() DateTime updatedAt});
+      @TimestampConverter() DateTime? createdAt,
+      @TimestampConverter() DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -71,16 +72,23 @@ class _$DetailCopyWithImpl<$Res> implements $DetailCopyWith<$Res> {
 
   @override
   $Res call({
-    Object title = freezed,
-    Object createdAt = freezed,
-    Object updatedAt = freezed,
+    Object? title = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_value.copyWith(
-      title: title == freezed ? _value.title : title as String,
-      createdAt:
-          createdAt == freezed ? _value.createdAt : createdAt as DateTime,
-      updatedAt:
-          updatedAt == freezed ? _value.updatedAt : updatedAt as DateTime,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -92,8 +100,8 @@ abstract class _$DetailCopyWith<$Res> implements $DetailCopyWith<$Res> {
   @override
   $Res call(
       {String title,
-      @TimestampConverter() DateTime createdAt,
-      @TimestampConverter() DateTime updatedAt});
+      @TimestampConverter() DateTime? createdAt,
+      @TimestampConverter() DateTime? updatedAt});
 }
 
 /// @nodoc
@@ -107,16 +115,23 @@ class __$DetailCopyWithImpl<$Res> extends _$DetailCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object title = freezed,
-    Object createdAt = freezed,
-    Object updatedAt = freezed,
+    Object? title = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
   }) {
     return _then(_Detail(
-      title: title == freezed ? _value.title : title as String,
-      createdAt:
-          createdAt == freezed ? _value.createdAt : createdAt as DateTime,
-      updatedAt:
-          updatedAt == freezed ? _value.updatedAt : updatedAt as DateTime,
+      title: title == freezed
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: updatedAt == freezed
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -126,10 +141,9 @@ class __$DetailCopyWithImpl<$Res> extends _$DetailCopyWithImpl<$Res>
 /// @nodoc
 class _$_Detail implements _Detail {
   _$_Detail(
-      {@required this.title,
+      {required this.title,
       @TimestampConverter() this.createdAt,
-      @TimestampConverter() this.updatedAt})
-      : assert(title != null);
+      @TimestampConverter() this.updatedAt});
 
   factory _$_Detail.fromJson(Map<String, dynamic> json) =>
       _$_$_DetailFromJson(json);
@@ -138,10 +152,10 @@ class _$_Detail implements _Detail {
   final String title;
   @override
   @TimestampConverter()
-  final DateTime createdAt;
+  final DateTime? createdAt;
   @override
   @TimestampConverter()
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   @override
   String toString() {
@@ -182,21 +196,21 @@ class _$_Detail implements _Detail {
 
 abstract class _Detail implements Detail {
   factory _Detail(
-      {@required String title,
-      @TimestampConverter() DateTime createdAt,
-      @TimestampConverter() DateTime updatedAt}) = _$_Detail;
+      {required String title,
+      @TimestampConverter() DateTime? createdAt,
+      @TimestampConverter() DateTime? updatedAt}) = _$_Detail;
 
   factory _Detail.fromJson(Map<String, dynamic> json) = _$_Detail.fromJson;
 
   @override
-  String get title;
+  String get title => throw _privateConstructorUsedError;
   @override
   @TimestampConverter()
-  DateTime get createdAt;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
   @override
   @TimestampConverter()
-  DateTime get updatedAt;
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$DetailCopyWith<_Detail> get copyWith;
+  _$DetailCopyWith<_Detail> get copyWith => throw _privateConstructorUsedError;
 }

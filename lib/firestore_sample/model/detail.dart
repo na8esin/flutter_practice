@@ -7,11 +7,11 @@ part 'detail.freezed.dart';
 part 'detail.g.dart';
 
 @freezed
-abstract class Detail with _$Detail {
+class Detail with _$Detail {
   factory Detail({
-    @required String title,
-    @TimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime updatedAt,
+    required String title,
+    @TimestampConverter() DateTime? createdAt,
+    @TimestampConverter() DateTime? updatedAt,
   }) = _Detail;
   factory Detail.fromJson(Map<String, dynamic> json) => _$DetailFromJson(json);
 }

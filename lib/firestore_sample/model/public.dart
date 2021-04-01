@@ -5,13 +5,13 @@ part 'public.freezed.dart';
 part 'public.g.dart';
 
 @freezed
-abstract class Public with _$Public {
+class Public with _$Public {
   // TODO: ここにDtailsを入れたくなるが。。。
   factory Public({
     required String name,
-    String subname,
-    @TimestampConverter() DateTime createdAt,
-    @TimestampConverter() DateTime updatedAt,
+    String? subname,
+    @TimestampConverter() DateTime? createdAt,
+    @TimestampConverter() DateTime? updatedAt,
   }) = _Public;
   factory Public.fromJson(Map<String, dynamic> json) => _$PublicFromJson(json);
 }
