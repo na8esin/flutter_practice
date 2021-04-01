@@ -12,10 +12,10 @@ main() {
   group('fetchPost', () {
     test('returns a Post if the http call completes successfully', () async {
       final client = MockClient();
-
+      final uri = Uri.https('jsonplaceholder.typicode.com', '/posts/1');
       // Use Mockito to return a successful response when it calls the
       // provided http.Client.
-      when(client.get('https://jsonplaceholder.typicode.com/posts/1'))
+      when(client.get(uri))
           .thenAnswer((_) async => http.Response('{"title": "Test"}', 200));
 
       expect(await fetchPost(client), isA<Post>());
@@ -23,10 +23,10 @@ main() {
 
     test('throws an exception if the http call completes with an error', () {
       final client = MockClient();
-
+      final uri = Uri.https('jsonplaceholder.typicode.com', '/posts/1');
       // Use Mockito to return an unsuccessful response when it calls the
       // provided http.Client.
-      when(client.get('https://jsonplaceholder.typicode.com/posts/1'))
+      when(client.get(uri))
           .thenAnswer((_) async => http.Response('Not Found', 404));
 
       expect(fetchPost(client), throwsException);
