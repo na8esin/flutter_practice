@@ -18,8 +18,9 @@ Future<void> main() async {
       await tester.pumpWidgetBuilder(
         Center(
             child: (GoldenBuilder.column()
-                  ..addScenario('red',
-                      Container(height: 50, width: 50, color: Colors.red))
+                  // 日本語でない。。。
+                  ..addScenario(
+                      '赤', Container(height: 50, width: 50, color: Colors.red))
                   ..addScenario('green',
                       Container(height: 50, width: 50, color: Colors.green))
                   ..addScenario('blue',
