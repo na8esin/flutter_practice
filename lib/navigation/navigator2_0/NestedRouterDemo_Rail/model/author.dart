@@ -3,5 +3,5 @@ class Author {
   final String name;
   final int age;
 
-  Author({this.name, this.age, this.id});
+  Author({required this.name, required this.age, required this.id});
 }

@@ -4,5 +4,5 @@ class Book {
   final String title;
   final String author;
 
-  Book({this.id, this.title, this.author});
+  Book({required this.id, required this.title, required this.author});
 }

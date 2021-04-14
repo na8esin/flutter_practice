@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../lib/sample/MyWidget.dart';
+import 'package:flutter_practice/sample/MyWidget.dart';
 
 // golden関連は下記のページから
 // https://halesworth.org/snapshot-testing-with-flutter-golden

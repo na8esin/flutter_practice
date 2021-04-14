@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
 
-import '../../lib/dart/post.dart';
+import 'package:flutter_practice/dart/post.dart';
 
 // Create a MockClient using the Mock class provided by the Mockito package.
 // Create new instances of this class in each test.

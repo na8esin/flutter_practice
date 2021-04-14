@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../lib/riverpod_sample/pod_sample_no_repo_main.dart';
+import 'package:flutter_practice/riverpod_sample/pod_sample_no_repo_main.dart';
 
 void main() {
   testWidgets('Can find the title.', (tester) async {
