@@ -6,7 +6,7 @@ import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:flutter_practice/sample/default_sample_main.dart' as app;
 
 /// integration_testだとgoldenのキャプチャって使えないよね？
-/// の確認
+/// の確認 -> 使えない
 
 Future<void> main() async {
   await loadAppFonts();
