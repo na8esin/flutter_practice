@@ -21,11 +21,17 @@ flutter pub run build_runner build --delete-conflicting-outputs
 
 - widgetを網羅する
 
-## NoSuchMethodError: The getter 'definingUnit' was called on null. 
+## build_runnerが失敗する
+### NoSuchMethodError: The getter 'definingUnit' was called on null. 
 
 build_runnerが失敗する件。テストコードのimportの相対パスがいけない
 
 https://github.com/google/json_serializable.dart/issues/738#
+
+### もしかすると、ファイル名に空白があるとだめかもしれない
+アノテーションとかついてない全然関係ないファイルでもだめかもしれない
+
+build.yamlで対象を絞ってもだめ
 
 ## 些末なこと
 
